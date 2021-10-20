@@ -74,28 +74,45 @@ def crash_events():
             gretel['y'] += 10
             gretel['Hp'] = gretel['Hp'] - 60
 
-# def monsters_AI():
-#     global dir, high
-#     x1, y1, num1, num2 = 0, 0, 0, 0
-#     mx, my, mw, mh = 0, 0, 0, 0
-#     for i in range(0, len(Characters) + 1):
-#         if Characters[i] == 'skeleton1_1':
-#             x1, y1, num1, num2 = skeleton1_1['x'], skeleton1_1['y'], skeleton1_1['width'], skeleton1_1['height']
-#         elif Characters[i] == 'skeleton1_2':
-#             x1, y1, num1, num2 = skeleton1_2['x'], skeleton1_2['y'], skeleton1_2['width'], skeleton1_2['height']
-#         for j in range(i + 1, len(Characters) + 1):
-#             if Characters[i] == 'skeleton1_1':
-#                 mx, my, mw, mh = skeleton1_1['x'], skeleton1_1['y'], skeleton1_1['width'], skeleton1_1['height']
-#             elif Characters[i] == 'skeleton1_2':
-#                 mx, my, mw, mh = skeleton1_2['x'], skeleton1_2['y'], skeleton1_2['width'], skeleton1_2['height']
-#             if x1 + num1 > mx - mw:
-#                 dir -= 1 #방향 반대로 바꾸기 class??
-#             elif x1 - num1 < mx + mw:
-#                 dir += 1
-#             elif y1 + num2 > my - mh:
-#                 high -= 1
-#             elif y1 - num2 < my + mw:
-#                 high += 1
+def monsters_AI():
+    global dir, high
+    x1, y1, num1, num2 = 0, 0, 0, 0
+    mx, my, mw, mh = 0, 0, 0, 0
+    chosei, chosej = 0, 0
+    for i in Characters:
+        if i == 'skeleton1_1':
+            x1, y1, num1, num2 = skeleton1_1['x'], skeleton1_1['y'], skeleton1_1['width'], skeleton1_1['height']
+            chosei = i
+            break
+        elif i == 'skeleton1_2':
+            x1, y1, num1, num2 = skeleton1_2['x'], skeleton1_2['y'], skeleton1_2['width'], skeleton1_2['height']
+            chosei = i
+            break
+    for j in Characters:
+        if chosei != 0 and chosei == j:
+            continue
+        if j == 'skeleton1_1':
+            mx, my, mw, mh = skeleton1_1['x'], skeleton1_1['y'], skeleton1_1['width'], skeleton1_1['height']
+            chosej = j
+            break
+        elif j == 'skeleton1_2':
+            mx, my, mw, mh = skeleton1_2['x'], skeleton1_2['y'], skeleton1_2['width'], skeleton1_2['height']
+            chosej = j
+            break
+    # if chosei != 0 and chosej != 0:
+    #     if mx - mw < x1 + num1 < mx + mw and y1 + num2 > my - mh and y1 - num2 < my + mh:
+    #         gretel['x'] -= 10
+    #         gretel['Hp'] = gretel['Hp'] - 60
+    #     elif mx - mw < x1 - num1 < mx + mw and y1 + num2 > my - mh and y1 - num2 < my + mh:
+    #         gretel['x'] += 10
+    #         gretel['Hp'] = gretel['Hp'] - 60
+    #     elif my - mh < y1 + num2 < my + mh and x1 + num1 > mx - mw and x1 - num1 < mx + mw:
+    #         gretel['y'] -= 10
+    #         gretel['Hp'] = gretel['Hp'] - 60
+    #     elif my - mh < y1 - num2 < my + mh and x1 + num1 > mx - mw and x1 - num1 < mx + mw:
+    #         gretel['y'] += 10
+    #         gretel['Hp'] = gretel['Hp'] - 60
+
 timer = False
 start, end = 0.0, 0.0
 def handle_events():
@@ -175,6 +192,7 @@ crun_l = load_image('gretel run_left sheet.png')
 cstop = load_image('gretel stop sheet.png')
 cjump = load_image('gretel jump sheet.png')
 cattack = load_image('gretel attack sheet.png')
+cattack_l = load_image('gretel attack_left sheet.png')
 cdefence = load_image('gretel defence sheet.png')
 cdied = load_image('gretel hurt sheet.png')
 skstop = load_image('skeleton stop.png')
@@ -233,8 +251,10 @@ while play:
         elif keys['jump']:
             cjump.clip_draw(frame['jump'] * 100, 0, 100, 100, gretel['x'], gretel['y'])
             frame['jump'] = (frame['jump'] + 1) % 19
-        elif keys['attack']:
+        elif direct > 0 and keys['attack']:
             cattack.clip_draw(frame['attack'] * 100, 0, 100, 100, gretel['x'], gretel['y'])
+        elif direct < 0 and keys['attack']:
+            cattack_l.clip_draw((25 - frame['attack']) * 100, 0, 100, 100, gretel['x'], gretel['y'])
         elif keys['defence']:
             cdefence.clip_draw(frame['defence'] * 112, 0, 112, 100, gretel['x'], gretel['y'])
             frame['defence'] = (frame['defence'] + two) % 4
