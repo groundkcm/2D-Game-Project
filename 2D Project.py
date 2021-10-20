@@ -108,18 +108,18 @@ def handle_events():
             play = False
         elif event.type == SDL_KEYDOWN:
             keys['stop'] = False
-            if event.key == SDLK_RIGHT:
+            if event.key == SDLK_d:
                 keys['run'] = True
                 direct = 1
                 dir += 1
-            elif event.key == SDLK_LEFT:
+            elif event.key == SDLK_a:
                 keys['run'] = True
                 direct = -1
                 dir -= 1
-            elif event.key == SDLK_UP:
+            elif event.key == SDLK_w:
                 keys['run'] = True
                 high += 1
-            elif event.key == SDLK_DOWN:
+            elif event.key == SDLK_s:
                 keys['run'] = True
                 high -= 1
             elif event.key == SDLK_ESCAPE:
@@ -128,19 +128,19 @@ def handle_events():
                 keys['jump'] = True
                 num = 0
         elif event.type == SDL_KEYUP:
-            if event.key == SDLK_RIGHT:
+            if event.key == SDLK_d:
                 keys['run'] = False
                 keys['stop'] = True
                 dir -= 1
-            elif event.key == SDLK_LEFT:
+            elif event.key == SDLK_a:
                 keys['run'] = False
                 keys['stop'] = True
                 dir += 1
-            elif event.key == SDLK_UP:
+            elif event.key == SDLK_w:
                 keys['run'] = False
                 keys['stop'] = True
                 high -= 1
-            elif event.key == SDLK_DOWN:
+            elif event.key == SDLK_s:
                 keys['run'] = False
                 keys['stop'] = True
                 high += 1
