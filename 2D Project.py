@@ -5,7 +5,7 @@ num = 0
 def jumping():
     global dir, high
     global num
-    keys['run'], keys['attack'], keys['defence'] = False, False, False
+    turn['run'], turn['attack'], turn['defence'] = False, False, False
 
     if num < 9:
         high = 1
@@ -14,42 +14,42 @@ def jumping():
     num += 1
 
     if num == 19:
-        keys['jump'] = False
-        keys['stop'] = True #뛰는 중 점프 했을때 착지 시 모션변화 없음.
+        turn['jump'] = False
+        turn['stop'] = True #뛰는 중 점프 했을때 착지 시 모션변화 없음.
         high = 0
 
 click = 0
 
 def attacking():
     global click
-    keys['run'], keys['jump'], keys['defence'] = False, False, False
+    turn['run'], turn['jump'], turn['defence'] = False, False, False
 
     if click == 1:
         frame['attack'] = (frame['attack'] + 1) % 26
         if frame['attack'] == 7:
-            keys['attack'] = False
-            keys['stop'] = True
+            turn['attack'] = False
+            turn['stop'] = True
     elif click == 2:
         frame['attack'] = (frame['attack'] + 1) % 26
         if frame['attack'] == 15:
-            keys['attack'] = False
-            keys['stop'] = True
+            turn['attack'] = False
+            turn['stop'] = True
     elif click == 0:
         frame['attack'] = (frame['attack'] + 1) % 26
         if frame['attack'] == 25:
-            keys['attack'] = False
-            keys['stop'] = True
+            turn['attack'] = False
+            turn['stop'] = True
 
 
 def defencing():
     global num, dir
-    keys['run'], keys['jump'], keys['attack'] = False, False, False
+    turn['run'], turn['jump'], turn['attack'] = False, False, False
 
     num += 1
     dir = -1
     if num == 8:
-        keys['defence'] = False
-        keys['stop'] = True
+        turn['defence'] = False
+        turn['stop'] = True
         dir = 0
 
 def crash_events():
@@ -124,42 +124,42 @@ def handle_events():
         if event.type == SDL_QUIT:
             play = False
         elif event.type == SDL_KEYDOWN:
-            keys['stop'] = False
+            turn['stop'] = False
             if event.key == SDLK_d:
-                keys['run'] = True
+                turn['run'] = True
                 direct = 1
                 dir += 1
             elif event.key == SDLK_a:
-                keys['run'] = True
+                turn['run'] = True
                 direct = -1
                 dir -= 1
             elif event.key == SDLK_w:
-                keys['run'] = True
+                turn['run'] = True
                 high += 1
             elif event.key == SDLK_s:
-                keys['run'] = True
+                turn['run'] = True
                 high -= 1
             elif event.key == SDLK_ESCAPE:
                 play = False
             elif event.key == SDLK_SPACE:
-                keys['jump'] = True
+                turn['jump'] = True
                 num = 0
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_d:
-                keys['run'] = False
-                keys['stop'] = True
+                turn['run'] = False
+                turn['stop'] = True
                 dir -= 1
             elif event.key == SDLK_a:
-                keys['run'] = False
-                keys['stop'] = True
+                turn['run'] = False
+                turn['stop'] = True
                 dir += 1
             elif event.key == SDLK_w:
-                keys['run'] = False
-                keys['stop'] = True
+                turn['run'] = False
+                turn['stop'] = True
                 high -= 1
             elif event.key == SDLK_s:
-                keys['run'] = False
-                keys['stop'] = True
+                turn['run'] = False
+                turn['stop'] = True
                 high += 1
         if event.type == SDL_MOUSEMOTION:
             ax, ay = event.x, 600 - event.y
@@ -169,12 +169,12 @@ def handle_events():
                 if event.button == SDL_BUTTON_LEFT and (ax - 10 < 50 and ay > 550):
                     inven = 1
                 elif event.button == SDL_BUTTON_LEFT:
-                    keys['stop'] = False
-                    keys['attack'] = True
+                    turn['stop'] = False
+                    turn['attack'] = True
                     click = (click + 1) % 3
                 elif event.button == SDL_BUTTON_RIGHT:
-                    keys['stop'] = False
-                    keys['defence'] = True
+                    turn['stop'] = False
+                    turn['defence'] = True
                     num = 0
             elif inven == 1:
                 if event.button == SDL_BUTTON_LEFT and (735 < ax-10 < 765 and 435 < ay < 465):
@@ -187,6 +187,7 @@ inventory = load_image('inventory.png')
 inven_but = load_image('inventory button.png')
 x_but = load_image('X Button.png')
 stage1 = load_image('background1.png')
+stage2 = load_image('background2.png')
 crun_r = load_image('gretel run sheet.png')
 crun_l = load_image('gretel run_left sheet.png')
 cstop = load_image('gretel stop sheet.png')
@@ -198,7 +199,8 @@ cdied = load_image('gretel hurt sheet.png')
 skstop = load_image('skeleton stop.png')
 
 play = True
-keys = {'run': False, 'jump': False, 'stop': True, 'attack': False, 'defence': False}
+turn = {'run': False, 'jump': False, 'stop': True, 'attack': False, 'defence': False}
+keys = {'stage2': False, 'stage3': False, 'stage4': False}
 inven = 0
 frame = {'run': 0, 'stop': 0, 'jump': 0, 'attack': 0, 'defence': 0, 'died': 0}
 Characters = ['gretel', 'skeleton1_1', 'skeleton1_2']
@@ -223,6 +225,15 @@ while play:
         HEIGHT = 120
 
     clear_canvas()
+    if keys['stage2']:
+        stage2.draw(WIDTH, HEIGHT)
+        keys['stage2'] = False
+    elif keys['stage3']:
+        # stage3.draw(WIDTH, HEIGHT)
+        keys['stage3'] = False
+    elif keys['stage3']:
+        # stage3.draw(WIDTH, HEIGHT)
+        keys['stage3'] = False
     stage1.draw(WIDTH, HEIGHT)
     two = (two + 1) % 2
     if inven == 1:
@@ -239,34 +250,34 @@ while play:
             if frame['died'] == 0:
                 gretel['Hp'] = 110
                 gretel['x'], gretel['y'] = 400, 150
-        elif keys['stop']:
+        elif turn['stop']:
             cstop.clip_draw(frame['stop'] * 100, 0, 100, 100, gretel['x'], gretel['y'])
             frame['stop'] = (frame['stop'] + 1) % 18
-        elif direct > 0 and keys['run']:
+        elif direct > 0 and turn['run']:
             crun_r.clip_draw(frame['run'] * 100, 0, 100, 100, gretel['x'], gretel['y'])
             frame['run'] = (frame['run'] + 1) % 24
-        elif direct < 0 and keys['run']:
+        elif direct < 0 and turn['run']:
             crun_l.clip_draw(frame['run'] * 100, 0, 100, 100, gretel['x'], gretel['y'])
             frame['run'] = (frame['run'] + 1) % 24
-        elif keys['jump']:
+        elif turn['jump']:
             cjump.clip_draw(frame['jump'] * 100, 0, 100, 100, gretel['x'], gretel['y'])
             frame['jump'] = (frame['jump'] + 1) % 19
-        elif direct > 0 and keys['attack']:
+        elif direct > 0 and turn['attack']:
             cattack.clip_draw(frame['attack'] * 100, 0, 100, 100, gretel['x'], gretel['y'])
-        elif direct < 0 and keys['attack']:
+        elif direct < 0 and turn['attack']:
             cattack_l.clip_draw((25 - frame['attack']) * 100, 0, 100, 100, gretel['x'], gretel['y'])
-        elif keys['defence']:
+        elif turn['defence']:
             cdefence.clip_draw(frame['defence'] * 112, 0, 112, 100, gretel['x'], gretel['y'])
             frame['defence'] = (frame['defence'] + two) % 4
     arrow.draw(ax, ay)
     update_canvas()
     # monsters_AI()
     crash_events()
-    if keys['jump']:
+    if turn['jump']:
         jumping()
-    elif keys['attack']:
+    elif turn['attack']:
         attacking()
-    elif keys['defence']:
+    elif turn['defence']:
         defencing()
 
     handle_events()
