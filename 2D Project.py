@@ -1,5 +1,5 @@
 from pico2d import *
-from time import time
+# from time import time
 
 num = 0
 def jumping():
@@ -230,11 +230,12 @@ while play:
         keys['stage2'] = False
     elif keys['stage3']:
         # stage3.draw(WIDTH, HEIGHT)
-        keys['stage3'] = False
+        keys['stage4'] = False
     elif keys['stage3']:
         # stage3.draw(WIDTH, HEIGHT)
-        keys['stage3'] = False
-    stage1.draw(WIDTH, HEIGHT)
+        keys['stage4'] = False
+    else:
+        stage1.draw(WIDTH, HEIGHT)
     two = (two + 1) % 2
     if inven == 1:
         inventory.draw(400, 300)
