@@ -74,31 +74,31 @@ def crash_events():
             gretel['y'] += 10
             gretel['Hp'] = gretel['Hp'] - 60
 
-def monsters_AI():
-    global dir, high
-    x1, y1, num1, num2 = 0, 0, 0, 0
-    mx, my, mw, mh = 0, 0, 0, 0
-    chosei, chosej = 0, 0
-    for i in Characters:
-        if i == 'skeleton1_1':
-            x1, y1, num1, num2 = skeleton1_1['x'], skeleton1_1['y'], skeleton1_1['width'], skeleton1_1['height']
-            chosei = i
-            break
-        elif i == 'skeleton1_2':
-            x1, y1, num1, num2 = skeleton1_2['x'], skeleton1_2['y'], skeleton1_2['width'], skeleton1_2['height']
-            chosei = i
-            break
-    for j in Characters:
-        if chosei != 0 and chosei == j:
-            continue
-        if j == 'skeleton1_1':
-            mx, my, mw, mh = skeleton1_1['x'], skeleton1_1['y'], skeleton1_1['width'], skeleton1_1['height']
-            chosej = j
-            break
-        elif j == 'skeleton1_2':
-            mx, my, mw, mh = skeleton1_2['x'], skeleton1_2['y'], skeleton1_2['width'], skeleton1_2['height']
-            chosej = j
-            break
+# def monsters_AI():
+#     global dir, high
+#     x1, y1, num1, num2 = 0, 0, 0, 0
+#     mx, my, mw, mh = 0, 0, 0, 0
+#     chosei, chosej = 0, 0
+#     for i in Characters:
+#         if i == 'skeleton1_1':
+#             x1, y1, num1, num2 = skeleton1_1['x'], skeleton1_1['y'], skeleton1_1['width'], skeleton1_1['height']
+#             chosei = i
+#             break
+#         elif i == 'skeleton1_2':
+#             x1, y1, num1, num2 = skeleton1_2['x'], skeleton1_2['y'], skeleton1_2['width'], skeleton1_2['height']
+#             chosei = i
+#             break
+#     for j in Characters:
+#         if chosei != 0 and chosei == j:
+#             continue
+#         if j == 'skeleton1_1':
+#             mx, my, mw, mh = skeleton1_1['x'], skeleton1_1['y'], skeleton1_1['width'], skeleton1_1['height']
+#             chosej = j
+#             break
+#         elif j == 'skeleton1_2':
+#             mx, my, mw, mh = skeleton1_2['x'], skeleton1_2['y'], skeleton1_2['width'], skeleton1_2['height']
+#             chosej = j
+#             break
     # if chosei != 0 and chosej != 0:
     #     if mx - mw < x1 + num1 < mx + mw and y1 + num2 > my - mh and y1 - num2 < my + mh:
     #         gretel['x'] -= 10
