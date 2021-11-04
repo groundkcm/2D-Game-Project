@@ -1,26 +1,10 @@
 from pico2d import *
 from background import Background
 
-# Boy Event
+# Gretel Event
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, MLEFT_BUT_DOWN, MRIGHT_BUT_DOWN, MLEFT_BUT_UP, MLRIGHT_BUT_UP, SPACE_DOWN, SPACE_UP,\
-    TOP_DOWN, TOP_UP, BOTTOM_DOWN, BOTTON_UP, WAIT, READY= range(16)
+    TOP_DOWN, TOP_UP, BOTTOM_DOWN, BOTTON_UP, WAIT, READY, DEAD = range(16)
 
-key_event_table = {
-    (SDL_KEYDOWN, SDLK_d): RIGHT_DOWN,
-    (SDL_KEYDOWN, SDLK_a): LEFT_DOWN,
-    (SDL_KEYUP, SDLK_d): RIGHT_UP,
-    (SDL_KEYUP, SDLK_a): LEFT_UP,
-    (SDL_KEYDOWN, SDLK_w): TOP_DOWN,
-    (SDL_KEYDOWN, SDLK_s): BOTTOM_DOWN,
-    (SDL_KEYUP, SDLK_w): TOP_UP,
-    (SDL_KEYUP, SDLK_s): BOTTON_UP,
-    (SDL_KEYDOWN, SDLK_SPACE): SPACE_DOWN,
-    (SDL_KEYUP, SDLK_SPACE): SPACE_UP,
-    (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT): MLEFT_BUT_DOWN,
-    (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): MRIGHT_BUT_DOWN,
-    (SDL_MOUSEBUTTONUP, SDL_BUTTON_LEFT): MLEFT_BUT_UP,
-    (SDL_MOUSEBUTTONUP, SDL_BUTTON_RIGHT): MLRIGHT_BUT_UP,
-}
 
 # Gretel States
 
@@ -42,6 +26,7 @@ class Gretel:
         self.dir = 1
         self.high = 0
         self.velocity = 0
+        self.click = 0
         self.frame = 0
         self.timer = 0
         self.event_que = []
@@ -76,6 +61,24 @@ class Gretel:
             self.add_event(key_event)
 
 
+key_event_table = {
+    (SDL_KEYDOWN, SDLK_d): RIGHT_DOWN,
+    (SDL_KEYDOWN, SDLK_a): LEFT_DOWN,
+    (SDL_KEYUP, SDLK_d): RIGHT_UP,
+    (SDL_KEYUP, SDLK_a): LEFT_UP,
+    (SDL_KEYDOWN, SDLK_w): TOP_DOWN,
+    (SDL_KEYDOWN, SDLK_s): BOTTOM_DOWN,
+    (SDL_KEYUP, SDLK_w): TOP_UP,
+    (SDL_KEYUP, SDLK_s): BOTTON_UP,
+    (SDL_KEYDOWN, SDLK_SPACE): SPACE_DOWN,
+    (SDL_KEYUP, SDLK_SPACE): SPACE_UP,
+    (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT): MLEFT_BUT_DOWN,
+    (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): MRIGHT_BUT_DOWN,
+    (SDL_MOUSEBUTTONUP, SDL_BUTTON_LEFT): MLEFT_BUT_UP,
+    (SDL_MOUSEBUTTONUP, SDL_BUTTON_RIGHT): MLRIGHT_BUT_UP,
+    Gretel().Hp == 0 : DEAD
+}
+
 class IdleState:
     def enter(gretel, event):
         if event == RIGHT_DOWN:
@@ -86,6 +89,14 @@ class IdleState:
             gretel.velocity -= 1
         elif event == LEFT_UP:
             gretel.velocity += 1
+        elif event == TOP_DOWN:
+            gretel.high += 1
+        elif event == BOTTOM_DOWN:
+            gretel.high -= 1
+        elif event == TOP_UP:
+            gretel.high -= 1
+        elif event == BOTTOM_UP:
+            gretel.high += 1
         gretel.timer = 1000
 
     def exit(gretel, event):
@@ -142,22 +153,24 @@ class RunState:
 
 class AttackState:
     def enter(gretel, event):
-        if event == RIGHT_DOWN:
-            gretel.velocity += 1
-        elif event == LEFT_DOWN:
-            gretel.velocity -= 1
-        elif event == RIGHT_UP:
-            gretel.velocity -= 1
-        elif event == LEFT_UP:
-            gretel.velocity += 1
-        gretel.timer = 1000
+        if event == MLEFT_BUT_DOWN:
+            gretel.click = (gretel.click + 1) % 3 + 1
+            gretle.timer = 200
 
     def exit(gretel, event):
         pass
 
     def do(gretel):
-        gretel.frame = (gretel.frame + 1) % 26
-        gretel.timer -= 1
+        if gretel.click == 1:
+            gretel.frame = (gretel.frame + 1) % 8
+        elif gretel.click == 2:
+            gretel.frame = (gretel.frame + 1) % 8 + 8
+        elif gretel.click == 3:
+            gretel.frame = (gretel.frame + 1) % 10 + 16
+            gretel.add_event(READY)
+        gretel.timer -= 10
+        if gretel.timer == 0:
+            gretel.add_event(READY)
 
     def draw(gretel):
         if gretel.dir == 1:
@@ -168,15 +181,7 @@ class AttackState:
 
 class DefenceState:
     def enter(gretel, event):
-        if event == RIGHT_DOWN:
-            gretel.velocity += 1
-        elif event == LEFT_DOWN:
-            gretel.velocity -= 1
-        elif event == RIGHT_UP:
-            gretel.velocity -= 1
-        elif event == LEFT_UP:
-            gretel.velocity += 1
-        gretel.timer = 1000
+        pass
 
     def exit(gretel, event):
         pass
@@ -184,7 +189,13 @@ class DefenceState:
     def do(gretel):
         two = (two + 1) % 2
         gretel.frame = (gretel.frame + two) % 4
-        gretel.timer -= 1
+        num += 1
+        gretel.velocity = -1
+        if num == 4:
+            gretel.velocity = 1
+            gretel.add_event(READY)
+        gretel.x += gretel.velocity * 2
+        gretel.x = clamp(15, gretel.x, 800 - 15)
 
     def draw(gretel):
         gretel.defence.clip_draw(gretel.frame * 100, 300, 100, 100, gretel.x, gretel.y)
@@ -200,30 +211,31 @@ class JumpState:
             gretel.velocity -= 1
         elif event == LEFT_UP:
             gretel.velocity += 1
-        gretel.timer = 1000
+        gretel.dir = gretel.velocity
 
     def exit(gretel, event):
         pass
 
     def do(gretel):
         gretel.frame = (gretel.frame + 1) % 19
-        gretel.timer -= 1
+        if gretel.frame < 9:
+            gretel.high = 1
+        else:
+            gretel.high = -1
+        gretel.x += gretel.velocity * 2
+        gretel.y += gretel.high * 2
+        gretel.x = clamp(15, gretel.x, 800 - 15)
+        gretel.y = clamp(20, gretel.y, 600 - 20)
+        if gretel.frame == 18:
+            gretel.add_event(READY)
 
     def draw(gretel):
         gretel.jump.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
 
 
-class DiedState:
+class DeadState:
     def enter(gretel, event):
-        if event == RIGHT_DOWN:
-            gretel.velocity += 1
-        elif event == LEFT_DOWN:
-            gretel.velocity -= 1
-        elif event == RIGHT_UP:
-            gretel.velocity -= 1
-        elif event == LEFT_UP:
-            gretel.velocity += 1
-        gretel.timer = 1000
+        pass
 
     def exit(gretel, event):
         pass
@@ -231,7 +243,9 @@ class DiedState:
     def do(gretel):
         two = (two + 1) % 2
         gretel.frame = (gretel.frame + two) % 7
-        gretel.timer -= 1
+        num += 1
+        if num == 7:
+            gretel.add_event(READY)
 
     def draw(gretel):
         gretel.died.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
@@ -239,15 +253,15 @@ class DiedState:
 
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
-                TOP_UP: RunState, BOTTON_UP: RunState, TOP_DOWN: RunState, BOTTOM_DOWN: RunState,
+                TOP_DOWN: RunState, BOTTOM_DOWN: RunState,
                 MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-                SPACE_DOWN: JumpState , SPACE_UP:JumpState},
+                SPACE_DOWN: JumpState, DEAD:DeadState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState,
-               TOP_UP: IdleState, BOTTON_UP: IdleState, TOP_DOWN: IdleState, BOTTOM_DOWN: IdleState,
+               TOP_UP: IdleState, BOTTON_UP: IdleState,
                MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-               SPACE_DOWN: JumpState, SPACE_UP: JumpState},
-    AttackState: {WAIT: AttackState, READY: IdleState},
-    DefenceState: {WAIT: DefenceState, READY: IdleState},
-    JumpState: {WAIT: JumpState, READY: IdleState},
-    DiedState: {WAIT: DiedState, READY: IdleState},
+               SPACE_DOWN: JumpState, DEAD:DeadState},
+    AttackState: {READY: IdleState, DEAD:DeadState},
+    DefenceState: {READY: IdleState, DEAD:DeadState},
+    JumpState: {READY: IdleState, DEAD:DeadState},
+    DeadState: {READY: IdleState},
 }
