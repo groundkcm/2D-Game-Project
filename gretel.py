@@ -3,7 +3,7 @@ from background import Background
 
 # Boy Event
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, MLEFT_BUT_DOWN, MRIGHT_BUT_DOWN, MLEFT_BUT_UP, MLRIGHT_BUT_UP, SPACE_DOWN, SPACE_UP,\
-    TOP_DOWN, TOP_UP, BOTTOM_DOWN, BOTTON_UP= range(14)
+    TOP_DOWN, TOP_UP, BOTTOM_DOWN, BOTTON_UP, WAIT, READY= range(16)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_d): RIGHT_DOWN,
@@ -26,19 +26,21 @@ key_event_table = {
 
 
 class Gretel:
-
     def __init__(self):
-        self.x, self.y = 800 // 2, 90
+        self.x, self.y = 800 // 2, 150
+        self.Hp = 110
+        self.width = 15
+        self.height = 20
         self.stop = load_image('gretel stop sheet.png')
         self.run_r = load_image('gretel run sheet.png')
         self.run_l = load_image('gretel run_left sheet.png')
-        self.stop = load_image('gretel stop sheet.png')
         self.jump = load_image('gretel jump sheet.png')
         self.attack_r = load_image('gretel attack sheet.png')
         self.attack_l = load_image('gretel attack_left sheet.png')
         self.defence = load_image('gretel defence sheet.png')
         self.died = load_image('gretel hurt sheet.png')
         self.dir = 1
+        self.high = 0
         self.velocity = 0
         self.frame = 0
         self.timer = 0
@@ -46,15 +48,12 @@ class Gretel:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
-
     def change_state(self, state):
         # fill here
         pass
 
-
     def add_event(self, event):
         self.event_que.insert(0, event)
-
 
     def update(self):
         self.cur_state.do(self)
@@ -69,7 +68,7 @@ class Gretel:
 
     def draw(self):
         self.cur_state.draw(self)
-        debug_print('Velocity :' + str(self.velocity) + ' Dir:' + str(self.dir))
+        debug_print('Velocity :' + str(self.velocity) + ' Dir:' + str(self.dir)+ ' X:' + str(self.x)+ ' Y:' + str(self.y))
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
@@ -93,14 +92,14 @@ class IdleState:
         pass
 
     def do(gretel):
-        gretel.frame = (gretel.frame + 1) % 8
+        gretel.frame = (gretel.frame + 1) % 18
         gretel.timer -= 1
 
     def draw(gretel):
         if gretel.dir == 1:
-            gretel.stop.clip_draw(gretel.frame * 100, 300, 100, 100, gretel.x, gretel.y)
+            gretel.stop.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
         else:
-            gretel.stop.clip_draw(gretel.frame * 100, 200, 100, 100, gretel.x, gretel.y)
+            gretel.stop.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
 
 
 class RunState:
@@ -113,20 +112,30 @@ class RunState:
             gretel.velocity -= 1
         elif event == LEFT_UP:
             gretel.velocity += 1
+        elif event == TOP_DOWN:
+            gretel.high += 1
+        elif event == BOTTOM_DOWN:
+            gretel.high -= 1
+        elif event == TOP_UP:
+            gretel.high -= 1
+        elif event == BOTTOM_UP:
+            gretel.high += 1
         gretel.dir = gretel.velocity
 
     def exit(gretel, event):
         pass
 
     def do(gretel):
-        gretel.frame = (gretel.frame + 1) % 8
+        gretel.frame = (gretel.frame + 1) % 24
         gretel.timer -= 1
-        gretel.x += gretel.velocity
-        gretel.x = clamp(25, gretel.x, 800 - 25)
+        gretel.x += gretel.velocity * 2
+        gretel.y += gretel.high * 2
+        gretel.x = clamp(15, gretel.x, 800 - 15)
+        gretel.y = clamp(20, gretel.y, 600 - 20)
 
     def draw(gretel):
         if gretel.velocity == 1:
-            gretel.stop.clip_draw(gretel.frame * 100, 100, 100, 100, gretel.x, gretel.y)
+            gretel.stop.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
         else:
             gretel.stop.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
 
@@ -147,14 +156,14 @@ class AttackState:
         pass
 
     def do(gretel):
-        gretel.frame = (gretel.frame + 1) % 8
+        gretel.frame = (gretel.frame + 1) % 26
         gretel.timer -= 1
 
     def draw(gretel):
         if gretel.dir == 1:
-            gretel.stop.clip_draw(gretel.frame * 100, 300, 100, 100, gretel.x, gretel.y)
+            gretel.attack_r.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
         else:
-            gretel.stop.clip_draw(gretel.frame * 100, 200, 100, 100, gretel.x, gretel.y)
+            gretel.attack_l.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
 
 
 class DefenceState:
@@ -173,14 +182,12 @@ class DefenceState:
         pass
 
     def do(gretel):
-        gretel.frame = (gretel.frame + 1) % 8
+        two = (two + 1) % 2
+        gretel.frame = (gretel.frame + two) % 4
         gretel.timer -= 1
 
     def draw(gretel):
-        if gretel.dir == 1:
-            gretel.stop.clip_draw(gretel.frame * 100, 300, 100, 100, gretel.x, gretel.y)
-        else:
-            gretel.stop.clip_draw(gretel.frame * 100, 200, 100, 100, gretel.x, gretel.y)
+        gretel.defence.clip_draw(gretel.frame * 100, 300, 100, 100, gretel.x, gretel.y)
 
 
 class JumpState:
@@ -199,14 +206,11 @@ class JumpState:
         pass
 
     def do(gretel):
-        gretel.frame = (gretel.frame + 1) % 8
+        gretel.frame = (gretel.frame + 1) % 19
         gretel.timer -= 1
 
     def draw(gretel):
-        if gretel.dir == 1:
-            gretel.stop.clip_draw(gretel.frame * 100, 300, 100, 100, gretel.x, gretel.y)
-        else:
-            gretel.stop.clip_draw(gretel.frame * 100, 200, 100, 100, gretel.x, gretel.y)
+        gretel.jump.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
 
 
 class DiedState:
@@ -225,17 +229,25 @@ class DiedState:
         pass
 
     def do(gretel):
-        gretel.frame = (gretel.frame + 1) % 8
+        two = (two + 1) % 2
+        gretel.frame = (gretel.frame + two) % 7
         gretel.timer -= 1
 
     def draw(gretel):
-        if gretel.dir == 1:
-            gretel.stop.clip_draw(gretel.frame * 100, 300, 100, 100, gretel.x, gretel.y)
-        else:
-            gretel.stop.clip_draw(gretel.frame * 100, 200, 100, 100, gretel.x, gretel.y)
+        gretel.died.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
+
 
 next_state_table = {
-    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState},
-    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState}
+    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
+                TOP_UP: RunState, BOTTON_UP: RunState, TOP_DOWN: RunState, BOTTOM_DOWN: RunState,
+                MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
+                SPACE_DOWN: JumpState , SPACE_UP:JumpState},
+    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState,
+               TOP_UP: IdleState, BOTTON_UP: IdleState, TOP_DOWN: IdleState, BOTTOM_DOWN: IdleState,
+               MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
+               SPACE_DOWN: JumpState, SPACE_UP: JumpState},
+    AttackState: {WAIT: AttackState, READY: IdleState},
+    DefenceState: {WAIT: DefenceState, READY: IdleState},
+    JumpState: {WAIT: JumpState, READY: IdleState},
+    DiedState: {WAIT: DiedState, READY: IdleState},
 }
-
