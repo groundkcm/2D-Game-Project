@@ -10,6 +10,7 @@ class Background:
         self.inven_but = load_image('inventory button.png')
         self.x_but = load_image('X Button.png')
         self.inven = 0
+        self.clear = None
 
     def draw(self):
         hide_cursor()
@@ -22,7 +23,16 @@ class Background:
             HEIGHT = 480
         elif HEIGHT <= 120:
             HEIGHT = 120
-        self.stage1.draw(WIDTH, HEIGHT)
+        if self.clear == 1:
+            self.stage2.draw(WIDTH, HEIGHT)
+        elif self.clear == 2:
+            # self.stage3.draw(WIDTH, HEIGHT)
+            pass
+        elif self.clear == 3:
+            # stage3.draw(WIDTH, HEIGHT)
+            pass
+        else:
+            self.stage1.draw(WIDTH, HEIGHT)
         if self.inven == 1:
             self.inventory.draw(400, 300)
             self.x_but.draw(750, 450)
