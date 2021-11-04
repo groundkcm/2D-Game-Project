@@ -38,3 +38,14 @@ class Background:
             self.x_but.draw(750, 450)
         else:
             self.inven_but.draw(25, 575)
+
+class Wall:
+    def __init__(self):
+        self.stage1 = load_image('background1.png')
+        self.stage2 = load_image('background2.png')
+        self.arrow = load_image('Arrow.png')
+        self.inventory = load_image('inventory.png')
+        self.inven_but = load_image('inventory button.png')
+        self.x_but = load_image('X Button.png')
+        self.inven = 0
+        self.clear = None
