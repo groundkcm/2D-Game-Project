@@ -141,7 +141,34 @@ class AttackState:
         if self.dir == 1:
             self.attack_r.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
         else:
-            self.attack_l.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            self.attack_l.clip_draw(int(26 - self.frame) * 100, 0, 100, 100, self.x, self.y)
+
+
+num = 0
+
+class DefenceState:
+    def enter(self, event):
+        self.timer = 200
+
+    def exit(gretel, event):
+        pass
+
+    def do(self):
+        global num
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.velocity = -RUN_SPEED_PPS
+        self.timer -= 10
+        if self.timer == 0:
+            self.velocity = RUN_SPEED_PPS
+            self.add_event(READY)
+        self.x += self.velocity * game_framework.frame_time
+        self.x = clamp(15, self.x, 1600 - 15)
+
+    def draw(self):
+        if self.dir == 1:
+            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+        else:
+            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
 
 
 class SleepState:
@@ -166,14 +193,16 @@ class SleepState:
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
                 TOP_DOWN: RunState, BOTTOM_DOWN: RunState,
-                MLEFT_BUT_DOWN: AttackState,
+                MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
                 SLEEP_TIMER: SleepState, SPACE: IdleState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
                TOP_UP: IdleState, BOTTOM_UP: IdleState,
-               MLEFT_BUT_DOWN: AttackState, SPACE: RunState},
+               MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
+               SPACE: RunState},
     SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN: RunState, LEFT_UP: RunState, RIGHT_UP: RunState,
                  TOP_DOWN: RunState, BOTTOM_DOWN: RunState, SPACE: IdleState},
     AttackState: {READY: IdleState},
+    DefenceState: {READY: IdleState},
 }
 
 class Boy:
@@ -193,7 +222,9 @@ class Boy:
         self.dir = 1
         self.high = 0
         self.velocity = 0
+        self.click = 0
         self.frame = 0
+        self.timer = 0
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
@@ -211,9 +242,12 @@ class Boy:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            self.cur_state.exit(self, event)
-            self.cur_state = next_state_table[self.cur_state][event]
-            self.cur_state.enter(self, event)
+            if not event in next_state_table[self.cur_state]:
+                pass
+            else:
+                self.cur_state.exit(self, event)
+                self.cur_state = next_state_table[self.cur_state][event]
+                self.cur_state.enter(self, event)
 
     def draw(self):
         self.cur_state.draw(self)
@@ -222,5 +256,8 @@ class Boy:
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
+            self.add_event(key_event)
+        elif (event.type, event.button) in key_event_table:
+            key_event = key_event_table[(event.type, event.button)]
             self.add_event(key_event)
 
