@@ -14,7 +14,7 @@ class Gretel:
         self.Hp = 110
         self.width = 15
         self.height = 20
-        self.stop = load_image('gretel stop sheet.png')
+        self.stop = load_image('gretel run sheet.png')
         self.run_r = load_image('gretel run sheet.png')
         self.run_l = load_image('gretel run_left sheet.png')
         self.jump = load_image('gretel jump sheet.png')
