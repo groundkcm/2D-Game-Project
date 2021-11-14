@@ -21,7 +21,7 @@ FRAMES_PER_ACTION = 8
 
 
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, TOP_DOWN, BOTTOM_DOWN, TOP_UP, BOTTOM_UP, SLEEP_TIMER, SPACE = range(10)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, TOP_DOWN, BOTTOM_DOWN, TOP_UP, BOTTOM_UP, MLEFT_BUT_DOWN, MRIGHT_BUT_DOWN, SLEEP_TIMER, SPACE, READY = range(13)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_d): RIGHT_DOWN,
@@ -32,6 +32,8 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_s): BOTTOM_DOWN,
     (SDL_KEYUP, SDLK_w): TOP_UP,
     (SDL_KEYUP, SDLK_s): BOTTOM_UP,
+    (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT): MLEFT_BUT_DOWN,
+    (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): MRIGHT_BUT_DOWN,
     (SDL_KEYDOWN, SDLK_SPACE): SPACE
 }
 
@@ -100,7 +102,7 @@ class RunState:
             boy.fire_ball()
 
     def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
         boy.x += boy.velocity * game_framework.frame_time
         boy.x = clamp(25, boy.x, 1600 - 25)
         boy.y += boy.high * game_framework.frame_time
@@ -109,9 +111,37 @@ class RunState:
     @staticmethod
     def draw(boy):
         if boy.dir == 1:
-            boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+            boy.run_r.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
         else:
-            boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+            boy.run_l.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+
+
+class AttackState:
+    def enter(self, event):
+        if event == MLEFT_BUT_DOWN:
+            self.click = (self.click + 1) % 3 + 1
+            self.timer = 200
+
+    def exit(self, event):
+        pass
+
+    def do(boy):
+        if boy.click == 1:
+            boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        elif boy.click == 2:
+            boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8 + 8
+        elif boy.click == 3:
+            boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10 + 16
+            boy.add_event(READY)
+        boy.timer -= 10
+        if boy.timer == 0:
+            boy.add_event(READY)
+
+    def draw(self):
+        if self.dir == 1:
+            self.attack_r.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+        else:
+            self.attack_l.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
 
 
 class SleepState:
@@ -123,7 +153,7 @@ class SleepState:
         pass
 
     def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
 
     def draw(boy):
         if boy.dir == 1:
@@ -133,16 +163,17 @@ class SleepState:
 
 
 
-
-
-
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
-                TOP_DOWN: RunState, BOTTOM_DOWN: RunState, SLEEP_TIMER: SleepState, SPACE: IdleState},
+                TOP_DOWN: RunState, BOTTOM_DOWN: RunState,
+                MLEFT_BUT_DOWN: AttackState,
+                SLEEP_TIMER: SleepState, SPACE: IdleState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
-               TOP_UP: IdleState, BOTTOM_UP: IdleState, SPACE: RunState},
+               TOP_UP: IdleState, BOTTOM_UP: IdleState,
+               MLEFT_BUT_DOWN: AttackState, SPACE: RunState},
     SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN: RunState, LEFT_UP: RunState, RIGHT_UP: RunState,
-                 TOP_DOWN: RunState, BOTTOM_DOWN: RunState, SPACE: IdleState}
+                 TOP_DOWN: RunState, BOTTOM_DOWN: RunState, SPACE: IdleState},
+    AttackState: {READY: IdleState},
 }
 
 class Boy:
