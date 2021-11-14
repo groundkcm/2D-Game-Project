@@ -1,6 +1,8 @@
 from pico2d import *
 from gretel import Gretel
 
+gretel = Gretel()
+
 class Background:
     def __init__(self):
         self.stage1 = load_image('background1.png')
@@ -14,7 +16,7 @@ class Background:
 
     def draw(self):
         hide_cursor()
-        WIDTH, HEIGHT = 1280 - Gretel().x * 2 + 160, 960 - Gretel().y * 2 + 120
+        WIDTH, HEIGHT = 1280 - gretel.x * 2 + 160, 960 - gretel.y * 2 + 120
         if WIDTH >= 640:
             WIDTH = 640
         elif WIDTH <= 160:

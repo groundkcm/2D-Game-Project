@@ -1,9 +1,8 @@
 from pico2d import *
-from background import Background
+# from background import Background
 
 # Gretel Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, MLEFT_BUT_DOWN, MRIGHT_BUT_DOWN, MLEFT_BUT_UP, MLRIGHT_BUT_UP, SPACE_DOWN, SPACE_UP,\
-    TOP_DOWN, TOP_UP, BOTTOM_DOWN, BOTTON_UP, WAIT, READY, DEAD = range(16)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, MLEFT_BUT_DOWN, MRIGHT_BUT_DOWN, MLEFT_BUT_UP, MLRIGHT_BUT_UP, SPACE_DOWN, SPACE_UP, TOP_DOWN, TOP_UP, BOTTOM_DOWN, BOTTOM_UP, WAIT, READY, DEAD = range(17)
 
 
 # Gretel States
@@ -53,7 +52,7 @@ class Gretel:
 
     def draw(self):
         self.cur_state.draw(self)
-        debug_print('Velocity :' + str(self.velocity) + ' Dir:' + str(self.dir)+ ' X:' + str(self.x)+ ' Y:' + str(self.y))
+        debug_print('Velocity :' + str(self.velocity) + ' Dir:' + str(self.dir) + ' X:' + str(self.x) + ' Y:' + str(self.y))
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
@@ -69,14 +68,14 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_w): TOP_DOWN,
     (SDL_KEYDOWN, SDLK_s): BOTTOM_DOWN,
     (SDL_KEYUP, SDLK_w): TOP_UP,
-    (SDL_KEYUP, SDLK_s): BOTTON_UP,
+    (SDL_KEYUP, SDLK_s): BOTTOM_UP,
     (SDL_KEYDOWN, SDLK_SPACE): SPACE_DOWN,
     (SDL_KEYUP, SDLK_SPACE): SPACE_UP,
     (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT): MLEFT_BUT_DOWN,
     (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): MRIGHT_BUT_DOWN,
     (SDL_MOUSEBUTTONUP, SDL_BUTTON_LEFT): MLEFT_BUT_UP,
-    (SDL_MOUSEBUTTONUP, SDL_BUTTON_RIGHT): MLRIGHT_BUT_UP,
-    Gretel().Hp == 0 : DEAD
+    (SDL_MOUSEBUTTONUP, SDL_BUTTON_RIGHT): MLRIGHT_BUT_UP
+    # Gretel().Hp == 0 : DEAD
 }
 
 class IdleState:
@@ -155,7 +154,7 @@ class AttackState:
     def enter(gretel, event):
         if event == MLEFT_BUT_DOWN:
             gretel.click = (gretel.click + 1) % 3 + 1
-            gretle.timer = 200
+            gretel.timer = 200
 
     def exit(gretel, event):
         pass
@@ -178,6 +177,7 @@ class AttackState:
         else:
             gretel.attack_l.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
 
+two, num = 0, 0
 
 class DefenceState:
     def enter(gretel, event):
@@ -187,6 +187,7 @@ class DefenceState:
         pass
 
     def do(gretel):
+        global two, num
         two = (two + 1) % 2
         gretel.frame = (gretel.frame + two) % 4
         num += 1
@@ -232,7 +233,7 @@ class JumpState:
     def draw(gretel):
         gretel.jump.clip_draw(gretel.frame * 100, 0, 100, 100, gretel.x, gretel.y)
 
-
+two2, num2 = 0, 0
 class DeadState:
     def enter(gretel, event):
         pass
@@ -241,10 +242,11 @@ class DeadState:
         pass
 
     def do(gretel):
-        two = (two + 1) % 2
-        gretel.frame = (gretel.frame + two) % 7
-        num += 1
-        if num == 7:
+        global two2, num2
+        two2 = (two2 + 1) % 2
+        gretel.frame = (gretel.frame + two2) % 7
+        num2 += 1
+        if num2 == 7:
             gretel.add_event(READY)
 
     def draw(gretel):
@@ -257,7 +259,7 @@ next_state_table = {
                 MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
                 SPACE_DOWN: JumpState, DEAD:DeadState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, RIGHT_DOWN: IdleState, LEFT_DOWN: IdleState,
-               TOP_UP: IdleState, BOTTON_UP: IdleState,
+               TOP_UP: IdleState, BOTTOM_UP: IdleState,
                MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
                SPACE_DOWN: JumpState, DEAD:DeadState},
     AttackState: {READY: IdleState, DEAD:DeadState},
