@@ -6,8 +6,8 @@ import game_world
 
 # Boy Run Speed
 # fill expressions correctly
-PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 20.0
+PIXEL_PER_METER = (3.0 / 0.3)
+RUN_SPEED_KMPH = 5.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 10000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -21,13 +21,17 @@ FRAMES_PER_ACTION = 8
 
 
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SLEEP_TIMER, SPACE = range(6)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, TOP_DOWN, BOTTOM_DOWN, TOP_UP, BOTTOM_UP, SLEEP_TIMER, SPACE = range(10)
 
 key_event_table = {
-    (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
-    (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
-    (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
-    (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
+    (SDL_KEYDOWN, SDLK_d): RIGHT_DOWN,
+    (SDL_KEYDOWN, SDLK_a): LEFT_DOWN,
+    (SDL_KEYUP, SDLK_d): RIGHT_UP,
+    (SDL_KEYUP, SDLK_a): LEFT_UP,
+    (SDL_KEYDOWN, SDLK_w): TOP_DOWN,
+    (SDL_KEYDOWN, SDLK_s): BOTTOM_DOWN,
+    (SDL_KEYUP, SDLK_w): TOP_UP,
+    (SDL_KEYUP, SDLK_s): BOTTOM_UP,
     (SDL_KEYDOWN, SDLK_SPACE): SPACE
 }
 
@@ -132,6 +136,7 @@ class Boy:
         self.image = load_image('gretel stop sheet.png')
         # self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
+        self.high = 0
         self.velocity = 0
         self.frame = 0
         self.event_que = []

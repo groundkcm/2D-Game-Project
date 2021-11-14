@@ -6,7 +6,7 @@ class Ball:
 
     def __init__(self, x = 400, y = 300, velocity = 1):
         if Ball.image == None:
-            Ball.image = load_image('ball21x21.png')
+            Ball.image = load_image('inventory button.png')
         self.x, self.y, self.velocity = x, y, velocity
 
     def draw(self):
@@ -15,5 +15,5 @@ class Ball:
     def update(self):
         self.x += self.velocity
 
-        if self.x < 25 or self.x > 1600 - 25:
+        if self.x < 100 or self.x > 1500 - 25:
             game_world.remove_object(self)
