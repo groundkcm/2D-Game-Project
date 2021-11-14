@@ -1,30 +1,29 @@
 import random
 import json
 import os
+
 from pico2d import *
 import game_framework
-from gretel import Gretel
-from background import Background
+import game_world
+
+from boy import Boy
+from grass import Grass
 
 
 name = "MainState"
 
-gretel = None
-background = None
-font = None
-
+boy = None
 
 def enter():
-    global gretel, background
-    gretel = Gretel()
-    background = Background()
+    global boy
+    boy = Boy()
+    grass = Grass()
+    game_world.add_object(grass, 0)
+    game_world.add_object(boy, 1)
 
 
 def exit():
-    global gretel, background
-    del gretel
-    del background
-
+    game_world.clear()
 
 def pause():
     pass
@@ -42,17 +41,19 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
         else:
-            gretel.handle_event(event)
-
+            boy.handle_event(event)
 
 
 def update():
-    gretel.update()
+    for game_object in game_world.all_objects():
+        game_object.update()
+    delay(0.01)
+
 
 def draw():
     clear_canvas()
-    background.draw()
-    gretel.draw()
+    for game_object in game_world.all_objects():
+        game_object.draw()
     update_canvas()
 
 
