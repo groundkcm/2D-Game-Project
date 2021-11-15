@@ -8,7 +8,7 @@ import game_world
 
 from boy import Boy
 from grass import Grass
-
+from inventory import Inven
 
 name = "MainState"
 
@@ -18,8 +18,10 @@ def enter():
     global boy
     boy = Boy()
     grass = Grass()
+    inven = Inven()
     game_world.add_object(grass, 0)
     game_world.add_object(boy, 1)
+    game_world.add_object(inven, 2)
 
 
 def exit():
