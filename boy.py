@@ -264,9 +264,6 @@ class Boy:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            # self.cur_state.exit(self, event)
-            # self.cur_state = next_state_table[self.cur_state][event]
-            # self.cur_state.enter(self, event)
             if event not in next_state_table[self.cur_state]:
                 pass
             else:

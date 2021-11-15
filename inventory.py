@@ -28,6 +28,9 @@ class Inven:
     def exit(boy, event):
         pass
 
+    def update(self):
+        pass
+
     def handle_events(self):
         self.events = get_events()
         for event in self.events:

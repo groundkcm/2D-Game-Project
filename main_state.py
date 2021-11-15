@@ -21,7 +21,7 @@ def enter():
     inven = Inven()
     game_world.add_object(grass, 0)
     game_world.add_object(boy, 1)
-    game_world.add_object(inven, 2)
+    game_world.add_object(inven, 1)
 
 
 def exit():
