@@ -148,7 +148,7 @@ class JumpState:
         self.y = clamp(20, self.y, 600 - 20)
         self.x = clamp(15, self.x, 800 - 15)
         fnum += 1
-        if fnum == 18:
+        if fnum == 19:
             fnum = 0
             self.high = 0
             self.add_event(READY)
@@ -250,6 +250,8 @@ class Boy:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
+    # def camera_move(self):
+    #     gretel = Grass(self.x, self.y)
 
     def fire_ball(self):
         ball = Ball(self.x, self.y, self.dir*3)
