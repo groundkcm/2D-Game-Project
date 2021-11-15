@@ -127,6 +127,8 @@ class JumpState:
         elif event == LEFT_UP:
             self.velocity += RUN_SPEED_PPS
         self.dir = clamp(-1, self.velocity, 1)
+        self.x += self.velocity * game_framework.frame_time
+        self.x = clamp(15, self.x, 1600 - 15)
         # self.timer = 500
 
     def exit(self, event):
@@ -138,14 +140,12 @@ class JumpState:
 
     def do(self):
         global fnum
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
+        self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
         if fnum < 9:
-            self.high = RUN_SPEED_PPS
+            self.high = RUN_SPEED_PPS * 2
         else:
-            self.high = -RUN_SPEED_PPS
-        self.x += self.velocity * game_framework.frame_time
+            self.high = -RUN_SPEED_PPS * 2
         self.y += self.high * game_framework.frame_time
-        self.x = clamp(15, self.x, 1600 - 15)
         self.y = clamp(20, self.y, 600 - 20)
         fnum += 1
         if fnum == 18:
@@ -262,15 +262,15 @@ class Boy:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            self.cur_state.exit(self, event)
-            self.cur_state = next_state_table[self.cur_state][event]
-            self.cur_state.enter(self, event)
-            # if not event in next_state_table[self.cur_state]:
-            #     pass
-            # else:
-            #     self.cur_state.exit(self, event)
-            #     self.cur_state = next_state_table[self.cur_state][event]
-            #     self.cur_state.enter(self, event)
+            # self.cur_state.exit(self, event)
+            # self.cur_state = next_state_table[self.cur_state][event]
+            # self.cur_state.enter(self, event)
+            if event not in next_state_table[self.cur_state]:
+                pass
+            else:
+                self.cur_state.exit(self, event)
+                self.cur_state = next_state_table[self.cur_state][event]
+                self.cur_state.enter(self, event)
 
     def draw(self):
         self.cur_state.draw(self)
