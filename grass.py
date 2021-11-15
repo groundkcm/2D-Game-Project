@@ -16,16 +16,14 @@ class Grass:
         self.clear = None
 
     def update(self):
-        pass
-
-    # def camera_move(self):
-    #     gretel = Boy()
+        global gretel
+        # gretel = Boy()
 
     def draw(self):
         global gretel, WIDTH, HEIGHT
         if gretel == None:
             gretel = Boy()
-        hide_cursor()
+        # hide_cursor()
         WIDTH, HEIGHT = 1280 - gretel.x * 2 + 160, 960 - gretel.y * 2 + 120
         if WIDTH >= 640:
             WIDTH = 640
@@ -45,11 +43,6 @@ class Grass:
             pass
         else:
             self.stage1.draw(WIDTH, HEIGHT)
-        if self.inven == 1:
-            self.inventory.draw(400, 300)
-            self.x_but.draw(750, 450)
-        else:
-            self.inven_but.draw(25, 575)
 
 
 class Wall:

@@ -37,7 +37,6 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_SPACE): SPACE
 }
 
-
 # Boy States
 
 class IdleState:
