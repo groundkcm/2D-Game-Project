@@ -17,8 +17,7 @@ class Grass:
         self.x, self.y = x, y
 
     def update(self):
-        global gretel
-        # gretel = Boy()
+        pass
 
     def draw(self):
         # global gretel, WIDTH, HEIGHT
@@ -26,6 +25,7 @@ class Grass:
         #     gretel = Boy()
         # hide_cursor()
         WIDTH, HEIGHT = 1280 - self.x * 2 + 160, 960 - self.y * 2 + 120
+        # WIDTH, HEIGHT = self.x, self.y
         if WIDTH >= 640:
             WIDTH = 640
         elif WIDTH <= 160:
