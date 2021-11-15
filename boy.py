@@ -1,6 +1,7 @@
 import game_framework
 from pico2d import *
 from ball import Ball
+from grass import Grass
 
 import game_world
 
@@ -249,12 +250,13 @@ class Boy:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
-    # def camera_move(self):
-    #     gretel = Grass(self.x, self.y)
+    def camera_move(self):
+        grass = Grass(self.x, self.y)
+        game_world.add_object(grass, 0)
 
-    def fire_ball(self):
-        ball = Ball(self.x, self.y, self.dir*3)
-        game_world.add_object(ball, 1)
+    # def fire_ball(self):
+    #     ball = Ball(self.x, self.y, self.dir*3)
+    #     game_world.add_object(ball, 1)
 
 
     def add_event(self, event):
