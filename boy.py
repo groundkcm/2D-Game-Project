@@ -101,7 +101,7 @@ class RunState:
     def do(boy):
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
         boy.x += boy.velocity * game_framework.frame_time
-        boy.x = clamp(25, boy.x, 1600 - 25)
+        boy.x = clamp(25, boy.x, 800 - 25)
         boy.y += boy.high * game_framework.frame_time
         boy.y = clamp(25, boy.y, 600 - 25)
 
@@ -146,7 +146,7 @@ class JumpState:
         self.y += self.high * game_framework.frame_time
         self.x += self.velocity * game_framework.frame_time
         self.y = clamp(20, self.y, 600 - 20)
-        self.x = clamp(15, self.x, 1600 - 15)
+        self.x = clamp(15, self.x, 800 - 15)
         fnum += 1
         if fnum == 18:
             fnum = 0
@@ -203,7 +203,7 @@ class DefenceState:
             self.velocity += RUN_SPEED_PPS
             self.add_event(READY)
         self.x += self.velocity * game_framework.frame_time
-        self.x = clamp(15, self.x, 1600 - 15)
+        self.x = clamp(15, self.x, 800 - 15)
 
     def draw(self):
         if self.dir == 1:
@@ -229,7 +229,7 @@ next_state_table = {
 class Boy:
 
     def __init__(self):
-        self.x, self.y = 1600 // 2, 90
+        self.x, self.y = 800 // 2, 150
         # Boy is only once created, so instance image loading is fine
         self.run_r = load_image('gretel run sheet.png')
         self.run_l = load_image('gretel run_left sheet.png')
