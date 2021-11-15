@@ -13,6 +13,7 @@ import game_world
 #     (SDL_MOUSEMOTION, my): MyPOS
 # }
 
+ax, ay = 0, 0
 class Inven:
 
     def __init__(self):
@@ -20,7 +21,7 @@ class Inven:
         self.inven_but = load_image('inventory button.png')
         self.x_but = load_image('X Button.png')
         self.inven = 0
-        self.events = 0
+        self.events = get_events()
 
     def enter(boy, event):
         pass
@@ -31,9 +32,13 @@ class Inven:
     def update(self):
         pass
 
+    # @staticmethod
     def handle_events(self):
+        global ax, ay
         self.events = get_events()
         for event in self.events:
+            if event.type == SDL_MOUSEMOTION:
+                ax, ay = event.x, 600 - event.y
             if event.type == SDL_MOUSEBUTTONDOWN:
                 ax, ay = event.x, 600 - event.y
                 if self.inven == 0:
@@ -42,9 +47,6 @@ class Inven:
                 elif self.inven == 1:
                     if event.button == SDL_BUTTON_LEFT and (735 < ax - 10 < 765 and 435 < ay < 465):
                         self.inven = 0
-
-    def do(self):
-        pass
 
     def draw(self):
         if self.inven == 1:
