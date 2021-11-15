@@ -127,8 +127,6 @@ class JumpState:
         elif event == LEFT_UP:
             self.velocity += RUN_SPEED_PPS
         self.dir = clamp(-1, self.velocity, 1)
-        self.x += self.velocity * game_framework.frame_time
-        self.x = clamp(15, self.x, 1600 - 15)
         # self.timer = 500
 
     def exit(self, event):
@@ -146,10 +144,13 @@ class JumpState:
         else:
             self.high = -RUN_SPEED_PPS * 2
         self.y += self.high * game_framework.frame_time
+        self.x += self.velocity * game_framework.frame_time
         self.y = clamp(20, self.y, 600 - 20)
+        self.x = clamp(15, self.x, 1600 - 15)
         fnum += 1
         if fnum == 18:
             fnum = 0
+            self.high = 0
             self.add_event(READY)
         # self.timer -= 10
         # if self.timer == 0:
