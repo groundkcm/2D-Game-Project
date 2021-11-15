@@ -85,7 +85,7 @@ class RunState:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
-        elif event == TOP_DOWN:
+        if event == TOP_DOWN:
             boy.high += RUN_SPEED_PPS
         elif event == BOTTOM_DOWN:
             boy.high -= RUN_SPEED_PPS
@@ -130,12 +130,16 @@ class JumpState:
         # self.timer = 500
 
     def exit(self, event):
-        pass
+        global fnum
+        if event == RIGHT_DOWN and fnum == 18:
+            self.add_event(RIGHT_DOWN)
+        elif event == LEFT_DOWN and fnum == 18:
+            self.add_event(LEFT_DOWN)
 
     def do(self):
         global fnum
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
-        if self.frame < 10:
+        if fnum < 9:
             self.high = RUN_SPEED_PPS
         else:
             self.high = -RUN_SPEED_PPS
@@ -144,14 +148,13 @@ class JumpState:
         self.x = clamp(15, self.x, 1600 - 15)
         self.y = clamp(20, self.y, 600 - 20)
         fnum += 1
-        if fnum >= 19:
+        if fnum == 18:
             fnum = 0
             self.add_event(READY)
         # self.timer -= 10
         # if self.timer == 0:
         #     self.add_event(READY)
 
-    @staticmethod
     def draw(self):
         self.jump.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
 
@@ -196,7 +199,7 @@ class DefenceState:
         self.velocity = -RUN_SPEED_PPS
         self.timer -= 10
         if self.timer == 0:
-            self.velocity = RUN_SPEED_PPS
+            self.velocity += RUN_SPEED_PPS
             self.add_event(READY)
         self.x += self.velocity * game_framework.frame_time
         self.x = clamp(15, self.x, 1600 - 15)
@@ -210,11 +213,11 @@ class DefenceState:
 
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
-                TOP_DOWN: RunState, BOTTOM_DOWN: RunState,
+                TOP_DOWN: RunState, BOTTOM_DOWN: RunState, TOP_UP: RunState, BOTTOM_UP: RunState,
                 MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
                 SPACE: JumpState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
-               TOP_UP: IdleState, BOTTOM_UP: IdleState,
+               TOP_DOWN: IdleState, BOTTOM_DOWN: IdleState, TOP_UP: IdleState, BOTTOM_UP: IdleState,
                MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
                SPACE: JumpState},
     AttackState: {READY: IdleState},
@@ -259,12 +262,15 @@ class Boy:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            if not event in next_state_table[self.cur_state]:
-                pass
-            else:
-                self.cur_state.exit(self, event)
-                self.cur_state = next_state_table[self.cur_state][event]
-                self.cur_state.enter(self, event)
+            self.cur_state.exit(self, event)
+            self.cur_state = next_state_table[self.cur_state][event]
+            self.cur_state.enter(self, event)
+            # if not event in next_state_table[self.cur_state]:
+            #     pass
+            # else:
+            #     self.cur_state.exit(self, event)
+            #     self.cur_state = next_state_table[self.cur_state][event]
+            #     self.cur_state.enter(self, event)
 
     def draw(self):
         self.cur_state.draw(self)
