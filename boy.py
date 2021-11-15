@@ -1,7 +1,7 @@
 import game_framework
 from pico2d import *
 from ball import Ball
-from grass import Grass
+# from grass import Grass
 
 import game_world
 
@@ -104,7 +104,7 @@ class RunState:
         boy.x = clamp(25, boy.x, 800 - 25)
         boy.y += boy.high * game_framework.frame_time
         boy.y = clamp(25, boy.y, 600 - 25)
-        boy.camera_move()
+        # boy.camera_move()
 
     # @staticmethod
     def draw(boy):
@@ -148,7 +148,7 @@ class JumpState:
         self.x += self.velocity * game_framework.frame_time
         self.y = clamp(20, self.y, 600 - 20)
         self.x = clamp(15, self.x, 800 - 15)
-        self.camera_move()
+        # self.camera_move()
         fnum += 1
         if fnum == 19:
             fnum = 0
@@ -206,7 +206,7 @@ class DefenceState:
             self.add_event(READY)
         self.x += self.velocity * game_framework.frame_time
         self.x = clamp(15, self.x, 800 - 15)
-        self.camera_move()
+        # self.camera_move()
 
     def draw(self):
         if self.dir == 1:
@@ -252,10 +252,10 @@ class Boy:
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
-
-    def camera_move(self):
-        grass = Grass(self.x, self.y)
-        # game_world.add_object(grass, 0)
+    #
+    # def camera_move(self):
+    #     grass = Grass(self.x, self.y)
+    #     # game_world.add_object(grass, 0)
 
     # def fire_ball(self):
     #     ball = Ball(self.x, self.y, self.dir*3)

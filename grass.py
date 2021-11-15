@@ -1,5 +1,5 @@
 from pico2d import *
-# from boy import Boy
+from boy import Boy
 
 gretel = None
 
@@ -20,10 +20,11 @@ class Grass:
         pass
 
     def draw(self):
-        # global gretel, WIDTH, HEIGHT
-        # if gretel == None:
-        #     gretel = Boy()
+        global gretel
+        if gretel == None:
+            gretel = Boy()
         # hide_cursor()
+        # print(self.x)
         WIDTH, HEIGHT = 1280 - self.x * 2 + 160, 960 - self.y * 2 + 120
         # WIDTH, HEIGHT = self.x, self.y
         if WIDTH >= 640:
