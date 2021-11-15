@@ -1,4 +1,22 @@
+import game_framework
 from pico2d import *
+
+
+import game_world
+
+# Boy Run Speed
+# fill expressions correctly
+PIXEL_PER_METER = (3.0 / 0.3)
+RUN_SPEED_KMPH = 5.0
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 10000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+# Boy Action Speed
+# fill expressions correctly
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 8
 
 HIT, RANGE, DEAD, LEFT_UP, SLEEP_TIMER, SHIFT_DOWN, SHIFT_UP = range(7)
 
@@ -49,7 +67,7 @@ class Skeleton:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            if not event in next_state_table[self.cur_state]:
+            if event not in next_state_table[self.cur_state]:
                 pass
             else:
                 self.cur_state.exit(self, event)
@@ -68,9 +86,9 @@ class Skeleton:
 class IdleState:
     def enter(self, event):
         if event == RIGHT_DOWN:
-            self.velocity += 1
+            self.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
-            self.velocity -= 1
+            self.velocity -= RUN_SPEED_PPS
         self.timer = 1000
 
     def exit(boy, event):
@@ -91,13 +109,13 @@ class IdleState:
 class WalkState:
     def enter(self, event):
         if event == RIGHT_DOWN:
-            self.velocity += 1
+            self.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
-            self.velocity -= 1
+            self.velocity -= RUN_SPEED_PPS
         elif event == RIGHT_UP:
-            self.velocity -= 1
+            self.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
-            self.velocity += 1
+            self.velocity += RUN_SPEED_PPS
         self.dir = self.velocity
 
     def exit(self, event):
@@ -118,13 +136,13 @@ class WalkState:
 class AttackState:
     def enter(self, event):
         if event == RIGHT_DOWN:
-            self.velocity += 1
+            self.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
-            self.velocity -= 1
+            self.velocity -= RUN_SPEED_PPS
         elif event == RIGHT_UP:
-            self.velocity -= 1
+            self.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
-            self.velocity += 1
+            self.velocity += RUN_SPEED_PPS
         self.timer = 1000
 
     def exit(gretel, event):
@@ -143,13 +161,13 @@ class AttackState:
 class DefenceState:
     def enter(self, event):
         if event == RIGHT_DOWN:
-            self.velocity += 1
+            self.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
-            self.velocity -= 1
+            self.velocity -= RUN_SPEED_PPS
         elif event == RIGHT_UP:
-            self.velocity -= 1
+            self.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
-            self.velocity += 1
+            self.velocity += RUN_SPEED_PPS
         self.timer = 1000
 
     def exit(self, event):
@@ -166,13 +184,13 @@ class DefenceState:
 class JumpState:
     def enter(self, event):
         if event == RIGHT_DOWN:
-            self.velocity += 1
+            self.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
-            self.velocity -= 1
+            self.velocity -= RUN_SPEED_PPS
         elif event == RIGHT_UP:
-            self.velocity -= 1
+            self.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
-            self.velocity += 1
+            self.velocity += RUN_SPEED_PPS
         self.timer = 1000
 
     def exit(self, event):
@@ -188,13 +206,13 @@ class JumpState:
 class DiedState:
     def enter(self, event):
         if event == RIGHT_DOWN:
-            self.velocity += 1
+            self.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
-            self.velocity -= 1
+            self.velocity -= RUN_SPEED_PPS
         elif event == RIGHT_UP:
-            self.velocity -= 1
+            self.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
-            self.velocity += 1
+            self.velocity += RUN_SPEED_PPS
         self.timer = 1000
 
     def exit(self, event):
