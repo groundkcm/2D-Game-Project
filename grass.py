@@ -3,6 +3,7 @@ from boy import Boy
 
 gretel = None
 
+WIDTH, HEIGHT = 0, 0
 class Grass:
     def __init__(self):
         self.stage1 = load_image('background1.png')
@@ -21,14 +22,11 @@ class Grass:
     #     gretel = Boy()
 
     def draw(self):
-        global gretel
+        global gretel, WIDTH, HEIGHT
         if gretel == None:
             gretel = Boy()
-        # self.stage1.draw(400, 300)
-        # self.inven_but.draw(25, 575)
         hide_cursor()
-        WIDTH, HEIGHT = gretel.x, gretel.y
-        # WIDTH, HEIGHT = 1280, 960
+        WIDTH, HEIGHT = 1280 - gretel.x * 2 + 160, 960 - gretel.y * 2 + 120
         if WIDTH >= 640:
             WIDTH = 640
         elif WIDTH <= 160:
