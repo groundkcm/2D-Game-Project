@@ -113,6 +113,49 @@ class RunState:
             boy.run_l.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
 
 
+fnum = 0
+class JumpState:
+    def enter(self, event):
+        # if event == SPACE:
+        #     self.high += RUN_SPEED_PPS
+        if event == RIGHT_DOWN:
+            self.velocity += RUN_SPEED_PPS
+        elif event == LEFT_DOWN:
+            self.velocity -= RUN_SPEED_PPS
+        elif event == RIGHT_UP:
+            self.velocity -= RUN_SPEED_PPS
+        elif event == LEFT_UP:
+            self.velocity += RUN_SPEED_PPS
+        self.dir = clamp(-1, self.velocity, 1)
+        # self.timer = 500
+
+    def exit(self, event):
+        pass
+
+    def do(self):
+        global fnum
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
+        if self.frame < 10:
+            self.high = RUN_SPEED_PPS
+        else:
+            self.high = -RUN_SPEED_PPS
+        self.x += self.velocity * game_framework.frame_time
+        self.y += self.high * game_framework.frame_time
+        self.x = clamp(15, self.x, 1600 - 15)
+        self.y = clamp(20, self.y, 600 - 20)
+        fnum += 1
+        if fnum >= 19:
+            fnum = 0
+            self.add_event(READY)
+        # self.timer -= 10
+        # if self.timer == 0:
+        #     self.add_event(READY)
+
+    @staticmethod
+    def draw(self):
+        self.jump.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+
+
 class AttackState:
     def enter(self, event):
         if event == MLEFT_BUT_DOWN:
@@ -165,40 +208,6 @@ class DefenceState:
             self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
 
 
-class JumpState:
-    def enter(self, event):
-        if event == RIGHT_DOWN:
-            self.velocity += RUN_SPEED_PPS
-        elif event == LEFT_DOWN:
-            self.velocity -= RUN_SPEED_PPS
-        elif event == RIGHT_UP:
-            self.velocity -= RUN_SPEED_PPS
-        elif event == LEFT_UP:
-            self.velocity += RUN_SPEED_PPS
-        self.dir = clamp(-1, self.velocity, 1)
-        self.timer = 300
-
-    def exit(self, event):
-        pass
-
-    def do(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
-        if self.frame < 10:
-            self.high = RUN_SPEED_PPS
-        else:
-            self.high = -RUN_SPEED_PPS
-        self.x += self.velocity * game_framework.frame_time
-        self.y += self.high * game_framework.frame_time
-        self.x = clamp(15, self.x, 800 - 15)
-        self.y = clamp(20, self.y, 600 - 20)
-        self.timer -= 10
-        if self.timer == 0:
-            self.add_event(READY)
-
-    def draw(self):
-        self.jump.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
-
-
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
                 TOP_DOWN: RunState, BOTTOM_DOWN: RunState,
@@ -210,7 +219,7 @@ next_state_table = {
                SPACE: JumpState},
     AttackState: {READY: IdleState},
     DefenceState: {READY: IdleState},
-    JumpState: {READY: IdleState},
+    JumpState: {LEFT_DOWN: JumpState, RIGHT_DOWN: JumpState, READY: IdleState},
 }
 
 class Boy:
