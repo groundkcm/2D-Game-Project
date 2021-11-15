@@ -131,10 +131,10 @@ class JumpState:
 
     def exit(self, event):
         global fnum
-        if event == RIGHT_DOWN and fnum == 18:
-            self.add_event(RIGHT_DOWN)
-        elif event == LEFT_DOWN and fnum == 18:
-            self.add_event(LEFT_DOWN)
+        if (event == RIGHT_DOWN or event == LEFT_DOWN) and fnum == 18:
+            self.cur_state.exit(self, event)
+            self.cur_state = RunState
+            self.cur_state.enter(self, event)
 
     def do(self):
         global fnum
