@@ -105,7 +105,7 @@ class RunState:
         boy.y += boy.high * game_framework.frame_time
         boy.y = clamp(25, boy.y, 600 - 25)
 
-    @staticmethod
+    # @staticmethod
     def draw(boy):
         if boy.dir == 1:
             boy.run_r.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
