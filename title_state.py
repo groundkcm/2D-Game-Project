@@ -7,17 +7,19 @@ name = "TitleState"
 image = None
 play = None
 exitb = None
+tname = None
 
 def enter():
-    global image, play, exitb
+    global image, play, exitb, tname
     image = load_image('title.jpg')
     play = load_image('Play Button.png')
     exitb = load_image('Exit Button.png')
+    tname = load_image('title eng.png')
 
 
 def exit():
-    global image, play, exitb
-    del(image, play, exitb)
+    global image, play, exitb, tname
+    del(image, play, exitb, tname)
 
 ax, ay = 0, 0
 def handle_events():
@@ -45,6 +47,7 @@ def draw():
     image.draw(250, 300)
     play.draw(300, 100)
     exitb.draw(500, 100)
+    tname.draw(400, 400)
     update_canvas()
 
 
