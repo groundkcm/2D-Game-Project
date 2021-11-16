@@ -57,7 +57,7 @@ class Inven:
             if event.type == SDL_MOUSEBUTTONDOWN:
                 ax, ay = event.x, 600 - event.y
                 if self.inven == 0:
-                    if event.button == SDL_BUTTON_LEFT and (ax - 10 < 50 and ay > 550):
+                    if event.button == SDL_BUTTON_LEFT and (ax - 10 < 40 and ay > 560):
                         self.inven = 1
                 elif inven == 1:
                     if event.button == SDL_BUTTON_LEFT and (735 < ax - 10 < 765 and 435 < ay < 465):
@@ -72,7 +72,7 @@ class Inven:
             self.inventory.draw(400, 300)
             self.x_but.draw(750, 450)
         else:
-            self.inven_but.draw(25, 575)
+            self.inven_but.draw(20, 580)
 
 
 # Inven.handle_events()
