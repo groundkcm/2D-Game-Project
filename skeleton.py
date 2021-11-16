@@ -20,17 +20,6 @@ FRAMES_PER_ACTION = 8
 
 HIT, RANGE, DEAD, LEFT_UP, SLEEP_TIMER, SHIFT_DOWN, SHIFT_UP = range(7)
 
-key_event_table = {
-    (SDL_KEYDOWN, SDLK_RIGHT): HIT,
-    (SDL_KEYDOWN, SDLK_LEFT): RANGE,
-    (SDL_KEYDOWN, SDLK_LSHIFT): DEAD,
-    (SDL_KEYDOWN, SDLK_RSHIFT): SHIFT_DOWN,
-    (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
-    (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
-    (SDL_KEYUP, SDLK_LSHIFT): SHIFT_UP,
-    (SDL_KEYUP, SDLK_RSHIFT): SHIFT_UP
-}
-
 class Skeleton:
     def __init__(self):
         self.x, self.y = 200, 200

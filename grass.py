@@ -3,6 +3,11 @@ from boy import Boy
 
 gretel = None
 
+def enter():
+    global gretel
+    gretel = Boy()
+
+
 def inxy(a):
     ax, ay = a.passxy()
     return ax, ay
@@ -19,12 +24,11 @@ class Grass:
         self.inven = 0
         self.clear = None
         self.x, self.y = x, y
+        enter()
 
     def update(self):
-        global gretel
-        if gretel == None:
-            gretel = Boy()
         self.x, self.y = inxy(gretel)
+        # print(self.x)
 
     def draw(self):
         # hide_cursor()

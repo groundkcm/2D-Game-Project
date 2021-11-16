@@ -36,7 +36,7 @@ class IdleState:
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
         boy.timer -= 1
         if boy.timer == 0:
-            boy.add_event(SLEEP_TIMER)
+            boy.add_event(SLEEP)
 
     def draw(boy):
         boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
