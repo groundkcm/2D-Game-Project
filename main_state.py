@@ -4,6 +4,7 @@ import os
 
 from pico2d import *
 import game_framework
+import title_state
 import game_world
 
 from boy import Boy
@@ -12,7 +13,7 @@ from inventory import Inven
 from witch import Witch
 from mushroom import Mushroom
 from skeleton2 import Skeleton2
-from skeleton import Skeleton
+# from skeleton import Skeleton
 
 name = "MainState"
 
@@ -53,7 +54,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-                game_framework.quit()
+                game_framework.change_state(title_state)
         else:
             boy.handle_event(event)
 
