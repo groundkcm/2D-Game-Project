@@ -3,6 +3,10 @@ from boy import Boy
 
 gretel = None
 
+def inxy(a):
+    ax, ay = a.passxy()
+    return ax, ay
+
 # WIDTH, HEIGHT = 0, 0
 class Grass:
     def __init__(self, x = 400, y = 90):
@@ -17,12 +21,12 @@ class Grass:
         self.x, self.y = x, y
 
     def update(self):
-        pass
-
-    def draw(self):
         global gretel
         if gretel == None:
             gretel = Boy()
+        self.x, self.y = inxy(gretel)
+
+    def draw(self):
         # hide_cursor()
         # print(self.x)
         WIDTH, HEIGHT = 1280 - self.x * 2 + 160, 960 - self.y * 2 + 120
