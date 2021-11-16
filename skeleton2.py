@@ -164,7 +164,7 @@ class DefenceState:
 #     JumpState: {LEFT_DOWN: JumpState, RIGHT_DOWN: JumpState, READY: IdleState},
 # }
 
-class Witch:
+class Skeleton2:
 
     def __init__(self):
         self.x, self.y = 800 // 2, 150
