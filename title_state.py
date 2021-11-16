@@ -8,18 +8,20 @@ image = None
 play = None
 exitb = None
 tname = None
+arrow = None
 
 def enter():
-    global image, play, exitb, tname
+    global image, play, exitb, tname, arrow
     image = load_image('title.jpg')
     play = load_image('Play Button.png')
     exitb = load_image('Exit Button.png')
     tname = load_image('title eng.png')
+    arrow = load_image('Arrow.png')
 
 
 def exit():
-    global image, play, exitb, tname
-    del(image, play, exitb, tname)
+    global image, play, exitb, tname, arrow
+    del(image, play, exitb, tname, arrow)
 
 ax, ay = 0, 0
 def handle_events():
@@ -43,7 +45,10 @@ def handle_events():
                 game_framework.change_state(main_state)
 
 def draw():
+    global ax, ay
+    # hide_cursor()
     clear_canvas()
+    arrow.draw(ax, ay)
     image.draw(250, 300)
     play.draw(300, 100)
     exitb.draw(500, 100)
