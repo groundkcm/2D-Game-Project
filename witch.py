@@ -27,19 +27,17 @@ HIT, RANGE, DEAD, READY, SLEEP, WALK, DEFENCE = range(7)
 class IdleState:
 
     def enter(boy, event):
-        boy.timer = 1000
+        pass
 
     def exit(boy, event):
         pass
 
     def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
-        boy.timer -= 1
-        if boy.timer == 0:
-            boy.add_event(SLEEP)
+        boy.frame = (boy.frame + 0.7 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
+
 
     def draw(boy):
-        boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+        boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
 
 
 class RunState:
@@ -124,30 +122,30 @@ class AttackState:
         else:
             self.attack_l.clip_draw(int(26 - self.frame) * 100, 0, 100, 100, self.x, self.y)
 
-
-class DefenceState:
-    def enter(self, event):
-        self.timer = 200
-
-    def exit(gretel, event):
-        pass
-
-    def do(self):
-        self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-        self.velocity = -RUN_SPEED_PPS
-        self.timer -= 10
-        if self.timer == 0:
-            self.velocity += RUN_SPEED_PPS
-            self.add_event(READY)
-        self.x += self.velocity * game_framework.frame_time
-        self.x = clamp(15, self.x, 800 - 15)
-        # self.camera_move()
-
-    def draw(self):
-        if self.dir == 1:
-            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
-        else:
-            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+#
+# class DefenceState:
+#     def enter(self, event):
+#         self.timer = 200
+#
+#     def exit(gretel, event):
+#         pass
+#
+#     def do(self):
+#         self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+#         self.velocity = -RUN_SPEED_PPS
+#         self.timer -= 10
+#         if self.timer == 0:
+#             self.velocity += RUN_SPEED_PPS
+#             self.add_event(READY)
+#         self.x += self.velocity * game_framework.frame_time
+#         self.x = clamp(15, self.x, 800 - 15)
+#         # self.camera_move()
+#
+#     def draw(self):
+#         if self.dir == 1:
+#             self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+#         else:
+#             self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
 
 
 # next_state_table = {
@@ -167,16 +165,15 @@ class DefenceState:
 class Witch:
 
     def __init__(self):
-        self.x, self.y = 800 // 2, 150
+        self.x, self.y = 600, 150
         # Boy is only once created, so instance image loading is fine
-        self.run_r = load_image('gretel run sheet.png')
-        self.run_l = load_image('gretel run_left sheet.png')
-        self.jump = load_image('gretel jump sheet.png')
-        self.attack_r = load_image('gretel attack sheet.png')
-        self.attack_l = load_image('gretel attack_left sheet.png')
-        self.defence = load_image('gretel defence sheet.png')
-        self.died = load_image('gretel hurt sheet.png')
-        self.image = load_image('gretel stop sheet.png')
+        # self.run_r = load_image('gretel run sheet.png')
+        # self.run_l = load_image('gretel run_left sheet.png')
+        # self.jump = load_image('gretel jump sheet.png')
+        # self.attack_r = load_image('gretel attack sheet.png')
+        # self.attack_l = load_image('gretel attack_left sheet.png')
+        # self.died = load_image('gretel hurt sheet.png')
+        self.image = load_image('witch attack.png')
         # self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.high = 0

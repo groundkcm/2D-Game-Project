@@ -9,6 +9,7 @@ import game_world
 from boy import Boy
 from grass import Grass
 from inventory import Inven
+from witch import Witch
 # from skeleton import Skeleton
 
 name = "MainState"
@@ -20,8 +21,10 @@ def enter():
     boy = Boy()
     grass = Grass()
     inven = Inven()
+    # witch = Witch()
     # skeleton = Skeleton()
     game_world.add_object(grass, 0)
+    # game_world.add_object(witch, 1)
     game_world.add_object(boy, 1)
     game_world.add_object(inven, 1)
     # game_world.add_object(skeleton, 1)
