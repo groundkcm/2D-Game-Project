@@ -238,6 +238,7 @@ class Boy:
 
     def __init__(self):
         self.x, self.y = 800 // 2, 150
+        self.hp = 110
         # Boy is only once created, so instance image loading is fine
         self.run_r = load_image('gretel run sheet.png')
         self.run_l = load_image('gretel run_left sheet.png')
