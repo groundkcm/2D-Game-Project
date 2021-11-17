@@ -25,6 +25,7 @@ class Inven:
         self.inventory = load_image('inventory.png')
         self.inven_but = load_image('inventory button.png')
         self.x_but = load_image('X Button.png')
+        self.potion = load_image('red potion.png')
         self.event_que = []
         self.inven = 0
 
@@ -58,8 +59,10 @@ class Inven:
         if self.inven == 1:
             self.inventory.draw(400, 300)
             self.x_but.draw(750, 450)
+            self.potion.draw(80, 400)
         else:
             self.inven_but.draw(20, 580)
+
 
 
 # Inven.handle_events()

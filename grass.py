@@ -13,8 +13,8 @@ class Grass:
         self.bgm = load_music('stage bgm.mp3')
         self.bgm.set_volume(64)
         self.bgm.repeat_play()
-        self.bgm = load_music('door.mp3')
-        self.bgm.set_volume(32)
+        self.open = load_music('door.mp3')
+        self.open.set_volume(32)
         self.clear = None
 
     def update(self):
