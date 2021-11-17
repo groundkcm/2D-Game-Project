@@ -249,6 +249,10 @@ class Boy:
         self.image = load_image('gretel stop sheet.png')
         self.hpbar = load_image('hp bar.png')
         self.hpbase = load_image('Hp base.png')
+        self.footsteps = load_wav('walk.wav')
+        self.footsteps.set_volume(32)
+        self.search = load_wav('search item.wav')
+        self.search.set_volume(32)
         # self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.high = 0
@@ -272,6 +276,10 @@ class Boy:
             self.x += self.velocity * game_framework.frame_time
         self.hp -= 2
         self.add_event(READY)
+
+    def searchitem(self):
+        self.search.play()
+        # 아이템 큐 내용 넘겨받음
 
     # def fire_ball(self):
     #     ball = Ball(self.x, self.y, self.dir*3)

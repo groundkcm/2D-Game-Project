@@ -24,6 +24,7 @@ witch = None
 skeletons = []
 skeletons2 = []
 mushrooms = []
+items = Grass.items
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
@@ -90,14 +91,13 @@ def update():
         game_object.update()
     # delay(0.01)
 
-    # for ball in balls:
-    #     if collide(boy, ball):
-    #         balls.remove(ball)
-    #         game_world.remove_object(ball)
-    # for ball in balls:
     for mushroom in mushrooms:
         if collide(boy, mushroom):
             boy.stop()
+
+    for item in items:
+        if collide(boy, item):
+            boy.searchitem()
 
 def draw():
     clear_canvas()

@@ -1,20 +1,8 @@
 from pico2d import *
-# from boy import Boy
-#
-# gretel = None
-#
-# def enter():
-#     global gretel
-#     gretel = Boy()
 
-
-# def inxy(a):
-#     ax, ay = a.passxy()
-#     return ax, ay
-
-# WIDTH, HEIGHT = 0, 0
 class Grass:
     x, y = 400, 150
+    items = []
     def __init__(self):
         self.stage1 = load_image('background1.png')
         self.stage2 = load_image('background2.png')
@@ -22,6 +10,8 @@ class Grass:
         self.bgm = load_music('stage bgm.mp3')
         self.bgm.set_volume(64)
         self.bgm.repeat_play()
+        self.bgm = load_music('door.mp3')
+        self.bgm.set_volume(32)
         self.clear = None
 
     def update(self):
