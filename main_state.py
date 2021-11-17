@@ -24,8 +24,8 @@ def enter():
     boy = Boy()
     grass = Grass()
     inven = Inven()
-    # witch = Witch()
-    # mushroom = Mushroom()
+    witch = Witch()
+    mushroom = Mushroom()
     # skeleton = Skeleton()
     # skeleton2 = Skeleton2()
     game_world.add_object(grass, 0)
@@ -34,7 +34,7 @@ def enter():
     game_world.add_object(inven, 1)
     # game_world.add_object(skeleton, 1)
     # game_world.add_object(skeleton2, 1)
-    # game_world.add_object(mushroom, 1)
+    game_world.add_object(mushroom, 1)
 
 
 def exit():

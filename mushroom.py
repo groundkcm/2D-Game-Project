@@ -33,13 +33,13 @@ class IdleState:
         pass
 
     def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
+        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         boy.timer -= 1
         if boy.timer == 0:
             boy.add_event(SLEEP)
 
     def draw(boy):
-        boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+        boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
 
 
 class RunState:
@@ -167,16 +167,14 @@ class DefenceState:
 class Mushroom:
 
     def __init__(self):
-        self.x, self.y = 800 // 2, 150
+        self.x, self.y = 600, 150
         # Boy is only once created, so instance image loading is fine
-        self.run_r = load_image('gretel run sheet.png')
-        self.run_l = load_image('gretel run_left sheet.png')
-        self.jump = load_image('gretel jump sheet.png')
-        self.attack_r = load_image('gretel attack sheet.png')
-        self.attack_l = load_image('gretel attack_left sheet.png')
-        self.defence = load_image('gretel defence sheet.png')
-        self.died = load_image('gretel hurt sheet.png')
-        self.image = load_image('gretel stop sheet.png')
+        self.run_r = load_image('mushroom run.png')
+        self.run_l = load_image('mushroom run.png')
+        self.attack_r = load_image('mushroom attack.png')
+        self.attack_l = load_image('mushroom attack.png')
+        # self.died = load_image('gretel hurt sheet.png')
+        self.image = load_image('mushroom stop.png')
         # self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.high = 0

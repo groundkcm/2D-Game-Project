@@ -7,8 +7,8 @@ import game_world
 
 # Boy Run Speed
 # fill expressions correctly
-PIXEL_PER_METER = (3.0 / 0.3)
-RUN_SPEED_KMPH = 5.0
+PIXEL_PER_METER = (10.0 / 0.3)
+RUN_SPEED_KMPH = 1.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 10000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -85,6 +85,7 @@ class RunState:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
+        boy.dir = clamp(-1, boy.velocity, 1)
         if event == TOP_DOWN:
             boy.high += RUN_SPEED_PPS
         elif event == BOTTOM_DOWN:
@@ -93,7 +94,7 @@ class RunState:
             boy.high -= RUN_SPEED_PPS
         elif event == BOTTOM_UP:
             boy.high += RUN_SPEED_PPS
-        boy.dir = clamp(-1, boy.velocity, 1)
+
 
     def exit(boy, event):
         pass
@@ -250,6 +251,7 @@ class Boy:
         self.frame = 0
         self.timer = 0
         self.event_que = []
+        self.item_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
     #
