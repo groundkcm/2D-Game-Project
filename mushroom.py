@@ -127,7 +127,7 @@ class DefenceState:
 # }
 
 class Mushroom:
-
+    x, y = 0, 0
     def __init__(self):
         self.x, self.y = 600, 150
         # Boy is only once created, so instance image loading is fine
@@ -149,7 +149,7 @@ class Mushroom:
         self.cur_state.enter(self, None)
 
     def get_bb(self):
-        return self.x - 20, self.y - 25, self.x + 20, self.y + 25
+        return self.x - 20, self.y - 25, self.x + 20, self.y + 20
 
     def add_event(self, event):
         self.event_que.insert(0, event)

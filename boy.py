@@ -247,6 +247,8 @@ class Boy:
         self.defence = load_image('gretel defence sheet.png')
         self.died = load_image('gretel hurt sheet.png')
         self.image = load_image('gretel stop sheet.png')
+        self.hpbar = load_image('hp bar.png')
+        self.hpbase = load_image('Hp base.png')
         # self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.high = 0
@@ -289,6 +291,8 @@ class Boy:
                 self.cur_state.enter(self, event)
 
     def draw(self):
+        self.hpbase.draw(150, 575)
+        self.hpbar.draw(150, 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
         draw_rectangle(*self.get_bb())
