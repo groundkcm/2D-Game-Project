@@ -40,7 +40,10 @@ class IdleState:
 
     def draw(boy):
         # boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, Mushroom.x, Mushroom.y)
-        boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
+        if boy.hp <= 0:
+            pass
+        else:
+            boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
 
 
 class RunState:
@@ -154,6 +157,9 @@ class Mushroom:
     def get_bb(self):
         return self.x - 20, self.y - 25, self.x + 20, self.y + 20
         # return Mushroom.x - 20, Mushroom.y - 25, Mushroom.x + 20, Mushroom.y + 20
+
+    def stop(self):
+        self.hp -= 20
 
     def add_event(self, event):
         self.event_que.insert(0, event)

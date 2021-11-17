@@ -61,6 +61,7 @@ class IdleState:
             boy.high -= RUN_SPEED_PPS
         elif event == BOTTOM_UP:
             boy.high += RUN_SPEED_PPS
+        # boy.dir = clamp(-1, boy.velocity, 1)
 
     def exit(boy, event):
         pass
@@ -97,7 +98,7 @@ class RunState:
         elif event == BOTTOM_UP:
             boy.high += RUN_SPEED_PPS
             boy.dir = clamp(-1, boy.high, 1)
-
+        boy.dir = clamp(-1, boy.velocity, 1)
 
     def exit(boy, event):
         if event == RIGHT_UP and event == LEFT_UP:
@@ -108,7 +109,6 @@ class RunState:
             boy.add_event(DEAD)
         # global soundcheck
 
-        boy.dir = clamp(-1, boy.velocity, 1)
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
         boy.x += boy.velocity * game_framework.frame_time
         boy.x = clamp(25, boy.x, 800 - 25)
@@ -119,7 +119,7 @@ class RunState:
             # boy.walking()
             # soundcheck = 0
         Grass.x, Grass.y = boy.x, boy.y
-        Mushroom.passx, Mushroom.passy = boy.x, boy.y
+        # Mushroom.passx, Mushroom.passy = boy.x, boy.y
 
     # @staticmethod
     def draw(boy):
@@ -243,8 +243,8 @@ class DeadState:
         pass
 
     def do(boy):
-        boy.frame = (boy.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
-        boy.timer -= 2
+        boy.frame = (boy.frame + 0.1 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
+        boy.timer -= 1
         if boy.timer == 0:
             boy.x, boy.y = 200, 200
             boy.hp = 100
@@ -321,10 +321,10 @@ class Boy:
         return self.x - 30, self.y - 20, self.x + 10, self.y + 20
 
     def stop(self):
-        if self.dir == 1:
-            self.x -= self.velocity * game_framework.frame_time
-        elif self.dir == -1:
-            self.x += self.velocity * game_framework.frame_time
+        # if self.dir == 1:
+        #     self.x -= self.velocity * game_framework.frame_time
+        # elif self.dir == -1:
+        #     self.x += self.velocity * game_framework.frame_time
         self.hp -= 2
         self.add_event(READY)
 

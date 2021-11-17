@@ -96,8 +96,9 @@ def update():
     for mushroom in mushrooms:
         if collide(boy, mushroom):
             boy.stop()
-            if boy.cur_state == AttackState:
-                mushroom.hp -= 20
+            # mushroom.stop()
+            # if boy.cur_state == AttackState:
+            #     mushroom.hp -= 20
 
     # for item in items:
     #     if collide(boy, item):
