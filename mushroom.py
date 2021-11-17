@@ -39,7 +39,7 @@ class IdleState:
             boy.add_event(SLEEP)
 
     def draw(boy):
-        boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
+        boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, Mushroom.x, Mushroom.y)
 
 
 class RunState:
@@ -61,9 +61,9 @@ class RunState:
     # @staticmethod
     def draw(boy):
         if boy.dir == 1:
-            boy.run_r.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+            boy.run_r.clip_draw(int(boy.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
         else:
-            boy.run_l.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+            boy.run_l.clip_draw(int(boy.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
 
 
 class AttackState:
@@ -82,9 +82,9 @@ class AttackState:
 
     def draw(self):
         if self.dir == 1:
-            self.attack_r.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            self.attack_r.clip_draw(int(self.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
         else:
-            self.attack_l.clip_draw(int(26 - self.frame) * 100, 0, 100, 100, self.x, self.y)
+            self.attack_l.clip_draw(int(26 - self.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
 
 
 class DefenceState:
@@ -107,9 +107,9 @@ class DefenceState:
 
     def draw(self):
         if self.dir == 1:
-            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
         else:
-            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
 
 
 # next_state_table = {
@@ -127,6 +127,7 @@ class DefenceState:
 # }
 
 class Mushroom:
+    passx, passy = 0, 0
     x, y = 0, 0
     def __init__(self):
         self.x, self.y = 600, 150
@@ -149,7 +150,7 @@ class Mushroom:
         self.cur_state.enter(self, None)
 
     def get_bb(self):
-        return self.x - 20, self.y - 25, self.x + 20, self.y + 20
+        return Mushroom.x - 20, Mushroom.y - 25, Mushroom.x + 20, Mushroom.y + 20
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -164,6 +165,7 @@ class Mushroom:
             #     self.cur_state.exit(self, event)
             #     self.cur_state = next_state_table[self.cur_state][event]
             #     self.cur_state.enter(self, event)
+        Mushroom.x, Mushroom.y = 1280 - Mushroom.passx * 2 + 160, 960 - Mushroom.passy * 2 + 120
 
     def draw(self):
         self.cur_state.draw(self)

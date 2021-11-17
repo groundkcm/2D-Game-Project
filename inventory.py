@@ -1,24 +1,9 @@
 from pico2d import *
-from boy import Boy
 
 import game_world
 
-# MLEFT_BUT_DOWN, MxPOS, MyPOS = range(3)
-#
-# ax, ay, inven = 0, 0, 0
-# def handle_events():
-#     global ax, ay, inven
-#     events = get_events()
-#     for event in events:
-#         if event.type == SDL_MOUSEMOTION:
-#             ax, ay = event.x, 600 - event.y
-#
-# key_event_table = {
-#     (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT): MLEFT_BUT_DOWN,
-#     (SDL_MOUSEMOTION, ax): MxPOS,
-#     (SDL_MOUSEMOTION, ay): MyPOS
-# }
 ax, ay, inven = 0, 0, 0
+
 class Inven:
     mx, my = 55, 397
     drag = False
@@ -74,6 +59,3 @@ class Inven:
         else:
             self.inven_but.draw(20, 580)
 
-
-
-# Inven.handle_events()

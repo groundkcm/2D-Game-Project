@@ -2,7 +2,7 @@ import game_framework
 from pico2d import *
 from ball import Ball
 from grass import Grass
-
+from mushroom import Mushroom
 import game_world
 
 
@@ -109,6 +109,7 @@ class RunState:
             # boy.walking()
             # soundcheck = 0
         Grass.x, Grass.y = boy.x, boy.y
+        Mushroom.passx, Mushroom.passy = boy.x, boy.y
 
     # @staticmethod
     def draw(boy):
@@ -151,7 +152,6 @@ class JumpState:
         self.x += self.velocity * game_framework.frame_time
         self.y = clamp(20, self.y, 600 - 20)
         self.x = clamp(15, self.x, 800 - 15)
-        Grass.x, Grass.y = self.x, self.y
         fnum += 1
         self.timer -= 1
         if self.timer == 0:
@@ -165,6 +165,8 @@ class JumpState:
         # self.timer -= 10
         # if self.timer == 0:
         #     self.add_event(READY)
+        Grass.x, Grass.y = self.x, self.y
+        Mushroom.passx, Mushroom.passy = self.x, self.y
 
     def draw(self):
         self.jump.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
@@ -215,6 +217,7 @@ class DefenceState:
         self.x += self.velocity * game_framework.frame_time
         self.x = clamp(15, self.x, 800 - 15)
         Grass.x = self.x
+        Mushroom.passx = self.passx
         # self.camera_move()
 
     def draw(self):
