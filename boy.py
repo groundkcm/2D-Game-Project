@@ -237,7 +237,7 @@ class Boy:
 
     def __init__(self):
         self.x, self.y = 800 // 2, 150
-        self.hp = 110
+        self.hp = 100
         # Boy is only once created, so instance image loading is fine
         self.run_r = load_image('gretel run sheet.png')
         self.run_l = load_image('gretel run_left sheet.png')
@@ -270,6 +270,7 @@ class Boy:
             self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
             self.x += self.velocity * game_framework.frame_time
+        self.hp -= 2
         self.add_event(READY)
 
     # def fire_ball(self):
@@ -292,7 +293,8 @@ class Boy:
 
     def draw(self):
         self.hpbase.draw(150, 575)
-        self.hpbar.draw(150, 575)
+        self.hpbar.clip_draw(0, 0, self.hp * 2, 13, 150 - (100 - self.hp), 575)
+        # self.hpbar.draw(150, 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
         draw_rectangle(*self.get_bb())
