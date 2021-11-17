@@ -29,25 +29,11 @@ class Inven:
         self.inven = 0
 
     def enter(self, event):
-        # global inven
-        # if inven == 0:
-        #     if event == MLEFT_BUT_DOWN and (ax - 10 < 50 and ay > 550):
-        #         inven = 1
-        # elif inven == 1:
-        #     if event == MLEFT_BUT_DOWN and (735 < ax - 10 < 765 and 435 < ay < 465):
-        #         inven = 0
         pass
 
     def exit(boy, event):
         pass
 
-    # def handle_event(self, event):
-    #     if (event.type, event.button) in key_event_table:
-    #         key_event = key_event_table[(event.type, event.button)]
-    #         self.add_event(key_event)
-
-    # def add_event(self, event):
-    #     self.event_que.insert(0, event)
     def handle_events(self):
         global ax, ay, inven
         events = get_events()
@@ -59,13 +45,14 @@ class Inven:
                 if self.inven == 0:
                     if event.button == SDL_BUTTON_LEFT and (ax - 10 < 40 and ay > 560):
                         self.inven = 1
-                elif inven == 1:
+                elif self.inven == 1:
                     if event.button == SDL_BUTTON_LEFT and (735 < ax - 10 < 765 and 435 < ay < 465):
                         self.inven = 0
 
     # @staticmethod
     def update(self):
-        pass
+        # pass
+        self.handle_events()
 
     def draw(self):
         if self.inven == 1:
