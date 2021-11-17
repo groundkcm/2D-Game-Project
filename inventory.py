@@ -18,9 +18,10 @@ import game_world
 #     (SDL_MOUSEMOTION, ax): MxPOS,
 #     (SDL_MOUSEMOTION, ay): MyPOS
 # }
-
+ax, ay, inven = 0, 0, 0
 class Inven:
-
+    mx, my = 55, 397
+    drag = False
     def __init__(self):
         self.inventory = load_image('inventory.png')
         self.inven_but = load_image('inventory button.png')
@@ -47,8 +48,14 @@ class Inven:
                     if event.button == SDL_BUTTON_LEFT and (ax - 10 < 40 and ay > 560):
                         self.inven = 1
                 elif self.inven == 1:
-                    if event.button == SDL_BUTTON_LEFT and (735 < ax - 10 < 765 and 435 < ay < 465):
+                    if event.button == SDL_BUTTON_LEFT and (730 < ax - 10 < 770 and 430 < ay < 470):
                         self.inven = 0
+                    elif event.button == SDL_BUTTON_LEFT and (40 < ax - 10 < 70 and 365 < ay < 430):
+                        Inven.drag = True
+            elif event.type == SDL_MOUSEBUTTONUP and self.inven == 1:
+                ax, ay = event.x, 600 - event.y
+                Inven.drag = False
+                Inven.mx, Inven.my = ax, ay
 
     # @staticmethod
     def update(self):
@@ -56,10 +63,14 @@ class Inven:
         self.handle_events()
 
     def draw(self):
+        global ax, ay
         if self.inven == 1:
             self.inventory.draw(400, 300)
             self.x_but.draw(750, 450)
-            self.potion.draw(80, 400)
+            if Inven.drag:
+                self.potion.draw(ax, ay)
+            else:
+                self.potion.draw(Inven.mx, Inven.my)
         else:
             self.inven_but.draw(20, 580)
 
