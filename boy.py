@@ -254,7 +254,11 @@ class Boy:
         self.item_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
-    #
+
+
+    def get_bb(self):
+        return self.x - 15, self.y - 20, self.x + 15, self.y + 20
+
     # def camera_move(self):
     #     grass = Grass(self.x, self.y)
     #     # game_world.add_object(grass, 0)
