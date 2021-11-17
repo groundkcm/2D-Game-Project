@@ -33,6 +33,7 @@ class Grass:
         # hide_cursor()
         # print(self.x)
         WIDTH, HEIGHT = 1280 - Grass.x * 2 + 160, 960 - Grass.y * 2 + 120
+        # WIDTH, HEIGHT = 400, 150
         if WIDTH >= 640:
             WIDTH = 640
         elif WIDTH <= 160:

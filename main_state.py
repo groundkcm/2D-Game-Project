@@ -58,11 +58,9 @@ def enter():
     # skeletons = [Skeleton() for i in range(10)] + [Skeleton2() for i in range(10)]
     # game_world.add_objects(skeletons, 1)
 
-    # global mushrooms
-    # mushrooms = [Mushroom() for i in range(10)]
-    # game_world.add_objects(mushrooms, 1)
-    mushroom = Mushroom()
-    game_world.add_object(mushroom, 1)
+    global mushrooms
+    mushrooms = [Mushroom() for i in range(1)]
+    game_world.add_objects(mushrooms, 1)
 
 
 def exit():
@@ -97,8 +95,9 @@ def update():
     #         balls.remove(ball)
     #         game_world.remove_object(ball)
     # for ball in balls:
-    #     if collide(grass, ball):
-    #         ball.stop()
+    for mushroom in mushrooms:
+        if collide(boy, mushroom):
+            boy.stop()
 
 def draw():
     clear_canvas()

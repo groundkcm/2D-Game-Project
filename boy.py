@@ -23,7 +23,8 @@ FRAMES_PER_ACTION = 8
 
 
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, TOP_DOWN, BOTTOM_DOWN, TOP_UP, BOTTOM_UP, MLEFT_BUT_DOWN, MRIGHT_BUT_DOWN, SLEEP_TIMER, SPACE, READY = range(13)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, TOP_DOWN, BOTTOM_DOWN, TOP_UP, BOTTOM_UP, ATTACK_DOWN, MRIGHT_BUT_DOWN, \
+SLEEP_TIMER, SPACE, READY = range(13)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_d): RIGHT_DOWN,
@@ -34,7 +35,7 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_s): BOTTOM_DOWN,
     (SDL_KEYUP, SDLK_w): TOP_UP,
     (SDL_KEYUP, SDLK_s): BOTTOM_UP,
-    (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): MLEFT_BUT_DOWN,#right ->left
+    (SDL_KEYDOWN, SDLK_q): ATTACK_DOWN,#right ->left
     (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): MRIGHT_BUT_DOWN,
     (SDL_KEYDOWN, SDLK_SPACE): SPACE
 }
@@ -60,16 +61,12 @@ class IdleState:
             boy.high -= RUN_SPEED_PPS
         elif event == BOTTOM_UP:
             boy.high += RUN_SPEED_PPS
-        boy.timer = 1000
 
     def exit(boy, event):
         pass
 
     def do(boy):
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
-        boy.timer -= 1
-        if boy.timer == 0:
-            boy.add_event(SLEEP_TIMER)
 
     def draw(boy):
         boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
@@ -107,7 +104,6 @@ class RunState:
         boy.y += boy.high * game_framework.frame_time
         boy.y = clamp(25, boy.y, 600 - 25)
         Grass.x, Grass.y = boy.x, boy.y
-        # boy.camera_move()
 
     # @staticmethod
     def draw(boy):
@@ -120,8 +116,6 @@ class RunState:
 fnum = 0
 class JumpState:
     def enter(self, event):
-        # if event == SPACE:
-        #     self.high += RUN_SPEED_PPS
         if event == RIGHT_DOWN:
             self.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
@@ -131,14 +125,15 @@ class JumpState:
         elif event == LEFT_UP:
             self.velocity += RUN_SPEED_PPS
         self.dir = clamp(-1, self.velocity, 1)
-        # self.timer = 500
+        self.timer = 500
 
     def exit(self, event):
-        global fnum
-        if (event == RIGHT_DOWN or event == LEFT_DOWN) and fnum == 18:
-            self.cur_state.exit(self, event)
-            self.cur_state = RunState
-            self.cur_state.enter(self, event)
+        pass
+        # global fnum
+        # if (event == RIGHT_DOWN or event == LEFT_DOWN) and fnum == 18:
+        #     self.cur_state.exit(self, event)
+        #     self.cur_state = RunState
+        #     self.cur_state.enter(self, event)
 
     def do(self):
         global fnum
@@ -152,8 +147,12 @@ class JumpState:
         self.y = clamp(20, self.y, 600 - 20)
         self.x = clamp(15, self.x, 800 - 15)
         Grass.x, Grass.y = self.x, self.y
-        # self.camera_move()
         fnum += 1
+        self.timer -= 1
+        if self.timer == 0:
+            fnum = 0
+            self.high = 0
+            self.add_event(READY)
         if fnum == 19:
             fnum = 0
             self.high = 0
@@ -168,7 +167,7 @@ class JumpState:
 
 class AttackState:
     def enter(self, event):
-        if event == MLEFT_BUT_DOWN:
+        if event == ATTACK_DOWN:
             self.click = (self.click + 1) % 3 + 1
             self.timer = 200
 
@@ -223,12 +222,12 @@ class DefenceState:
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
                 TOP_DOWN: RunState, BOTTOM_DOWN: RunState, TOP_UP: RunState, BOTTOM_UP: RunState,
-                MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
+                ATTACK_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
                 SPACE: JumpState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
                TOP_DOWN: IdleState, BOTTOM_DOWN: IdleState, TOP_UP: IdleState, BOTTOM_UP: IdleState,
-               MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-               SPACE: JumpState},
+               ATTACK_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
+               SPACE: JumpState, READY: IdleState},
     AttackState: {READY: IdleState},
     DefenceState: {READY: IdleState},
     JumpState: {LEFT_DOWN: JumpState, RIGHT_DOWN: JumpState, READY: IdleState},
@@ -263,6 +262,13 @@ class Boy:
 
     def get_bb(self):
         return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+
+    def stop(self):
+        if self.dir == 1:
+            self.x -= self.velocity * game_framework.frame_time
+        elif self.dir == -1:
+            self.x += self.velocity * game_framework.frame_time
+        self.add_event(READY)
 
     # def fire_ball(self):
     #     ball = Ball(self.x, self.y, self.dir*3)
