@@ -131,7 +131,8 @@ class Mushroom:
     passx, passy = 0, 0
     x, y = 0, 0
     def __init__(self):
-        self.x, self.y = 100, 150
+        self.x, self.y = 300, 200
+        self.hp = 50
         # Boy is only once created, so instance image loading is fine
         self.run_r = load_image('mushroom run.png')
         self.run_l = load_image('mushroom run.png')

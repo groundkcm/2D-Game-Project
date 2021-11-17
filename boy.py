@@ -75,20 +75,16 @@ class IdleState:
 
 
 class RunState:
-    soundcheck = 0
+    # soundcheck = 0
     def enter(boy, event):
         if event == RIGHT_DOWN:
             boy.velocity += RUN_SPEED_PPS
-            boy.dir = clamp(-1, boy.velocity, 1)
         elif event == LEFT_DOWN:
             boy.velocity -= RUN_SPEED_PPS
-            boy.dir = clamp(-1, boy.velocity, 1)
         elif event == RIGHT_UP:
             boy.velocity -= RUN_SPEED_PPS
-            boy.dir = clamp(-1, boy.velocity, 1)
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
-            boy.dir = clamp(-1, boy.velocity, 1)
         elif event == TOP_DOWN:
             boy.high += RUN_SPEED_PPS
             boy.dir = clamp(-1, boy.high, 1)
@@ -104,12 +100,15 @@ class RunState:
 
 
     def exit(boy, event):
-        pass
+        if event == RIGHT_UP and event == LEFT_UP:
+            boy.add_event(READY)
 
     def do(boy):
         if boy.hp == 0:
             boy.add_event(DEAD)
         # global soundcheck
+
+        boy.dir = clamp(-1, boy.velocity, 1)
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
         boy.x += boy.velocity * game_framework.frame_time
         boy.x = clamp(25, boy.x, 800 - 25)
@@ -189,13 +188,13 @@ class AttackState:
         if boy.hp == 0:
             boy.add_event(DEAD)
         if boy.click == 1:
-            boy.frame = (boy.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+            boy.frame = (boy.frame + 0.7 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         elif boy.click == 2:
-            boy.frame = (boy.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8 + 8
+            boy.frame = (boy.frame + 0.7 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8 + 8
         elif boy.click == 3:
-            boy.frame = (boy.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10 + 16
+            boy.frame = (boy.frame + 0.7 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10 + 16
             boy.add_event(READY)
-        boy.timer -= 10
+        boy.timer -= 1
         if boy.timer == 0:
             boy.add_event(READY)
 
@@ -218,14 +217,14 @@ class DefenceState:
             self.add_event(DEAD)
         self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.velocity = -RUN_SPEED_PPS
-        self.timer -= 10
+        self.timer -= 5
         if self.timer == 0:
             self.velocity += RUN_SPEED_PPS
             self.add_event(READY)
         self.x += self.velocity * game_framework.frame_time
         self.x = clamp(15, self.x, 800 - 15)
         Grass.x = self.x
-        Mushroom.passx = self.passx
+        Mushroom.passx = self.x
         # self.camera_move()
 
     def draw(self):
@@ -244,10 +243,11 @@ class DeadState:
         pass
 
     def do(boy):
-        boy.frame = (boy.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
+        boy.frame = (boy.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
         boy.timer -= 2
         if boy.timer == 0:
-            boy.x, boy.y = 400, 150
+            boy.x, boy.y = 200, 200
+            boy.hp = 100
             boy.add_event(READY)
 
     def draw(boy):
@@ -284,7 +284,7 @@ next_state_table = {
 class Boy:
 
     def __init__(self):
-        self.x, self.y = 800 // 2, 150
+        self.x, self.y = 200, 200
         self.hp = 100
         # Boy is only once created, so instance image loading is fine
         self.run_r = load_image('gretel run sheet.png')

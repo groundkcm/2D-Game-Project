@@ -7,7 +7,7 @@ import game_framework
 import title_state
 import game_world
 
-from boy import Boy
+from boy import Boy, AttackState
 from grass import Grass
 from inventory import Inven
 from witch import Witch
@@ -47,10 +47,6 @@ def enter():
     boy = Boy()
     game_world.add_object(boy, 1)
 
-    global inven
-    inven = Inven()
-    game_world.add_object(inven, 1)
-
     global witch
     witch = Witch()
     # game_world.add_object(witch, 1)
@@ -62,6 +58,10 @@ def enter():
     global mushrooms
     mushrooms = [Mushroom() for i in range(1)]
     game_world.add_objects(mushrooms, 1)
+
+    global inven
+    inven = Inven()
+    game_world.add_object(inven, 1)
 
 
 def exit():
@@ -96,6 +96,8 @@ def update():
     for mushroom in mushrooms:
         if collide(boy, mushroom):
             boy.stop()
+            if boy.cur_state == AttackState:
+                mushroom.hp -= 20
 
     # for item in items:
     #     if collide(boy, item):
