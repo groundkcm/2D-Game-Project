@@ -52,7 +52,7 @@ class Inven:
                         self.inven = 0
                     elif event.button == SDL_BUTTON_LEFT and (40 < ax - 10 < 70 and 365 < ay < 430):
                         Inven.drag = True
-            elif event.type == SDL_MOUSEBUTTONUP and self.inven == 1:
+            elif event.type == SDL_MOUSEBUTTONUP and Inven.drag:
                 ax, ay = event.x, 600 - event.y
                 Inven.drag = False
                 Inven.mx, Inven.my = ax, ay

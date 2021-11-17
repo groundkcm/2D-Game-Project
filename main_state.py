@@ -95,9 +95,9 @@ def update():
         if collide(boy, mushroom):
             boy.stop()
 
-    for item in items:
-        if collide(boy, item):
-            boy.searchitem()
+    # for item in items:
+    #     if collide(boy, item):
+    #         boy.searchitem()
 
 def draw():
     clear_canvas()
