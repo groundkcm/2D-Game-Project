@@ -18,7 +18,12 @@ from skeleton2 import Skeleton2
 name = "MainState"
 
 boy = None
-
+grass = None
+inven = None
+witch = None
+skeletons = []
+skeletons2 = []
+mushrooms = []
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
@@ -33,20 +38,30 @@ def collide(a, b):
 
 
 def enter():
+    global grass
+    grass = Grass()
+    game_world.add_object(grass, 0)
+
     global boy
     boy = Boy()
-    grass = Grass()
-    inven = Inven()
-    witch = Witch()
-    mushroom = Mushroom()
-    # skeleton = Skeleton()
-    # skeleton2 = Skeleton2()
-    game_world.add_object(grass, 0)
-    # game_world.add_object(witch, 1)
     game_world.add_object(boy, 1)
+
+    global inven
+    inven = Inven()
     game_world.add_object(inven, 1)
-    # game_world.add_object(skeleton, 1)
-    # game_world.add_object(skeleton2, 1)
+
+    global witch
+    witch = Witch()
+    # game_world.add_object(witch, 1)
+
+    # global skeletons
+    # skeletons = [Skeleton() for i in range(10)] + [Skeleton2() for i in range(10)]
+    # game_world.add_objects(skeletons, 1)
+
+    # global mushrooms
+    # mushrooms = [Mushroom() for i in range(10)]
+    # game_world.add_objects(mushrooms, 1)
+    mushroom = Mushroom()
     game_world.add_object(mushroom, 1)
 
 
@@ -75,8 +90,15 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-    delay(0.01)
+    # delay(0.01)
 
+    # for ball in balls:
+    #     if collide(boy, ball):
+    #         balls.remove(ball)
+    #         game_world.remove_object(ball)
+    # for ball in balls:
+    #     if collide(grass, ball):
+    #         ball.stop()
 
 def draw():
     clear_canvas()

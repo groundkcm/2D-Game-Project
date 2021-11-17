@@ -262,17 +262,11 @@ class Boy:
 
 
     def get_bb(self):
-        return self.x - 15, self.y - 20, self.x + 15, self.y + 20
-
-    # def camera_move(self):
-    #     grass = Grass(self.x, self.y)
-    #     # game_world.add_object(grass, 0)
+        return self.x - 30, self.y - 20, self.x + 10, self.y + 20
 
     # def fire_ball(self):
     #     ball = Ball(self.x, self.y, self.dir*3)
     #     game_world.add_object(ball, 1)
-    def passxy(self):
-        return self.x, self.y
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -291,6 +285,7 @@ class Boy:
     def draw(self):
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
+        draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:

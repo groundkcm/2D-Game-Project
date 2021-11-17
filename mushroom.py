@@ -5,8 +5,8 @@ import game_world
 
 # Boy Run Speed
 # fill expressions correctly
-PIXEL_PER_METER = (3.0 / 0.3)
-RUN_SPEED_KMPH = 5.0
+PIXEL_PER_METER = (10.0 / 0.3)
+RUN_SPEED_KMPH = 1.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 10000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -15,7 +15,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # fill expressions correctly
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8
+FRAMES_PER_ACTION = 5
 
 
 
@@ -64,44 +64,6 @@ class RunState:
             boy.run_r.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
         else:
             boy.run_l.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
-
-
-# fnum = 0
-# class JumpState:
-#     def enter(self, event):
-#         self.dir = clamp(-1, self.velocity, 1)
-#         # self.timer = 500
-#
-#     def exit(self, event):
-#         global fnum
-#         if (event == RIGHT_DOWN or event == LEFT_DOWN) and fnum == 18:
-#             self.cur_state.exit(self, event)
-#             self.cur_state = RunState
-#             self.cur_state.enter(self, event)
-#
-#     def do(self):
-#         global fnum
-#         self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
-#         if fnum < 9:
-#             self.high = RUN_SPEED_PPS * 2
-#         else:
-#             self.high = -RUN_SPEED_PPS * 2
-#         self.y += self.high * game_framework.frame_time
-#         self.x += self.velocity * game_framework.frame_time
-#         self.y = clamp(20, self.y, 600 - 20)
-#         self.x = clamp(15, self.x, 800 - 15)
-#         # self.camera_move()
-#         fnum += 1
-#         if fnum == 19:
-#             fnum = 0
-#             self.high = 0
-#             self.add_event(READY)
-#         # self.timer -= 10
-#         # if self.timer == 0:
-#         #     self.add_event(READY)
-#
-#     def draw(self):
-#         self.jump.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
 
 
 class AttackState:
@@ -186,8 +148,8 @@ class Mushroom:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
-    def passxy(self):
-        return self.x, self.y
+    def get_bb(self):
+        return self.x - 20, self.y - 25, self.x + 20, self.y + 25
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -205,4 +167,4 @@ class Mushroom:
 
     def draw(self):
         self.cur_state.draw(self)
-
+        draw_rectangle(*self.get_bb())
