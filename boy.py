@@ -1,9 +1,10 @@
 import game_framework
 from pico2d import *
 from ball import Ball
-# from grass import Grass
+from grass import Grass
 
 import game_world
+
 
 # Boy Run Speed
 # fill expressions correctly
@@ -85,7 +86,6 @@ class RunState:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
-        boy.dir = clamp(-1, boy.velocity, 1)
         if event == TOP_DOWN:
             boy.high += RUN_SPEED_PPS
         elif event == BOTTOM_DOWN:
@@ -94,6 +94,7 @@ class RunState:
             boy.high -= RUN_SPEED_PPS
         elif event == BOTTOM_UP:
             boy.high += RUN_SPEED_PPS
+        boy.dir = clamp(-1, boy.velocity, 1)
 
 
     def exit(boy, event):
@@ -105,6 +106,7 @@ class RunState:
         boy.x = clamp(25, boy.x, 800 - 25)
         boy.y += boy.high * game_framework.frame_time
         boy.y = clamp(25, boy.y, 600 - 25)
+        Grass.x, Grass.y = boy.x, boy.y
         # boy.camera_move()
 
     # @staticmethod
@@ -149,6 +151,7 @@ class JumpState:
         self.x += self.velocity * game_framework.frame_time
         self.y = clamp(20, self.y, 600 - 20)
         self.x = clamp(15, self.x, 800 - 15)
+        Grass.x, Grass.y = self.x, self.y
         # self.camera_move()
         fnum += 1
         if fnum == 19:
@@ -207,6 +210,7 @@ class DefenceState:
             self.add_event(READY)
         self.x += self.velocity * game_framework.frame_time
         self.x = clamp(15, self.x, 800 - 15)
+        Grass.x = self.x
         # self.camera_move()
 
     def draw(self):

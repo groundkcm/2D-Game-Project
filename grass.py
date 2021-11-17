@@ -1,20 +1,21 @@
 from pico2d import *
-from boy import Boy
+# from boy import Boy
+#
+# gretel = None
+#
+# def enter():
+#     global gretel
+#     gretel = Boy()
 
-gretel = None
 
-def enter():
-    global gretel
-    gretel = Boy()
-
-
-def inxy(a):
-    ax, ay = a.passxy()
-    return ax, ay
+# def inxy(a):
+#     ax, ay = a.passxy()
+#     return ax, ay
 
 # WIDTH, HEIGHT = 0, 0
 class Grass:
-    def __init__(self, x = 400, y = 90):
+    x, y = 800, 550
+    def __init__(self):
         self.stage1 = load_image('background1.png')
         self.stage2 = load_image('background2.png')
         self.arrow = load_image('Arrow.png')
@@ -23,18 +24,16 @@ class Grass:
         self.x_but = load_image('X Button.png')
         self.inven = 0
         self.clear = None
-        self.x, self.y = x, y
-        enter()
 
     def update(self):
-        self.x, self.y = inxy(gretel)
+        pass
+        # self.x, self.y = inxy(gretel)
         # print(self.x)
 
     def draw(self):
         # hide_cursor()
         # print(self.x)
-        WIDTH, HEIGHT = 1280 - self.x * 2 + 160, 960 - self.y * 2 + 120
-        # WIDTH, HEIGHT = self.x, self.y
+        WIDTH, HEIGHT = 1280 - Grass.x * 2 + 160, 960 - Grass.y * 2 + 120
         if WIDTH >= 640:
             WIDTH = 640
         elif WIDTH <= 160:
@@ -44,7 +43,8 @@ class Grass:
         elif HEIGHT <= 120:
             HEIGHT = 120
         if self.clear == 1:
-            self.stage2.draw(WIDTH, HEIGHT)
+            # self.stage2.draw(WIDTH, HEIGHT)
+            pass
         elif self.clear == 2:
             # self.stage3.draw(WIDTH, HEIGHT)
             pass
@@ -52,6 +52,7 @@ class Grass:
             # stage3.draw(WIDTH, HEIGHT)
             pass
         else:
+            # self.stage1.clip_draw(0 + Grass.x, 0 + Grass.y, 800, 600, Grass.x - 300, Grass.y - 250)
             self.stage1.draw(WIDTH, HEIGHT)
 
 
