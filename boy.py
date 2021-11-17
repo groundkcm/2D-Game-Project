@@ -73,7 +73,7 @@ class IdleState:
 
 
 class RunState:
-
+    soundcheck = 0
     def enter(boy, event):
         if event == RIGHT_DOWN:
             boy.velocity += RUN_SPEED_PPS
@@ -98,11 +98,16 @@ class RunState:
         pass
 
     def do(boy):
+        global soundcheck
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
         boy.x += boy.velocity * game_framework.frame_time
         boy.x = clamp(25, boy.x, 800 - 25)
         boy.y += boy.high * game_framework.frame_time
         boy.y = clamp(25, boy.y, 600 - 25)
+        soundcheck += 1
+        if soundcheck == 100:
+            boy.walking()
+            soundcheck = 0
         Grass.x, Grass.y = boy.x, boy.y
 
     # @staticmethod
@@ -265,6 +270,8 @@ class Boy:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
+    def walking(self):
+        self.footsteps.play()
 
     def get_bb(self):
         return self.x - 30, self.y - 20, self.x + 10, self.y + 20

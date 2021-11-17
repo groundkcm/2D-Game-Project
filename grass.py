@@ -4,8 +4,11 @@ class Grass:
     x, y = 400, 150
     items = []
     def __init__(self):
+
         self.stage1 = load_image('background1.png')
+        self.door1 = 0, 0
         self.stage2 = load_image('background2.png')
+        self.door2 = 0, 0
         self.arrow = load_image('Arrow.png')
         self.bgm = load_music('stage bgm.mp3')
         self.bgm.set_volume(64)
