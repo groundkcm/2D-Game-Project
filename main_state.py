@@ -65,7 +65,9 @@ def enter():
 
 
 def exit():
+    global grass
     game_world.clear()
+    # grass.bgm.stop()
 
 def pause():
     pass

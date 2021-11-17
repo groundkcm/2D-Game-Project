@@ -165,7 +165,7 @@ class Mushroom:
             #     self.cur_state.exit(self, event)
             #     self.cur_state = next_state_table[self.cur_state][event]
             #     self.cur_state.enter(self, event)
-        Mushroom.x, Mushroom.y = 1280 - Mushroom.passx * 2 + 160, 960 - Mushroom.passy * 2 + 120
+        Mushroom.x, Mushroom.y = 1280 - Mushroom.passx + 600, 960 - Mushroom.passy + 150
 
     def draw(self):
         self.cur_state.draw(self)

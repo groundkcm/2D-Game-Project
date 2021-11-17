@@ -24,7 +24,7 @@ FRAMES_PER_ACTION = 8
 
 # Boy Event
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, TOP_DOWN, BOTTOM_DOWN, TOP_UP, BOTTOM_UP, ATTACK_DOWN, MRIGHT_BUT_DOWN, \
-SLEEP_TIMER, SPACE, READY = range(13)
+SLEEP_TIMER, SPACE, READY, RUN = range(14)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_d): RIGHT_DOWN,
@@ -85,13 +85,18 @@ class RunState:
             boy.velocity += RUN_SPEED_PPS
         if event == TOP_DOWN:
             boy.high += RUN_SPEED_PPS
+            boy.velocity = boy.high
         elif event == BOTTOM_DOWN:
             boy.high -= RUN_SPEED_PPS
+            boy.velocity = boy.high
         elif event == TOP_UP:
             boy.high -= RUN_SPEED_PPS
+            boy.velocity = boy.high
         elif event == BOTTOM_UP:
             boy.high += RUN_SPEED_PPS
+            boy.velocity = boy.high
         boy.dir = clamp(-1, boy.velocity, 1)
+        # boy.dir = clamp(-1, boy.high, 1)
 
 
     def exit(boy, event):
@@ -119,7 +124,6 @@ class RunState:
             boy.run_l.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
 
 
-fnum = 0
 class JumpState:
     def enter(self, event):
         if event == RIGHT_DOWN:
@@ -135,16 +139,10 @@ class JumpState:
 
     def exit(self, event):
         pass
-        # global fnum
-        # if (event == RIGHT_DOWN or event == LEFT_DOWN) and fnum == 18:
-        #     self.cur_state.exit(self, event)
-        #     self.cur_state = RunState
-        #     self.cur_state.enter(self, event)
 
     def do(self):
-        global fnum
         self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
-        if fnum < 9:
+        if self.frame < 9:
             self.high = RUN_SPEED_PPS * 2
         else:
             self.high = -RUN_SPEED_PPS * 2
@@ -152,19 +150,13 @@ class JumpState:
         self.x += self.velocity * game_framework.frame_time
         self.y = clamp(20, self.y, 600 - 20)
         self.x = clamp(15, self.x, 800 - 15)
-        fnum += 1
-        self.timer -= 1
+        self.timer -= 2
         if self.timer == 0:
-            fnum = 0
+            self.high = 0
+            self.add_event(RUN)
+        if self.frame == 19:
             self.high = 0
             self.add_event(READY)
-        if fnum == 19:
-            fnum = 0
-            self.high = 0
-            self.add_event(READY)
-        # self.timer -= 10
-        # if self.timer == 0:
-        #     self.add_event(READY)
         Grass.x, Grass.y = self.x, self.y
         Mushroom.passx, Mushroom.passy = self.x, self.y
 
@@ -183,11 +175,11 @@ class AttackState:
 
     def do(boy):
         if boy.click == 1:
-            boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+            boy.frame = (boy.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         elif boy.click == 2:
-            boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8 + 8
+            boy.frame = (boy.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8 + 8
         elif boy.click == 3:
-            boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10 + 16
+            boy.frame = (boy.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10 + 16
             boy.add_event(READY)
         boy.timer -= 10
         if boy.timer == 0:
@@ -235,10 +227,10 @@ next_state_table = {
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
                TOP_DOWN: IdleState, BOTTOM_DOWN: IdleState, TOP_UP: IdleState, BOTTOM_UP: IdleState,
                ATTACK_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-               SPACE: JumpState, READY: IdleState},
+               SPACE: JumpState},
     AttackState: {READY: IdleState},
     DefenceState: {READY: IdleState},
-    JumpState: {LEFT_DOWN: JumpState, RIGHT_DOWN: JumpState, READY: IdleState},
+    JumpState: {READY: IdleState, RUN: RunState},
 }
 
 class Boy:
@@ -288,9 +280,9 @@ class Boy:
         self.hp -= 2
         self.add_event(READY)
 
-    def searchitem(self):
-        self.search.play()
-        # 아이템 큐 내용 넘겨받음
+    # def searchitem(self):
+    #     self.search.play()
+    #     # 아이템 큐 내용 넘겨받음
 
     # def fire_ball(self):
     #     ball = Ball(self.x, self.y, self.dir*3)
