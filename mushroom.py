@@ -39,7 +39,8 @@ class IdleState:
             boy.add_event(SLEEP)
 
     def draw(boy):
-        boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, Mushroom.x, Mushroom.y)
+        # boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, Mushroom.x, Mushroom.y)
+        boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
 
 
 class RunState:
@@ -130,7 +131,7 @@ class Mushroom:
     passx, passy = 0, 0
     x, y = 0, 0
     def __init__(self):
-        self.x, self.y = 600, 150
+        self.x, self.y = 100, 150
         # Boy is only once created, so instance image loading is fine
         self.run_r = load_image('mushroom run.png')
         self.run_l = load_image('mushroom run.png')
@@ -150,7 +151,8 @@ class Mushroom:
         self.cur_state.enter(self, None)
 
     def get_bb(self):
-        return Mushroom.x - 20, Mushroom.y - 25, Mushroom.x + 20, Mushroom.y + 20
+        return self.x - 20, self.y - 25, self.x + 20, self.y + 20
+        # return Mushroom.x - 20, Mushroom.y - 25, Mushroom.x + 20, Mushroom.y + 20
 
     def add_event(self, event):
         self.event_que.insert(0, event)

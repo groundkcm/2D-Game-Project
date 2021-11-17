@@ -24,7 +24,7 @@ FRAMES_PER_ACTION = 8
 
 # Boy Event
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, TOP_DOWN, BOTTOM_DOWN, TOP_UP, BOTTOM_UP, ATTACK_DOWN, MRIGHT_BUT_DOWN, \
-SLEEP_TIMER, SPACE, READY, RUN = range(14)
+SLEEP_TIMER, SPACE, READY, RUN, DEAD = range(15)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_d): RIGHT_DOWN,
@@ -66,6 +66,8 @@ class IdleState:
         pass
 
     def do(boy):
+        if boy.hp == 0:
+            boy.add_event(DEAD)
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
 
     def draw(boy):
@@ -77,32 +79,36 @@ class RunState:
     def enter(boy, event):
         if event == RIGHT_DOWN:
             boy.velocity += RUN_SPEED_PPS
+            boy.dir = clamp(-1, boy.velocity, 1)
         elif event == LEFT_DOWN:
             boy.velocity -= RUN_SPEED_PPS
+            boy.dir = clamp(-1, boy.velocity, 1)
         elif event == RIGHT_UP:
             boy.velocity -= RUN_SPEED_PPS
+            boy.dir = clamp(-1, boy.velocity, 1)
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
-        if event == TOP_DOWN:
+            boy.dir = clamp(-1, boy.velocity, 1)
+        elif event == TOP_DOWN:
             boy.high += RUN_SPEED_PPS
-            boy.velocity = boy.high
+            boy.dir = clamp(-1, boy.high, 1)
         elif event == BOTTOM_DOWN:
             boy.high -= RUN_SPEED_PPS
-            boy.velocity = boy.high
+            boy.dir = clamp(-1, boy.high, 1)
         elif event == TOP_UP:
             boy.high -= RUN_SPEED_PPS
-            boy.velocity = boy.high
+            boy.dir = clamp(-1, boy.high, 1)
         elif event == BOTTOM_UP:
             boy.high += RUN_SPEED_PPS
-            boy.velocity = boy.high
-        boy.dir = clamp(-1, boy.velocity, 1)
-        # boy.dir = clamp(-1, boy.high, 1)
+            boy.dir = clamp(-1, boy.high, 1)
 
 
     def exit(boy, event):
         pass
 
     def do(boy):
+        if boy.hp == 0:
+            boy.add_event(DEAD)
         # global soundcheck
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
         boy.x += boy.velocity * game_framework.frame_time
@@ -128,20 +134,25 @@ class JumpState:
     def enter(self, event):
         if event == RIGHT_DOWN:
             self.velocity += RUN_SPEED_PPS
+            self.timer = 500
         elif event == LEFT_DOWN:
             self.velocity -= RUN_SPEED_PPS
+            self.timer = 500
         elif event == RIGHT_UP:
             self.velocity -= RUN_SPEED_PPS
+            self.timer = 500
         elif event == LEFT_UP:
             self.velocity += RUN_SPEED_PPS
+            self.timer = 500
         self.dir = clamp(-1, self.velocity, 1)
-        self.timer = 500
 
     def exit(self, event):
         pass
 
     def do(self):
-        self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
+        if self.hp == 0:
+            self.add_event(DEAD)
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
         if self.frame < 9:
             self.high = RUN_SPEED_PPS * 2
         else:
@@ -150,11 +161,12 @@ class JumpState:
         self.x += self.velocity * game_framework.frame_time
         self.y = clamp(20, self.y, 600 - 20)
         self.x = clamp(15, self.x, 800 - 15)
-        self.timer -= 2
+        self.timer -= 10
+        print(self.frame)
         if self.timer == 0:
             self.high = 0
             self.add_event(RUN)
-        if self.frame == 19:
+        if self.frame >= 18:
             self.high = 0
             self.add_event(READY)
         Grass.x, Grass.y = self.x, self.y
@@ -174,6 +186,8 @@ class AttackState:
         pass
 
     def do(boy):
+        if boy.hp == 0:
+            boy.add_event(DEAD)
         if boy.click == 1:
             boy.frame = (boy.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         elif boy.click == 2:
@@ -200,6 +214,8 @@ class DefenceState:
         pass
 
     def do(self):
+        if self.hp == 0:
+            self.add_event(DEAD)
         self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.velocity = -RUN_SPEED_PPS
         self.timer -= 10
@@ -219,18 +235,50 @@ class DefenceState:
             self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
 
 
+class DeadState:
+
+    def enter(boy, event):
+        boy.timer = 100
+
+    def exit(boy, event):
+        pass
+
+    def do(boy):
+        boy.frame = (boy.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
+        boy.timer -= 2
+        if boy.timer == 0:
+            boy.x, boy.y = 400, 150
+            boy.add_event(READY)
+
+    def draw(boy):
+        boy.died.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+
+# next_state_table = {
+#     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
+#                 TOP_DOWN: RunState, BOTTOM_DOWN: RunState, TOP_UP: RunState, BOTTOM_UP: RunState,
+#                 ATTACK_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
+#                 SPACE: JumpState},
+#     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
+#                TOP_DOWN: IdleState, BOTTOM_DOWN: IdleState, TOP_UP: IdleState, BOTTOM_UP: IdleState,
+#                ATTACK_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
+#                SPACE: JumpState},
+#     AttackState: {READY: IdleState},
+#     DefenceState: {READY: IdleState},
+#     JumpState: {READY: IdleState, RUN: RunState},
+# }
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
                 TOP_DOWN: RunState, BOTTOM_DOWN: RunState, TOP_UP: RunState, BOTTOM_UP: RunState,
                 ATTACK_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-                SPACE: JumpState},
+                SPACE: JumpState, DEAD: DeadState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
                TOP_DOWN: IdleState, BOTTOM_DOWN: IdleState, TOP_UP: IdleState, BOTTOM_UP: IdleState,
                ATTACK_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-               SPACE: JumpState},
-    AttackState: {READY: IdleState},
-    DefenceState: {READY: IdleState},
-    JumpState: {READY: IdleState, RUN: RunState},
+               SPACE: JumpState, DEAD: DeadState, READY: IdleState},
+    AttackState: {READY: IdleState, DEAD: DeadState},
+    DefenceState: {READY: IdleState, DEAD: DeadState},
+    JumpState: {READY: IdleState, RUN: RunState, DEAD: DeadState},
+    DeadState: {READY: IdleState}
 }
 
 class Boy:
@@ -295,20 +343,20 @@ class Boy:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
+            self.cur_state.exit(self, event)
             if event not in next_state_table[self.cur_state]:
                 pass
             else:
-                self.cur_state.exit(self, event)
                 self.cur_state = next_state_table[self.cur_state][event]
                 self.cur_state.enter(self, event)
 
     def draw(self):
         self.hpbase.draw(150, 575)
         self.hpbar.clip_draw(0, 0, self.hp * 2, 13, 150 - (100 - self.hp), 575)
-        # self.hpbar.draw(150, 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
         draw_rectangle(*self.get_bb())
+        debug_print('Velocity :' + str(self.velocity) + ' Dir:' + str(self.dir) + ' State:' + str(self.cur_state))
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
