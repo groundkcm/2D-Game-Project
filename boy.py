@@ -1,6 +1,5 @@
 import game_framework
 from pico2d import *
-from ball import Ball
 from grass import Grass
 
 import game_world
