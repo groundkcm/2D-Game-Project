@@ -220,6 +220,35 @@ class DefenceState:
             self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
 
 
+class DeadState:
+    def enter(self, event):
+        self.timer = 200
+
+    def exit(gretel, event):
+        pass
+
+    def do(self):
+        if self.hp == 0:
+            self.add_event(DEAD)
+        self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.velocity = -RUN_SPEED_PPS
+        self.timer -= 5
+        if self.timer == 0:
+            self.velocity += RUN_SPEED_PPS
+            self.add_event(READY)
+        self.x += self.velocity * game_framework.frame_time
+        self.x = clamp(15, self.x, 800 - 15)
+        Grass.x = self.x
+        # Mushroom.passx = self.x
+        # self.camera_move()
+
+    def draw(self):
+        if self.dir == 1:
+            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+        else:
+            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+
+
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
                 TOP_DOWN: RunState, BOTTOM_DOWN: RunState, TOP_UP: RunState, BOTTOM_UP: RunState,
@@ -270,7 +299,18 @@ class Boy:
     #     self.footsteps.play()
 
     def get_bb(self):
-        return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+        if self.cur_state == IdleState:
+            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+        elif self.cur_state == RunState:
+            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+        elif self.cur_state == AttackState:
+            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+        elif self.cur_state == DefenceState:
+            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+        elif self.cur_state == JumpState:
+            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+        elif self.cur_state == DeadState:
+            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
 
     def stop(self):
         if self.dir == 1:
