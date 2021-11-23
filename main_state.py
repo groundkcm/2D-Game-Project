@@ -61,6 +61,7 @@ def handle_events():
                 game_framework.change_state(title_state)
         else:
             server.boy.handle_event(event)
+            server.inven.handle_events() #check
 
 
 def update():
