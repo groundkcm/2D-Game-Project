@@ -70,7 +70,10 @@ def update():
 
     for mushroom in server.mushrooms:
         if collide(server.boy, mushroom):
-            server.boy.stop()
+            if server.boy.cur_state == 'AttackState':
+                mushroom.stop()
+            else:
+                server.boy.stop()
             # mushroom.stop()
             # if boy.cur_state == AttackState:
             #     mushroom.hp -= 20

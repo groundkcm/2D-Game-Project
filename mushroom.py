@@ -135,7 +135,7 @@ class Mushroom:
     x, y = 0, 0
     def __init__(self):
         self.x, self.y = 300, 200
-        self.hp = 50
+        self.hp = 40
         # Boy is only once created, so instance image loading is fine
         self.run_r = load_image('mushroom run.png')
         self.run_l = load_image('mushroom run.png')
@@ -143,6 +143,7 @@ class Mushroom:
         self.attack_l = load_image('mushroom attack.png')
         # self.died = load_image('gretel hurt sheet.png')
         self.image = load_image('mushroom stop.png')
+        self.hpbar = load_image('monster hp bar.png')
         # self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.high = 0
@@ -179,3 +180,4 @@ class Mushroom:
     def draw(self):
         self.cur_state.draw(self)
         draw_rectangle(*self.get_bb())
+        self.hpbar.clip_draw(0, 0, self.hp, 3, self.x - (40 - self.hp), self.y + 20)

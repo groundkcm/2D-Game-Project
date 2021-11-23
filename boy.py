@@ -1,27 +1,18 @@
 import game_framework
 from pico2d import *
 from grass import Grass
-
 import game_world
 
-
-# Boy Run Speed
-# fill expressions correctly
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 1.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 10000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-# Boy Action Speed
-# fill expressions correctly
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
-
-
-# Boy Event
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, TOP_DOWN, BOTTOM_DOWN, TOP_UP, BOTTOM_UP, ATTACK_DOWN, MRIGHT_BUT_DOWN, \
 SLEEP_TIMER, SPACE, READY, DEAD = range(14)
 
@@ -38,8 +29,6 @@ key_event_table = {
     (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT): MRIGHT_BUT_DOWN,
     (SDL_KEYDOWN, SDLK_SPACE): SPACE
 }
-
-# Boy States
 
 class IdleState:
 
@@ -315,9 +304,9 @@ class Boy:
     def draw(self):
         self.hpbase.draw(150, 575)
         self.hpbar.clip_draw(0, 0, self.hp * 2, 13, 150 - (100 - self.hp), 575)
-        # self.hpbar.draw(150, 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
+        debug_print('Velocity :' + str(self.velocity) + '  Dir:' + str(self.dir) + ' Current State:' + str(self.cur_state))
         draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
