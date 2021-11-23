@@ -6,6 +6,7 @@ from pico2d import *
 import game_framework
 import title_state
 import game_world
+import server
 
 from boy import Boy, AttackState
 from grass import Grass
@@ -14,58 +15,32 @@ from witch import Witch
 from mushroom import Mushroom
 from skeleton2 import Skeleton2
 # from skeleton import Skeleton
+from collision import collide
 
 name = "MainState"
 
-boy = None
-grass = None
-inven = None
-witch = None
-skeletons = []
-skeletons2 = []
-mushrooms = []
-items = Grass.items
-
-def collide(a, b):
-    left_a, bottom_a, right_a, top_a = a.get_bb()
-    left_b, bottom_b, right_b, top_b = b.get_bb()
-
-    if left_a > right_b: return False
-    if right_a < left_b: return False
-    if top_a < bottom_b: return False
-    if bottom_a > top_b: return False
-
-    return True
-
 
 def enter():
-    global grass
-    grass = Grass()
-    game_world.add_object(grass, 0)
+    server.grass = Grass()
+    game_world.add_object(server.grass, 0)
 
-    global boy
-    boy = Boy()
-    game_world.add_object(boy, 1)
+    server.boy = Boy()
+    game_world.add_object(server.boy, 1)
 
-    global witch
-    witch = Witch()
-    # game_world.add_object(witch, 1)
+    server.witch = Witch()
+    # game_world.add_object(server.witch, 1)
 
-    # global skeletons
-    # skeletons = [Skeleton() for i in range(10)] + [Skeleton2() for i in range(10)]
-    # game_world.add_objects(skeletons, 1)
+    # server.skeletons = [Skeleton() for i in range(10)] + [Skeleton2() for i in range(10)]
+    # game_world.add_objects(server.skeletons, 1)
 
-    global mushrooms
-    mushrooms = [Mushroom() for i in range(1)]
-    game_world.add_objects(mushrooms, 1)
+    server.mushrooms = [Mushroom() for i in range(1)]
+    game_world.add_objects(server.mushrooms, 1)
 
-    global inven
-    inven = Inven()
-    game_world.add_object(inven, 1)
+    server.inven = Inven()
+    game_world.add_object(server.inven, 1)
 
 
 def exit():
-    global grass
     game_world.clear()
     # grass.bgm.stop()
 
@@ -85,7 +60,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.change_state(title_state)
         else:
-            boy.handle_event(event)
+            server.boy.handle_event(event)
 
 
 def update():
@@ -93,9 +68,9 @@ def update():
         game_object.update()
     # delay(0.01)
 
-    for mushroom in mushrooms:
-        if collide(boy, mushroom):
-            boy.stop()
+    for mushroom in server.mushrooms:
+        if collide(server.boy, mushroom):
+            server.boy.stop()
             # mushroom.stop()
             # if boy.cur_state == AttackState:
             #     mushroom.hp -= 20
