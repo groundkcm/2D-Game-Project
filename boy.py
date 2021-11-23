@@ -1,6 +1,7 @@
 import game_framework
 from pico2d import *
 from grass import Grass
+import server
 import game_world
 
 PIXEL_PER_METER = (10.0 / 0.3)

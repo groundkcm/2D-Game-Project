@@ -44,8 +44,8 @@ class Inven:
 
     # @staticmethod
     def update(self):
-        # pass
-        self.handle_events()
+        pass
+        # self.handle_events()
 
     def draw(self):
         global ax, ay
