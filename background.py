@@ -45,11 +45,8 @@ class Background:
 
 class Wall:
     def __init__(self):
+        self.start = load_image('prison.png')
         self.stage1 = load_image('background1.png')
         self.stage2 = load_image('background2.png')
-        self.arrow = load_image('Arrow.png')
-        self.inventory = load_image('inventory.png')
-        self.inven_but = load_image('inventory button.png')
-        self.x_but = load_image('X Button.png')
-        self.inven = 0
+        self.stage3 = load_image('bossstage.png')
         self.clear = None
