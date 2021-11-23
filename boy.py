@@ -14,7 +14,7 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, TOP_DOWN, BOTTOM_DOWN, TOP_UP, BOTTOM_UP, ATTACK_DOWN, MRIGHT_BUT_DOWN, \
-SLEEP_TIMER, SPACE, READY, DEAD = range(14)
+SPACE, READY, DEAD = range(13)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_d): RIGHT_DOWN,
@@ -98,7 +98,7 @@ class RunState:
         #     soundcheck = 0
         Grass.x, Grass.y = boy.x, boy.y
 
-    # @staticmethod
+    @staticmethod
     def draw(boy):
         if boy.dir == 1:
             boy.run_r.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)

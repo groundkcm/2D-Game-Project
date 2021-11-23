@@ -36,8 +36,8 @@ def enter():
     server.mushrooms = [Mushroom() for i in range(1)]
     game_world.add_objects(server.mushrooms, 1)
 
-    server.inven = Inven()
-    game_world.add_object(server.inven, 1)
+    # server.inven = Inven()
+    # game_world.add_object(server.inven, 1)
 
 
 def exit():
