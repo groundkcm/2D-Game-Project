@@ -104,7 +104,7 @@ class RunState:
         if boy.dir == 1:
             boy.run_r.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
         else:
-            boy.run_l.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+            boy.run_l.clip_draw(int(24 - boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
 
 
 fnum = 0
@@ -174,11 +174,11 @@ class AttackState:
         if boy.hp == 0:
             boy.add_event(DEAD)
         if boy.click == 1:
-            boy.frame = (boy.frame + 0.7 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+            boy.frame = (boy.frame + 0.8 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         elif boy.click == 2:
-            boy.frame = (boy.frame + 0.7 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8 + 8
+            boy.frame = (boy.frame + 0.8 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8 + 8
         elif boy.click == 3:
-            boy.frame = (boy.frame + 0.7 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10 + 16
+            boy.frame = (boy.frame + 0.8 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10 + 16
             boy.add_event(READY)
         boy.timer -= 1
         if boy.timer == 0:
@@ -201,23 +201,21 @@ class DefenceState:
     def do(self):
         if self.hp == 0:
             self.add_event(DEAD)
-        self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.frame = (self.frame + 0.01 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.velocity = -RUN_SPEED_PPS
-        self.timer -= 5
+        self.timer -= 2
         if self.timer == 0:
             self.velocity += RUN_SPEED_PPS
             self.add_event(READY)
         self.x += self.velocity * game_framework.frame_time
         self.x = clamp(15, self.x, 800 - 15)
         Grass.x = self.x
-        # Mushroom.passx = self.x
-        # self.camera_move()
 
     def draw(self):
         if self.dir == 1:
-            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            self.defence.clip_draw(int(self.frame) * 112, 0, 112, 100, self.x, self.y)
         else:
-            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            self.defence.clip_draw(int(self.frame) * 112, 0, 112, 100, self.x, self.y)
 
 
 class DeadState:
@@ -228,25 +226,16 @@ class DeadState:
         pass
 
     def do(self):
-        if self.hp == 0:
-            self.add_event(DEAD)
-        self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-        self.velocity = -RUN_SPEED_PPS
-        self.timer -= 5
+        self.frame = (self.frame + 0.01 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.timer -= 2
         if self.timer == 0:
-            self.velocity += RUN_SPEED_PPS
             self.add_event(READY)
-        self.x += self.velocity * game_framework.frame_time
-        self.x = clamp(15, self.x, 800 - 15)
-        Grass.x = self.x
-        # Mushroom.passx = self.x
-        # self.camera_move()
 
     def draw(self):
         if self.dir == 1:
-            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            self.died.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
         else:
-            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            self.died.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
 
 
 next_state_table = {
@@ -261,6 +250,7 @@ next_state_table = {
     AttackState: {READY: IdleState},
     DefenceState: {READY: IdleState},
     JumpState: {LEFT_DOWN: JumpState, RIGHT_DOWN: JumpState, READY: IdleState},
+    DeadState: {READY: IdleState}
 }
 
 class Boy:
@@ -300,13 +290,13 @@ class Boy:
 
     def get_bb(self):
         if self.cur_state == IdleState:
-            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+            return self.x - 30, self.y - 25, self.x + 5, self.y + 20
         elif self.cur_state == RunState:
-            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+            return self.x - 30, self.y - 25, self.x + 10, self.y + 20
         elif self.cur_state == AttackState:
-            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+            return self.x - 30, self.y - 25, self.x + 25, self.y + 25
         elif self.cur_state == DefenceState:
-            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+            return self.x - 30, self.y - 35, self.x + 5, self.y + 5
         elif self.cur_state == JumpState:
             return self.x - 30, self.y - 20, self.x + 10, self.y + 20
         elif self.cur_state == DeadState:
