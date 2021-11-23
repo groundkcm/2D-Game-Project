@@ -1,28 +1,19 @@
 import game_framework
 from pico2d import *
-
 import game_world
 
-# Boy Run Speed
-# fill expressions correctly
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 1.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 10000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-# Boy Action Speed
-# fill expressions correctly
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 5
 
 
-
-# Boy Event
 HIT, RANGE, DEAD, READY, SLEEP, WALK, DEFENCE = range(7)
-
-# Boy States
 
 class IdleState:
 
@@ -65,9 +56,9 @@ class RunState:
     # @staticmethod
     def draw(boy):
         if boy.dir == 1:
-            boy.run_r.clip_draw(int(boy.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
+            boy.run_r.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
         else:
-            boy.run_l.clip_draw(int(boy.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
+            boy.run_l.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
 
 
 class AttackState:
@@ -86,9 +77,9 @@ class AttackState:
 
     def draw(self):
         if self.dir == 1:
-            self.attack_r.clip_draw(int(self.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
+            self.attack_r.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
         else:
-            self.attack_l.clip_draw(int(26 - self.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
+            self.attack_l.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
 
 
 class DefenceState:
@@ -111,24 +102,39 @@ class DefenceState:
 
     def draw(self):
         if self.dir == 1:
-            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
+            self.defence.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
         else:
-            self.defence.clip_draw(int(self.frame) * 100, 0, 100, 100, Mushroom.x, Mushroom.y)
+            self.defence.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
 
 
-# next_state_table = {
-#     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
-#                 TOP_DOWN: RunState, BOTTOM_DOWN: RunState, TOP_UP: RunState, BOTTOM_UP: RunState,
-#                 MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-#                 SPACE: JumpState},
-#     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
-#                TOP_DOWN: IdleState, BOTTOM_DOWN: IdleState, TOP_UP: IdleState, BOTTOM_UP: IdleState,
-#                MLEFT_BUT_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-#                SPACE: JumpState},
-#     AttackState: {READY: IdleState},
-#     DefenceState: {READY: IdleState},
-#     JumpState: {LEFT_DOWN: JumpState, RIGHT_DOWN: JumpState, READY: IdleState},
-# }
+class DeadState:
+    def enter(self, event):
+        self.timer = 200
+
+    def exit(self, event):
+        pass
+
+    def do(self):
+        self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.timer -= 10
+        if self.timer == 0:
+            self.add_event(READY)
+
+    def draw(self):
+        if self.dir == 1:
+            self.died.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
+        else:
+            self.died.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
+
+
+# HIT, RANGE, DEAD, READY, SLEEP, WALK, DEFENCE = range(7)
+next_state_table = {
+    IdleState: {DEAD: DeadState},
+    RunState: {DEAD: DeadState},
+    AttackState: {DEAD: DeadState, READY: IdleState},
+    DefenceState: {DEAD: DeadState, READY: IdleState},
+    DeadState: {READY: IdleState}
+}
 
 class Mushroom:
     passx, passy = 0, 0
@@ -141,7 +147,7 @@ class Mushroom:
         self.run_l = load_image('mushroom run.png')
         self.attack_r = load_image('mushroom attack.png')
         self.attack_l = load_image('mushroom attack.png')
-        # self.died = load_image('gretel hurt sheet.png')
+        self.died = load_image('mushroom death.png')
         self.image = load_image('mushroom stop.png')
         self.hpbar = load_image('monster hp bar.png')
         # self.font = load_font('ENCR10B.TTF', 16)
@@ -160,7 +166,7 @@ class Mushroom:
         # return Mushroom.x - 20, Mushroom.y - 25, Mushroom.x + 20, Mushroom.y + 20
 
     def stop(self):
-        self.hp -= 20
+        self.hp -= 1
 
     def add_event(self, event):
         self.event_que.insert(0, event)
