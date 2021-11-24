@@ -107,8 +107,8 @@ class RunState:
             boy.run_l.clip_draw(int(24 - boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
 
 
-fnum = 0
 class JumpState:
+    jnum = 0
     def enter(self, event):
         if event == RIGHT_DOWN:
             self.velocity += RUN_SPEED_PPS
@@ -119,7 +119,8 @@ class JumpState:
         elif event == LEFT_UP:
             self.velocity += RUN_SPEED_PPS
         self.dir = clamp(-1, self.velocity, 1)
-        self.timer = 500
+        self.timer = 200
+        self.frame = 0
 
     def exit(self, event):
         pass
@@ -130,32 +131,25 @@ class JumpState:
         #     self.cur_state.enter(self, event)
 
     def do(self):
-        global fnum
         if self.hp == 0:
             self.add_event(DEAD)
         self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
-        if fnum < 9:
-            self.high = RUN_SPEED_PPS * 2
+        if int(self.frame) < 9:
+            self.high = RUN_SPEED_PPS
         else:
-            self.high = -RUN_SPEED_PPS * 2
+            self.high = -RUN_SPEED_PPS
         self.y += self.high * game_framework.frame_time
         self.x += self.velocity * game_framework.frame_time
         self.y = clamp(20, self.y, 600 - 20)
         self.x = clamp(15, self.x, 800 - 15)
         Grass.x, Grass.y = self.x, self.y
-        fnum += 1
         self.timer -= 1
-        if self.timer == 0:
-            fnum = 0
-            self.high = 0
-            self.add_event(READY)
-        if fnum == 19:
-            fnum = 0
-            self.high = 0
-            self.add_event(READY)
-        # self.timer -= 10
         # if self.timer == 0:
+        #     self.high = 0
         #     self.add_event(READY)
+        if int(self.frame) == 18:
+            self.high = 0
+            self.add_event(READY)
 
     def draw(self):
         self.jump.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
