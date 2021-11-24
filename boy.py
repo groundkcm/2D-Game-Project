@@ -55,6 +55,8 @@ class IdleState:
         pass
 
     def do(boy):
+        if boy.hp == 0:
+            boy.add_event(DEAD)
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
 
     def draw(boy):
@@ -88,6 +90,8 @@ class RunState:
 
     def do(boy):
         global soundcheck
+        if boy.hp == 0:
+            boy.add_event(DEAD)
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
         boy.x += boy.velocity * game_framework.frame_time
         boy.x = clamp(25, boy.x, 800 - 25)
@@ -218,7 +222,8 @@ class DeadState:
         self.frame = (self.frame + 0.01 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.timer -= 2
         if self.timer == 0:
-            self.add_event(READY)
+            server.gameover = 1
+            # self.add_event(READY)
 
     def draw(self):
         if self.dir == 1:
@@ -299,10 +304,10 @@ class Boy:
         self.hp -= 2
         # self.add_event(READY)
 
-    def set_parent(self, mushroom):
-        self.parent = mushroom
+    def set_parent(self, enemy):
+        self.parent = enemy
         if self.cur_state == AttackState:
-            mushroom.stop()
+            enemy.stop()
         else:
             self.stop()
 
