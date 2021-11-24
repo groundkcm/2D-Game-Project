@@ -8,7 +8,7 @@ import title_state
 import game_world
 import server
 
-from boy import Boy, AttackState
+from boy import Boy
 from grass import Grass
 from inventory import Inven
 from witch import Witch
@@ -68,18 +68,14 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-    # delay(0.01)
 
     for mushroom in server.mushrooms:
         if collide(server.boy, mushroom):
             mushroom.stop()
-            # if server.boy.cur_state == 'AttackState':
+            # if server.boy.cur_state == server.boy.AttackState:
             #     mushroom.stop()
             # else:
             #     server.boy.stop()
-            # mushroom.stop()
-            # if boy.cur_state == AttackState:
-            #     mushroom.hp -= 20
 
     # for item in items:
     #     if collide(boy, item):
