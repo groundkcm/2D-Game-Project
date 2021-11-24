@@ -17,9 +17,9 @@ def enter():
     exitb = load_image('Exit Button.png')
     tname = load_image('title eng.png')
     arrow = load_image('Arrow.png')
-    bgm = load_music('stage bgm.mp3')
-    bgm.set_volume(64)
-    bgm.repeat_play()
+    # bgm = load_music('stage bgm.mp3')
+    # bgm.set_volume(64)
+    # bgm.repeat_play()
 
 
 def exit():

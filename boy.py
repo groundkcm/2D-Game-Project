@@ -98,9 +98,9 @@ class RunState:
         boy.y += boy.high * game_framework.frame_time
         boy.y = clamp(25, boy.y, 600 - 25)
         RunState.soundcheck += 1
-        # if soundcheck == 100:
-        #     boy.walking()
-        #     soundcheck = 0
+        if soundcheck == 100:
+            boy.walking()
+            soundcheck = 0
         server.x, server.y = boy.x, boy.y
 
     @staticmethod
@@ -263,10 +263,10 @@ class Boy:
         self.image = load_image('gretel stop sheet.png')
         self.hpbar = load_image('hp bar.png')
         self.hpbase = load_image('Hp base.png')
-        # self.footsteps = load_wav('walk.wav')
-        # self.footsteps.set_volume(32)
-        # self.search = load_wav('search item.wav')
-        # self.search.set_volume(32)
+        self.search = load_wav('search item.wav')
+        self.search.set_volume(32)
+        self.footsteps = load_wav('walk.wav')
+        self.footsteps.set_volume(32)
         # self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.high = 0
@@ -279,8 +279,8 @@ class Boy:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
-    # def walking(self):
-    #     self.footsteps.play()
+    def walking(self):
+        self.footsteps.play()
 
     def get_bb(self):
         if self.cur_state == IdleState:
@@ -301,7 +301,7 @@ class Boy:
             self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
             self.x += self.velocity * game_framework.frame_time
-        self.hp -= 2
+        self.hp -= 1
         # self.add_event(READY)
 
     def set_parent(self, enemy):
