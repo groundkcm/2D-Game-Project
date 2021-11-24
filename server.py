@@ -1,4 +1,5 @@
 
+x, y = 0, 0
 boy = None
 grass = None
 inven = None

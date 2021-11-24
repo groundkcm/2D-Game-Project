@@ -80,7 +80,7 @@ class RunState:
             boy.high -= RUN_SPEED_PPS
         elif event == BOTTOM_UP:
             boy.high += RUN_SPEED_PPS
-        boy.dir = clamp(-1, boy.velocity, 1)
+        boy.dir = clamp(-1, boy.velocity, 1) #좌우 방향
 
 
     def exit(boy, event):
@@ -97,7 +97,7 @@ class RunState:
         # if soundcheck == 100:
         #     boy.walking()
         #     soundcheck = 0
-        Grass.x, Grass.y = boy.x, boy.y
+        server.x, server.y = boy.x, boy.y
 
     @staticmethod
     def draw(boy):
@@ -108,7 +108,6 @@ class RunState:
 
 
 class JumpState:
-    jnum = 0
     def enter(self, event):
         if event == RIGHT_DOWN:
             self.velocity += RUN_SPEED_PPS
@@ -142,7 +141,7 @@ class JumpState:
         self.x += self.velocity * game_framework.frame_time
         self.y = clamp(20, self.y, 600 - 20)
         self.x = clamp(15, self.x, 800 - 15)
-        Grass.x, Grass.y = self.x, self.y
+        server.x, server.y = self.x, self.y
         if int(self.frame) >= 18:
             self.high = 0
             self.add_event(READY)
@@ -199,7 +198,7 @@ class DefenceState:
             self.add_event(READY)
         self.x += self.velocity * game_framework.frame_time
         self.x = clamp(15, self.x, 800 - 15)
-        Grass.x = self.x
+        server.x = self.x
 
     def draw(self):
         if self.dir == 1:
