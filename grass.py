@@ -23,7 +23,14 @@ class Grass:
 
     def draw(self):
         # hide_cursor()
-        WIDTH, HEIGHT = 1280 - server.x * 2 + 160, 960 - server.y * 2 + 120
+        if self.clear == 1:
+            WIDTH, HEIGHT = 1280 - server.x * 2 + 160, 960 - server.y * 2 + 120
+        elif self.clear == 2:
+            WIDTH, HEIGHT = 1280 - server.x * 2 + 160, 960 - server.y * 2 + 120
+        elif self.clear == 3:
+            WIDTH, HEIGHT = 1280 - server.x * 2 + 160, 719 - server.y * 2 + 120
+        else:
+            WIDTH, HEIGHT = 1280 - server.x * 2 + 160, 960 - server.y * 2 + 120
         if WIDTH >= 640:
             WIDTH = 640
         elif WIDTH <= 160:
@@ -33,17 +40,15 @@ class Grass:
         elif HEIGHT <= 120:
             HEIGHT = 120
         if self.clear == 1:
-            # self.stage2.draw(WIDTH, HEIGHT)
-            pass
-        elif self.clear == 2:
-            # self.stage3.draw(WIDTH, HEIGHT)
-            pass
-        elif self.clear == 3:
-            # stage3.draw(WIDTH, HEIGHT)
-            pass
-        else:
-            # self.stage1.clip_draw(0 + Grass.x, 0 + Grass.y, 800, 600, Grass.x - 300, Grass.y - 250)
             self.stage1.draw(WIDTH, HEIGHT)
+        elif self.clear == 2:
+            self.stage2.draw(WIDTH, HEIGHT)
+        elif self.clear == 3:
+            self.stage3.draw(WIDTH, HEIGHT)
+        else:
+            # self.start.draw(WIDTH, HEIGHT)
+            # self.stage2.draw(WIDTH, HEIGHT)
+            self.stage3.draw(WIDTH, HEIGHT)
 
 
 class Wall:
