@@ -270,7 +270,6 @@ class Boy:
         self.frame = 0
         self.timer = 0
         self.event_que = []
-        self.item_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
@@ -303,14 +302,18 @@ class Boy:
     #     self.search.play()
         # 아이템 큐 내용 넘겨받음
 
-    # def fire_ball(self):
-    #     ball = Ball(self.x, self.y, self.dir*3)
-    #     game_world.add_object(ball, 1)
-
     def add_event(self, event):
         self.event_que.insert(0, event)
 
     def update(self):
+        # if self.x >= 640:
+        #     server.x = 640
+        # elif self.x <= 160:
+        #     server.x = 160
+        # if self.y >= 480:
+        #     server.y = 480
+        # elif self.y <= 120:
+        #     server.y = 120
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()

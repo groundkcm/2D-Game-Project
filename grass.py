@@ -2,7 +2,6 @@ from pico2d import *
 import server
 
 class Grass:
-    items = []
     def __init__(self):
         self.start = load_image('prison.png')
         self.stage1 = load_image('background1.png')
@@ -24,9 +23,7 @@ class Grass:
 
     def draw(self):
         # hide_cursor()
-        # print(self.x)
         WIDTH, HEIGHT = 1280 - server.x * 2 + 160, 960 - server.y * 2 + 120
-        # WIDTH, HEIGHT = 400, 150
         if WIDTH >= 640:
             WIDTH = 640
         elif WIDTH <= 160:
