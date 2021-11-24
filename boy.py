@@ -133,7 +133,7 @@ class JumpState:
     def do(self):
         if self.hp == 0:
             self.add_event(DEAD)
-        self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
         if int(self.frame) < 9:
             self.high = RUN_SPEED_PPS
         else:
@@ -143,11 +143,7 @@ class JumpState:
         self.y = clamp(20, self.y, 600 - 20)
         self.x = clamp(15, self.x, 800 - 15)
         Grass.x, Grass.y = self.x, self.y
-        self.timer -= 1
-        # if self.timer == 0:
-        #     self.high = 0
-        #     self.add_event(READY)
-        if int(self.frame) == 18:
+        if int(self.frame) >= 18:
             self.high = 0
             self.add_event(READY)
 
@@ -331,7 +327,7 @@ class Boy:
         self.hpbar.clip_draw(0, 0, self.hp * 2, 13, 150 - (100 - self.hp), 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
-        debug_print('Velocity :' + str(self.velocity) + '  Dir:' + str(self.dir) + ' Current State:' + str(self.cur_state))
+        debug_print('Velocity :' + str(self.velocity) + ' frame:' + str(int(self.frame)) + ' Current State:' + str(self.cur_state))
         draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
