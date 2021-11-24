@@ -263,10 +263,10 @@ class Boy:
         self.image = load_image('gretel stop sheet.png')
         self.hpbar = load_image('hp bar.png')
         self.hpbase = load_image('Hp base.png')
-        self.search = load_wav('search item.wav')
-        self.search.set_volume(32)
-        self.footsteps = load_wav('walk.wav')
-        self.footsteps.set_volume(32)
+        # self.search = load_wav('search item.wav')
+        # self.search.set_volume(32)
+        # self.footsteps = load_wav('walk.wav')
+        # self.footsteps.set_volume(32)
         # self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.high = 0
