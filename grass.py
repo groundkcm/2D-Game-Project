@@ -21,8 +21,6 @@ class Grass:
 
     def update(self):
         pass
-        # self.x, self.y = inxy(gretel)
-        # print(self.x)
 
     def draw(self):
         # hide_cursor()

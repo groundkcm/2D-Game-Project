@@ -180,7 +180,7 @@ class Mushroom:
             #     self.cur_state.exit(self, event)
             #     self.cur_state = next_state_table[self.cur_state][event]
             #     self.cur_state.enter(self, event)
-        self.x, self.y = 1280 - server.x * 2 + 600, 960 - server.y * 2 + 150
+        self.x, self.y = 1280 - server.x * 2 + 200, 960 - server.y * 2 + 120
 
     def draw(self):
         self.cur_state.draw(self)
