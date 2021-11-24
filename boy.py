@@ -222,8 +222,8 @@ class DeadState:
         self.frame = (self.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.timer -= 2
         if self.timer == 0:
-            # server.gameover = 1
-            server.end = 1
+            server.gameover = 1
+            # server.end = 1
             # self.add_event(READY)
 
     def draw(self):
@@ -251,7 +251,7 @@ next_state_table = {
 class Boy:
 
     def __init__(self):
-        self.x, self.y = 400, 200
+        self.x, self.y = 400, 300
         self.hp = 100
         # Boy is only once created, so instance image loading is fine
         self.run_r = load_image('gretel run sheet.png')
