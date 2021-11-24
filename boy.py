@@ -1,6 +1,6 @@
 import game_framework
 from pico2d import *
-from grass import Grass
+from collision import collide
 import server
 import game_world
 
@@ -296,11 +296,10 @@ class Boy:
         elif self.dir == -1:
             self.x += self.velocity * game_framework.frame_time
         self.hp -= 2
-        self.add_event(READY)
+        # self.add_event(READY)
 
-    # def searchitem(self):
-    #     self.search.play()
-        # 아이템 큐 내용 넘겨받음
+    def set_parent(self, brick):
+        self.parent = brick
 
     def add_event(self, event):
         self.event_que.insert(0, event)

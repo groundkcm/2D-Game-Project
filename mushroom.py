@@ -1,5 +1,6 @@
 import game_framework
 from pico2d import *
+from collision import collide
 import server
 import game_world
 
@@ -165,12 +166,19 @@ class Mushroom:
         # return Mushroom.x - 20, Mushroom.y - 25, Mushroom.x + 20, Mushroom.y + 20
 
     def stop(self):
+        if self.dir == 1:
+            self.x -= self.velocity * game_framework.frame_time
+        elif self.dir == -1:
+            self.x += self.velocity * game_framework.frame_time
         self.hp -= 1
 
     def add_event(self, event):
         self.event_que.insert(0, event)
 
     def update(self):
+        if collide(self, server.boy):
+            server.boy.set_parent(self)
+
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
@@ -180,14 +188,14 @@ class Mushroom:
             #     self.cur_state.exit(self, event)
             #     self.cur_state = next_state_table[self.cur_state][event]
             #     self.cur_state.enter(self, event)
-        if server.x >= 640:
-            server.x = 640
-        elif server.x <= 160:
-            server.x = 160
-        if server.y >= 480:
-            server.y = 480
-        elif server.y <= 120:
-            server.y = 120
+        # if server.x >= 640:
+        #     server.x = 640
+        # elif server.x <= 160:
+        #     server.x = 160
+        # if server.y >= 480:
+        #     server.y = 480
+        # elif server.y <= 120:
+        #     server.y = 120
         self.x, self.y = 1280 - server.x * 2 + 100, 960 - server.y * 2 + 100
 
     def draw(self):

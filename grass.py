@@ -1,5 +1,6 @@
 from pico2d import *
 import server
+from collision import collide
 
 class Grass:
     def __init__(self):

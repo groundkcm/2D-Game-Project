@@ -77,9 +77,6 @@ def update():
             # else:
             #     server.boy.stop()
 
-    # for item in items:
-    #     if collide(boy, item):
-    #         boy.searchitem()
 
 def draw():
     clear_canvas()
