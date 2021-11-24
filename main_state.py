@@ -69,7 +69,7 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    if server.gameover == 1:
+    if server.gameover == 1 or server.end == 1:
         game_framework.change_state(pass_state)
     # for mushroom in server.mushrooms:
     #     if collide(server.boy, mushroom):

@@ -97,10 +97,10 @@ class RunState:
         boy.x = clamp(25, boy.x, 800 - 25)
         boy.y += boy.high * game_framework.frame_time
         boy.y = clamp(25, boy.y, 600 - 25)
-        RunState.soundcheck += 1
-        if soundcheck == 100:
-            boy.walking()
-            soundcheck = 0
+        # RunState.soundcheck += 1
+        # if RunState.soundcheck == 100:
+        #     boy.walking()
+        #     RunState.soundcheck = 0
         server.x, server.y = boy.x, boy.y
 
     @staticmethod
@@ -222,7 +222,8 @@ class DeadState:
         self.frame = (self.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.timer -= 2
         if self.timer == 0:
-            server.gameover = 1
+            # server.gameover = 1
+            server.end = 1
             # self.add_event(READY)
 
     def draw(self):
