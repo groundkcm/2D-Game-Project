@@ -135,9 +135,9 @@ class JumpState:
             self.add_event(DEAD)
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
         if int(self.frame) < 9:
-            self.high = RUN_SPEED_PPS
+            self.high = RUN_SPEED_PPS * 0.5
         else:
-            self.high = -RUN_SPEED_PPS
+            self.high = -RUN_SPEED_PPS * 0.5
         self.y += self.high * game_framework.frame_time
         self.x += self.velocity * game_framework.frame_time
         self.y = clamp(20, self.y, 600 - 20)
