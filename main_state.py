@@ -69,13 +69,13 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    for mushroom in server.mushrooms:
-        if collide(server.boy, mushroom):
-            mushroom.stop()
-            # if server.boy.cur_state == server.boy.AttackState:
-            #     mushroom.stop()
-            # else:
-            #     server.boy.stop()
+    # for mushroom in server.mushrooms:
+    #     if collide(server.boy, mushroom):
+    #         mushroom.stop()
+    #         # if server.boy.cur_state == server.boy.AttackState:
+    #         #     mushroom.stop()
+    #         # else:
+    #         #     server.boy.stop()
 
 
 def draw():

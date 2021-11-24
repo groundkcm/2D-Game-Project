@@ -266,6 +266,7 @@ class Boy:
         self.dir = 1
         self.high = 0
         self.velocity = 0
+        self.parent = None
         self.click = 0
         self.frame = 0
         self.timer = 0
@@ -298,8 +299,12 @@ class Boy:
         self.hp -= 2
         # self.add_event(READY)
 
-    def set_parent(self, brick):
-        self.parent = brick
+    def set_parent(self, mushroom):
+        self.parent = mushroom
+        if self.cur_state == AttackState:
+            mushroom.stop()
+        else:
+            self.stop()
 
     def add_event(self, event):
         self.event_que.insert(0, event)
