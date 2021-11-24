@@ -5,6 +5,7 @@ import os
 from pico2d import *
 import game_framework
 import title_state
+import pass_state
 import game_world
 import server
 
@@ -41,7 +42,6 @@ def enter():
 
 
 def exit():
-
     game_world.clear()
     # grass.bgm.stop()
 
@@ -60,8 +60,6 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(title_state)
-        elif server.gameover == 1:
-            game_framework.change_state(title_state)
         else:
             server.boy.handle_event(event)
             #server.inven.handle_events() #check
@@ -71,6 +69,8 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
+    if server.gameover == 1:
+        game_framework.change_state(pass_state)
     # for mushroom in server.mushrooms:
     #     if collide(server.boy, mushroom):
     #         mushroom.stop()

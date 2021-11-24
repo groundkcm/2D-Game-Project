@@ -236,14 +236,14 @@ next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
                 TOP_DOWN: RunState, BOTTOM_DOWN: RunState, TOP_UP: RunState, BOTTOM_UP: RunState,
                 ATTACK_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-                SPACE: JumpState},
+                SPACE: JumpState, DEAD: DeadState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
                TOP_DOWN: IdleState, BOTTOM_DOWN: IdleState, TOP_UP: IdleState, BOTTOM_UP: IdleState,
                ATTACK_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-               SPACE: JumpState, READY: IdleState},
-    AttackState: {READY: IdleState},
-    DefenceState: {READY: IdleState},
-    JumpState: {LEFT_DOWN: JumpState, RIGHT_DOWN: JumpState, READY: IdleState},
+               SPACE: JumpState, READY: IdleState, DEAD: DeadState},
+    AttackState: {READY: IdleState, DEAD: DeadState},
+    DefenceState: {READY: IdleState, DEAD: DeadState},
+    JumpState: {LEFT_DOWN: JumpState, RIGHT_DOWN: JumpState, READY: IdleState, DEAD: DeadState},
     DeadState: {READY: IdleState}
 }
 
