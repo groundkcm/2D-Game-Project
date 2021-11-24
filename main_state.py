@@ -43,7 +43,7 @@ def enter():
 
 def exit():
     game_world.clear()
-    # grass.bgm.stop()
+    server.grass.bgm.stop()
 
 def pause():
     pass
