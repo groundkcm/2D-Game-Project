@@ -1,5 +1,6 @@
 import game_framework
 from pico2d import *
+import server
 import game_world
 
 PIXEL_PER_METER = (10.0 / 0.3)
@@ -137,8 +138,6 @@ next_state_table = {
 }
 
 class Mushroom:
-    passx, passy = 0, 0
-    x, y = 0, 0
     def __init__(self):
         self.x, self.y = 300, 200
         self.hp = 40
@@ -181,7 +180,7 @@ class Mushroom:
             #     self.cur_state.exit(self, event)
             #     self.cur_state = next_state_table[self.cur_state][event]
             #     self.cur_state.enter(self, event)
-        Mushroom.x, Mushroom.y = 1280 - Mushroom.passx + 600, 960 - Mushroom.passy + 150
+        self.x, self.y = 1280 - server.x * 2 + 600, 960 - server.y * 2 + 150
 
     def draw(self):
         self.cur_state.draw(self)
