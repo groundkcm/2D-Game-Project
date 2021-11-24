@@ -59,10 +59,12 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-                game_framework.change_state(title_state)
+            game_framework.change_state(title_state)
+        elif server.gameover == 1:
+            game_framework.change_state(title_state)
         else:
             server.boy.handle_event(event)
-            server.inven.handle_events() #check
+            #server.inven.handle_events() #check
 
 
 def update():
