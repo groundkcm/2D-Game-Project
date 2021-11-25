@@ -25,14 +25,14 @@ def enter():
     server.grass = Grass()
     game_world.add_object(server.grass, 0)
 
-    server.witch = Witch()
+    # server.witch = Witch()
     # game_world.add_object(server.witch, 1)
 
     # server.skeletons = [Skeleton() for i in range(10)] + [Skeleton2() for i in range(10)]
     # game_world.add_objects(server.skeletons, 1)
 
-    server.mushrooms = [Mushroom() for i in range(1)]
-    game_world.add_objects(server.mushrooms, 1)
+    # server.mushrooms = [Mushroom() for i in range(1)]
+    # game_world.add_objects(server.mushrooms, 1)
 
     server.boy = Boy()
     game_world.add_object(server.boy, 1)
@@ -75,13 +75,6 @@ def update():
 
     if server.gameover == 1 or server.end == 1:
         game_framework.change_state(pass_state)
-    # for mushroom in server.mushrooms:
-    #     if collide(server.boy, mushroom):
-    #         mushroom.stop()
-    #         # if server.boy.cur_state == server.boy.AttackState:
-    #         #     mushroom.stop()
-    #         # else:
-    #         #     server.boy.stop()
 
 
 def draw():

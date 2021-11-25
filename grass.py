@@ -15,9 +15,6 @@ class Grass:
 
     def __init__(self):
         self.load_images()
-        # self.door1 = 0, 0
-        # self.door2 = 0, 0
-        # self.door3 = 0, 0
         self.arrow = load_image('./sheets/UI/Arrow.png')
         self.inven_but = load_image('./sheets/UI/inventory button.png')
         self.bgm = load_music('stage bgm.mp3')
@@ -55,15 +52,16 @@ class Grass:
 
 
 class Wall:
-    def __init__(self):
-        pass
-
-    def update(self):
-        if collide_wall(self, server.boy):
-            server.boy.set_parent(self)
-
-    def get_bb(self):
-        return self.x - 20, self.y - 25, self.x + 20, self.y + 20
-
-    def stop(self):
-        pass
+    pass
+    # def __init__(self):
+    #     pass
+    #
+    # def update(self):
+    #     if collide_wall(self, server.boy):
+    #         server.boy.set_parent(self)
+    #
+    # def get_bb(self):
+    #     return self.x - 20, self.y - 25, self.x + 20, self.y + 20
+    #
+    # def stop(self):
+    #     pass

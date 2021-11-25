@@ -252,9 +252,9 @@ class Boy:
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self, None)
-
-    def walking(self):
-        self.footsteps.play()
+    #
+    # def walking(self):
+    #     self.footsteps.play()
 
     def get_bb(self):
         if self.cur_state == RunState:
