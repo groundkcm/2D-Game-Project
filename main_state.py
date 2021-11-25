@@ -58,7 +58,7 @@ def handle_events():
         elif event.type == SDL_MOUSEBUTTONDOWN:
             ax, ay = event.x, 600 - event.y
             if event.button == SDL_BUTTON_LEFT and (ax - 10 < 40 and ay > 560):
-                game_framework.change_state(Inven_State)
+                game_framework.push_state(Inven_State)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(title_state)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_p:

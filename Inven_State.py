@@ -34,7 +34,7 @@ def enter():
 
 def exit():
     global x_but, images, potion
-    del(x_but, images, potion)
+    del(x_but, potion)
 
 def handle_events():
     global ax, ay, drag, mx, my
@@ -45,7 +45,7 @@ def handle_events():
         if event.type == SDL_MOUSEBUTTONDOWN:
             ax, ay = event.x, 600 - event.y
             if event.button == SDL_BUTTON_LEFT and (730 < ax - 10 < 770 and 430 < ay < 470):
-                game_framework.change_state(main_state)
+                game_framework.pop_state()
             elif event.button == SDL_BUTTON_LEFT and (40 < ax - 10 < 70 and 365 < ay < 430):
                 drag = True
         elif event.type == SDL_MOUSEBUTTONUP and drag:
