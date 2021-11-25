@@ -31,9 +31,9 @@ def handle_events():
     global ax, ay
     events = get_events()
     for event in events:
-        # if event.type == SDL_MOUSEMOTION:
-        #     ax, ay = event.x, 600 - event.y
-        if (event.type, event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):
+        if event.type == SDL_MOUSEMOTION:
+            ax, ay = event.x, 600 - event.y
+        elif (event.type, event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):
             ax, ay = event.x, 600 - event.y
             if 300 - 75 < ax - 10 < 300 + 75 and 100 - 25 < ay < 100 + 25:
                 game_framework.change_state(main_state)
@@ -44,8 +44,8 @@ def handle_events():
         else:
             if (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 game_framework.quit()
-            # elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
-            #     game_framework.change_state(main_state)
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
+                game_framework.change_state(main_state)
 
 def draw():
     global ax, ay, image, play, exitb, tname
