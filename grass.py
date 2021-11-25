@@ -50,18 +50,18 @@ class Grass:
             # self.stage3.draw(WIDTH, HEIGHT)
         self.inven_but.draw(20, 580)
 
-
-class Wall:
-    pass
-    # def __init__(self):
-    #     pass
-    #
-    # def update(self):
-    #     if collide_wall(self, server.boy):
-    #         server.boy.set_parent(self)
-    #
-    # def get_bb(self):
-    #     return self.x - 20, self.y - 25, self.x + 20, self.y + 20
-    #
-    # def stop(self):
-    #     pass
+#
+# class Wall:
+#     pass
+#     # def __init__(self):
+#     #     pass
+#     #
+#     # def update(self):
+#     #     if collide_wall(self, server.boy):
+#     #         server.boy.set_parent(self)
+#     #
+#     # def get_bb(self):
+#     #     return self.x - 20, self.y - 25, self.x + 20, self.y + 20
+#     #
+#     # def stop(self):
+#     #     pass
