@@ -13,10 +13,10 @@ arrow = None
 def enter():
     global image, play, exitb, tname, arrow
     image = load_image('./sheets/background/title.jpg')
-    play = load_image('Play Button.png')
-    exitb = load_image('Exit Button.png')
-    tname = load_image('title eng.png')
-    arrow = load_image('Arrow.png')
+    play = load_image('./sheets/UI/Play Button.png')
+    exitb = load_image('./sheets/UI/Exit Button.png')
+    tname = load_image('./sheets/UI/title eng.png')
+    arrow = load_image('./sheets/UI/Arrow.png')
     # bgm = load_music('stage bgm.mp3')
     # bgm.set_volume(64)
     # bgm.repeat_play()

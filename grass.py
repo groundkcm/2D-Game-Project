@@ -18,8 +18,8 @@ class Grass:
         # self.door1 = 0, 0
         # self.door2 = 0, 0
         # self.door3 = 0, 0
-        self.arrow = load_image('Arrow.png')
-        self.inven_but = load_image('inventory button.png')
+        self.arrow = load_image('./sheets/UI/Arrow.png')
+        self.inven_but = load_image('./sheets/UI/inventory button.png')
         self.bgm = load_music('stage bgm.mp3')
         self.bgm.set_volume(64)
         self.bgm.repeat_play()

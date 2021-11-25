@@ -34,7 +34,7 @@ class Mushroom:
         self.x, self.y = 0, 0
         self.hp = 40
         self.load_images()
-        self.hpbar = load_image('monster hp bar.png')
+        self.hpbar = load_image('./sheets/UI/monster hp bar.png')
         # self.font = load_font('ENCR10B.TTF', 16)
         self.prepare_patrol_points()
         self.patrol_order = 1

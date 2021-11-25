@@ -6,12 +6,7 @@ import server
 import game_world
 
 name = "InvenState"
-inventory = None
 x_but = None
-stage1 = None
-start = None
-stage2 = None
-stage3 = None
 potion = None
 
 png_names = ['inventory', 'stage1', 'stage2', 'stage3', 'start']
@@ -33,8 +28,8 @@ def load_images():
 def enter():
     global x_but, potion
     load_images()
-    x_but = load_image('X Button.png')
-    potion = load_image('red potion.png')
+    x_but = load_image('./sheets/UI/X Button.png')
+    potion = load_image('./sheets/UI/red potion.png')
 
 
 def exit():
