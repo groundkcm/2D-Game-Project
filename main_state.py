@@ -5,13 +5,13 @@ import os
 from pico2d import *
 import game_framework
 import title_state
+import Inven_State
 import pass_state
 import game_world
 import server
 
 from boy import Boy
 from grass import Grass
-from inventory import Inven
 from witch import Witch
 from mushroom import Mushroom
 from skeleton2 import Skeleton2
@@ -36,9 +36,9 @@ def enter():
 
     server.mushrooms = [Mushroom() for i in range(1)]
     game_world.add_objects(server.mushrooms, 1)
-
-    server.inven = Inven()
-    game_world.add_object(server.inven, 1)
+    #
+    # server.inven = Inven()
+    # game_world.add_object(server.inven, 1)
 
 
 def exit():
@@ -58,6 +58,10 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
+        elif event.type == SDL_MOUSEBUTTONDOWN:
+            ax, ay = event.x, 600 - event.y
+            if event.button == SDL_BUTTON_LEFT and (ax - 10 < 40 and ay > 560):
+                game_framework.change_state(Inven_State)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(title_state)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_p:

@@ -12,6 +12,7 @@ class Grass:
         self.door2 = 0, 0
         self.door3 = 0, 0
         self.arrow = load_image('Arrow.png')
+        self.inven_but = load_image('inventory button.png')
         self.bgm = load_music('stage bgm.mp3')
         self.bgm.set_volume(64)
         self.bgm.repeat_play()
@@ -43,6 +44,7 @@ class Grass:
             self.stage1.draw(WIDTH, HEIGHT)
             # self.stage2.draw(WIDTH, HEIGHT)
             # self.stage3.draw(WIDTH, HEIGHT)
+        self.inven_but.draw(20, 580)
 
 
 class Wall:
