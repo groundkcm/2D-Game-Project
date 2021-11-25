@@ -62,7 +62,7 @@ class IdleState:
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
 
     def draw(boy):
-        boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+        Boy.images['idle'].clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
 
 
 class RunState:
@@ -108,9 +108,9 @@ class RunState:
     @staticmethod
     def draw(boy):
         if boy.dir == 1:
-            boy.run_r.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+            Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
         else:
-            boy.run_l.clip_draw(int(24 - boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+            Boy.images['run'].clip_composite_draw(int(boy.frame) * 100, 0, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
 
 
 class JumpState:
@@ -148,7 +148,7 @@ class JumpState:
             self.add_event(READY)
 
     def draw(self):
-        self.jump.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+        Boy.images['jump'].clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
 
 
 class AttackState:
@@ -176,9 +176,9 @@ class AttackState:
 
     def draw(self):
         if self.dir == 1:
-            self.attack_r.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            Boy.images['attack'].clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
         else:
-            self.attack_l.clip_draw(int(26 - self.frame) * 100, 0, 100, 100, self.x, self.y)
+            Boy.images['attack'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
 
 
 class DefenceState:
@@ -203,9 +203,9 @@ class DefenceState:
 
     def draw(self):
         if self.dir == 1:
-            self.defence.clip_draw(int(self.frame) * 112, 0, 112, 100, self.x, self.y)
+            Boy.images['defence'].clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
         else:
-            self.defence.clip_draw(int(self.frame) * 112, 0, 112, 100, self.x, self.y)
+            Boy.images['defence'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
 
 
 class DeadState:
@@ -225,9 +225,9 @@ class DeadState:
 
     def draw(self):
         if self.dir == 1:
-            self.died.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            Boy.images['dead'].clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
         else:
-            self.died.clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            Boy.images['dead'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
 
 
 next_state_table = {
@@ -246,20 +246,19 @@ next_state_table = {
 }
 
 class Boy:
+    images = None
     check = 0
+
+    def load_images(self):
+        if Boy.images == None:
+            Boy.images = {}
+            for name in animation_names:
+                Boy.images[name] = load_image("./sheets/gretel/" + name + ".png")
 
     def __init__(self):
         server.x, server.y = self.x, self.y = 400, 300
         self.hp = 100
-        # Boy is only once created, so instance image loading is fine
-        self.run_r = load_image('gretel run sheet.png')
-        self.run_l = load_image('gretel run_left sheet.png')
-        self.jump = load_image('gretel jump sheet.png')
-        self.attack_r = load_image('gretel attack sheet.png')
-        self.attack_l = load_image('gretel attack_left sheet.png')
-        self.defence = load_image('gretel defence sheet.png')
-        self.died = load_image('gretel hurt sheet.png')
-        self.image = load_image('gretel stop sheet.png')
+        self.load_images()
         self.hpbar = load_image('hp bar.png')
         self.hpbase = load_image('Hp base.png')
         # self.search = load_wav('search item.wav')
