@@ -17,7 +17,7 @@ def enter():
     tname = load_image('./sheets/UI/title eng.png')
     theend = load_image('./sheets/UI/the end.png')
     image = load_image('./sheets/background/title.jpg')
-    menu = load_image('./sheets/UI/Menu Button.png')
+    menu = load_image('./sheets/UI/space.png')
 
 def exit():
     global gameover, tname, theend, image, menu
