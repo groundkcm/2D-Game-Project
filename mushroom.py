@@ -33,6 +33,7 @@ class Mushroom:
     def __init__(self):
         self.x, self.y = 0, 0
         self.hp = 40
+        self.load_images()
         # Boy is only once created, so instance image loading is fine
         # self.run_r = load_image('mushroom run.png')
         # self.run_l = load_image('mushroom run.png')
@@ -40,7 +41,7 @@ class Mushroom:
         # self.attack_l = load_image('mushroom attack.png')
         # self.died = load_image('mushroom death.png')
         # self.image = load_image('mushroom stop.png')
-        # self.hpbar = load_image('monster hp bar.png')
+        self.hpbar = load_image('monster hp bar.png')
         # self.font = load_font('ENCR10B.TTF', 16)
         self.prepare_patrol_points()
         self.patrol_order = 1
@@ -131,7 +132,6 @@ class Mushroom:
 
     def get_bb(self):
         return self.x - 20, self.y - 25, self.x + 20, self.y + 20
-        # return Mushroom.x - 20, Mushroom.y - 25, Mushroom.x + 20, Mushroom.y + 20
 
     def stop(self):
         if self.dir == 1:
@@ -151,22 +151,12 @@ class Mushroom:
             server.boy.set_parent(self)
 
         self.bt.run()
-
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         Mushroom.px += self.speed * math.cos(self.dir) * game_framework.frame_time
         Mushroom.py += self.speed * math.sin(self.dir) * game_framework.frame_time
         print(Mushroom.px)
         Mushroom.px = clamp(-450, Mushroom.px, 770)
         Mushroom.py = clamp(-330, Mushroom.py, 560)
-        # self.cur_state.do(self)
-        # if len(self.event_que) > 0:
-        #     event = self.event_que.pop()
-        #     # if event not in next_state_table[self.cur_state]:
-        #     #     pass
-        #     # else:
-        #     #     self.cur_state.exit(self, event)
-        #     #     self.cur_state = next_state_table[self.cur_state][event]
-        #     #     self.cur_state.enter(self, event)
         if server.x >= 640:
             server.x = 640
         elif server.x <= 400:
@@ -176,8 +166,8 @@ class Mushroom:
         elif server.y <= 300:
             server.y = 300
         self.x, self.y = 1280 - server.x * 2 + 0, 960 - server.y * 2 + 0
-        # self.x = clamp(25, self.x, 800 - 25)
-        # self.y = clamp(15, self.y, 600 - 25)
+        self.x = clamp(25, self.x, 800 - 25)
+        self.y = clamp(15, self.y, 600 - 25)
 
     def draw(self):
         if math.cos(self.dir) < 0:
