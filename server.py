@@ -2,7 +2,7 @@
 x, y = 0, 0
 gameover = 0
 end = 0
-debugmode = 0
+debugmode = 1
 boy = None
 grass = None
 wall = None

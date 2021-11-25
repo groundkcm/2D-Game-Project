@@ -44,8 +44,8 @@ class Grass:
         elif server.clear == 3:
             Grass.images['stage3'].draw(WIDTH, HEIGHT)
         else:
-            # Grass.images['start'].draw(WIDTH, HEIGHT)
-            Grass.images['stage1'].draw(WIDTH, HEIGHT)
+            Grass.images['start'].draw(WIDTH, HEIGHT)
+            # Grass.images['stage1'].draw(WIDTH, HEIGHT)
             # self.stage2.draw(WIDTH, HEIGHT)
             # self.stage3.draw(WIDTH, HEIGHT)
         self.inven_but.draw(20, 580)
