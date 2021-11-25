@@ -12,7 +12,7 @@ arrow = None
 
 def enter():
     global image, play, exitb, tname, arrow
-    image = load_image('title.jpg')
+    image = load_image('./sheets/background/title.jpg')
     play = load_image('Play Button.png')
     exitb = load_image('Exit Button.png')
     tname = load_image('title eng.png')

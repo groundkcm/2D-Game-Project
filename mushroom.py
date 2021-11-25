@@ -162,7 +162,6 @@ class Mushroom:
         self.x, self.y = 1280 - server.x * 2 + Mushroom.px, 960 - server.y * 2 + Mushroom.py
 
     def draw(self):
-        print(int(self.frame8))
         if math.cos(self.dir) < 0:
             if self.speed == 0:
                 Mushroom.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', self.x, self.y, 150, 150)

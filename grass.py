@@ -2,15 +2,22 @@ from pico2d import *
 import server
 from collision import collide
 
+png_names = ['inventory', 'stage1', 'stage2', 'stage3', 'start']
+
 class Grass:
+    images = None
+
+    def load_images(self):
+        if Grass.images == None:
+            Grass.images = {}
+            for name in png_names:
+                Grass.images[name] = load_image("./sheets/background/" + name + ".png")
+
     def __init__(self):
-        self.start = load_image('prison.png')
-        self.stage1 = load_image('background1.png')
-        self.stage2 = load_image('background2.png')
-        self.stage3 = load_image('bossstage.png')
-        self.door1 = 0, 0
-        self.door2 = 0, 0
-        self.door3 = 0, 0
+        self.load_images()
+        # self.door1 = 0, 0
+        # self.door2 = 0, 0
+        # self.door3 = 0, 0
         self.arrow = load_image('Arrow.png')
         self.inven_but = load_image('inventory button.png')
         self.bgm = load_music('stage bgm.mp3')
@@ -34,14 +41,14 @@ class Grass:
         elif HEIGHT <= 120:
             HEIGHT = 120
         if server.clear == 1:
-            self.stage1.draw(WIDTH, HEIGHT)
+            Grass.images['stage1'].draw(WIDTH, HEIGHT)
         elif server.clear == 2:
-            self.stage2.draw(WIDTH, HEIGHT)
+            Grass.images['stage2'].draw(WIDTH, HEIGHT)
         elif server.clear == 3:
-            self.stage3.draw(WIDTH, HEIGHT)
+            Grass.images['stage3'].draw(WIDTH, HEIGHT)
         else:
-            # self.start.draw(WIDTH, HEIGHT)
-            self.stage1.draw(WIDTH, HEIGHT)
+            # Grass.images['start'].draw(WIDTH, HEIGHT)
+            Grass.images['stage1'].draw(WIDTH, HEIGHT)
             # self.stage2.draw(WIDTH, HEIGHT)
             # self.stage3.draw(WIDTH, HEIGHT)
         self.inven_but.draw(20, 580)
@@ -49,10 +56,7 @@ class Grass:
 
 class Wall:
     def __init__(self):
-        self.start = load_image('prison.png')
-        self.stage1 = load_image('background1.png')
-        self.stage2 = load_image('background2.png')
-        self.stage3 = load_image('bossstage.png')
+        self.load_images()
         self.arrow = load_image('Arrow.png')
         self.inventory = load_image('inventory.png')
         self.inven_but = load_image('inventory button.png')

@@ -14,24 +14,32 @@ stage2 = None
 stage3 = None
 potion = None
 
+png_names = ['inventory', 'stage1', 'stage2', 'stage3', 'start']
+
 ax, ay = 0, 0
 mx, my = 55, 397
 drag = False
+images = None
+
+
+def load_images():
+    global images
+    if images == None:
+        images = {}
+        for name in png_names:
+            images[name] = load_image("./sheets/background/" + name + ".png")
+
 
 def enter():
-    global inventory, x_but, stage1, start, stage2, stage3, potion
-    start = load_image('prison.png')
-    stage1 = load_image('background1.png')
-    stage2 = load_image('background2.png')
-    stage3 = load_image('bossstage.png')
-    inventory = load_image('inventory.png')
+    global x_but, potion
+    load_images()
     x_but = load_image('X Button.png')
     potion = load_image('red potion.png')
 
 
 def exit():
-    global inventory, x_but, stage1, start, stage2, stage3, potion
-    del(inventory, x_but, stage1, start, stage2, stage3, potion)
+    global x_but, images, potion
+    del(x_but, images, potion)
 
 def handle_events():
     global ax, ay, drag, mx, my
@@ -51,7 +59,7 @@ def handle_events():
             mx, my = ax, ay
 
 def draw():
-    global ax, ay, drag, mx, my
+    global ax, ay, drag, mx, my, images
     WIDTH, HEIGHT = 1280 - server.x * 2 + 160, 960 - server.y * 2 + 120
     if WIDTH >= 640:
         WIDTH = 640
@@ -62,8 +70,10 @@ def draw():
     elif HEIGHT <= 120:
         HEIGHT = 120
     clear_canvas()
-    stage1.draw(WIDTH, HEIGHT)
-    inventory.draw(400, 300)
+
+    images['stage1'].draw(WIDTH, HEIGHT)
+    images['inventory'].draw(400, 300)
+
     x_but.draw(750, 450)
     if drag:
         potion.draw(ax, ay)

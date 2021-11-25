@@ -10,7 +10,7 @@ logo_time = 0.0
 
 def enter():
     global image
-    image = load_image('moonlighter.jpg')
+    image = load_image('./sheets/background/loading.jpg')
 
 def exit():
     global image

@@ -13,10 +13,10 @@ menu = None
 
 def enter():
     global gameover, tname, theend, image, menu
-    gameover = load_image('gameover.jpg')
+    gameover = load_image('./sheets/background/gameover.jpg')
     tname = load_image('title eng.png')
     theend = load_image('the end.png')
-    image = load_image('title.jpg')
+    image = load_image('./sheets/background/title.jpg')
     menu = load_image('Menu Button.png')
 
 def exit():
