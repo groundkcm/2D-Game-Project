@@ -25,9 +25,6 @@ def enter():
     server.grass = Grass()
     game_world.add_object(server.grass, 0)
 
-    server.boy = Boy()
-    game_world.add_object(server.boy, 1)
-
     server.witch = Witch()
     # game_world.add_object(server.witch, 1)
 
@@ -36,9 +33,9 @@ def enter():
 
     server.mushrooms = [Mushroom() for i in range(1)]
     game_world.add_objects(server.mushrooms, 1)
-    #
-    # server.inven = Inven()
-    # game_world.add_object(server.inven, 1)
+
+    server.boy = Boy()
+    game_world.add_object(server.boy, 1)
 
 
 def exit():

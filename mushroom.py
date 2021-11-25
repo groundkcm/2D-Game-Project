@@ -108,15 +108,12 @@ class DeadState:
 
     def do(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-        self.timer -= 10
+        self.timer -= 1
         if self.timer == 0:
             game_world.remove_object(self)
 
     def draw(self):
-        if self.dir == 1:
-            self.died.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
-        else:
-            self.died.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
+        self.died.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
 
 
 # HIT, RANGE, DEAD, READY, SLEEP, WALK, DEFENCE = range(7)
