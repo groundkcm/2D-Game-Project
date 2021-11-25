@@ -194,5 +194,6 @@ class Mushroom:
 
     def draw(self):
         self.cur_state.draw(self)
-        draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp, 3, self.x - (40 - self.hp), self.y + 30)
+        if server.debugmode == 1:
+            draw_rectangle(*self.get_bb())
+        self.hpbar.clip_draw(0, 0, self.hp, 3, self.x - (40 - self.hp), self.y + 15)

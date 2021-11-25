@@ -330,7 +330,8 @@ class Boy:
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
         debug_print('server.x:' + str(int(server.x)) + ' server.y:' + str(int(server.y)) + ' frame:' + str(int(self.frame)) + ' Current State:' + str(self.cur_state))
-        draw_rectangle(*self.get_bb())
+        if server.debugmode == 1:
+            draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
