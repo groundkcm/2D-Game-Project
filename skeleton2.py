@@ -35,6 +35,7 @@ class Skeleton2:
         self.x, self.y = 100, 200
         self.hp = 500
         self.load_images()
+        self.hpbar = load_image('./sheets/UI/monster hp bar.png')
         # self.font = load_font('ENCR10B.TTF', 16)
         self.prepare_patrol_points()
         self.patrol_order = 1
