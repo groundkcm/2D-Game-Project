@@ -258,13 +258,19 @@ class Boy:
 
     def get_bb(self):
         if self.cur_state == RunState:
-            return self.x - 30, self.y - 25, self.x + 10, self.y + 20
+            if self.dir == 1:
+                return self.x - 30, self.y - 25, self.x + 10, self.y + 20
+            else:
+                return self.x - 10, self.y - 25, self.x + 30, self.y + 20
         elif self.cur_state == AttackState:
             return self.x - 30, self.y - 25, self.x + 25, self.y + 25
         elif self.cur_state == DefenceState:
             return self.x - 30, self.y - 35, self.x + 5, self.y + 5
         elif self.cur_state == JumpState:
-            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+            if self.dir == 1:
+                return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+            else:
+                return self.x - 10, self.y - 20, self.x + 30, self.y + 20
         elif self.cur_state == DeadState:
             return self.x - 30, self.y - 20, self.x + 10, self.y + 20
 

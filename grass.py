@@ -53,12 +53,12 @@ class Grass:
             # self.stage3.draw(WIDTH, HEIGHT)
         self.inven_but.draw(20, 580)
 
-
-class Wall:
-    def __init__(self):
-        self.load_images()
-        self.arrow = load_image('Arrow.png')
-        self.inventory = load_image('inventory.png')
-        self.inven_but = load_image('inventory button.png')
-        self.x_but = load_image('X Button.png')
-        self.inven = 0
+#
+# class Wall:
+#     def __init__(self):
+#         # self.load_images()
+#         self.arrow = load_image('Arrow.png')
+#         self.inventory = load_image('inventory.png')
+#         self.inven_but = load_image('inventory button.png')
+#         self.x_but = load_image('X Button.png')
+#         self.inven = 0
