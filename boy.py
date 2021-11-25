@@ -95,11 +95,6 @@ class RunState:
                     Boy.images['idle'].clip_draw(int(boy.iframe) * 100, 0, 100, 100, boy.x, boy.y)
                 else:
                     Boy.images['idle'].clip_composite_draw(int(boy.iframe) * 100, 0, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
-        #
-        # if boy.dir == 1:
-        #     Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
-        # else:
-        #     Boy.images['run'].clip_composite_draw(int(boy.frame) * 100, 0, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
 
 
 class JumpState:
@@ -180,7 +175,7 @@ class DefenceState:
     def do(self):
         if self.hp == 0:
             self.add_event(DEAD)
-        self.frame = (self.frame + 0.01 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.frame = (self.frame + 0.1 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.velocity = -RUN_SPEED_PPS
         self.timer -= 2
         if self.timer == 0:

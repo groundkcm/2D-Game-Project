@@ -55,9 +55,9 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
-        elif event.type == SDL_MOUSEBUTTONDOWN:
+        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
             ax, ay = event.x, 600 - event.y
-            if event.button == SDL_BUTTON_LEFT and (ax - 10 < 40 and ay > 560):
+            if ax - 10 < 40 and ay > 560:
                 game_framework.push_state(Inven_State)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(title_state)
@@ -67,7 +67,6 @@ def handle_events():
             server.debugmode = 0
         else:
             server.boy.handle_event(event)
-            #server.inven.handle_events() #check
 
 
 def update():
