@@ -29,7 +29,7 @@ def enter():
     global x_but, potion
     load_images()
     x_but = load_image('./sheets/UI/X Button.png')
-    potion = load_image('./sheets/UI/red potion.png')
+    potion = load_image('./sheets/item/red potion.png')
 
 
 def exit():
