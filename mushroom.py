@@ -1,10 +1,10 @@
 import game_framework
-import math
 from pico2d import *
 from collision import collide
 from BehaviorTree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 import random
 import server
+import math
 import game_world
 
 PIXEL_PER_METER = (10.0 / 0.3)
