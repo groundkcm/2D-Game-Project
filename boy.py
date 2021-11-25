@@ -33,58 +33,26 @@ key_event_table = {
 
 animation_names = ['attack', 'dead', 'idle', 'run', 'defence', 'jump']
 
-class IdleState:
-
-    def enter(boy, event):
-        if event == RIGHT_DOWN:
-            boy.velocity += RUN_SPEED_PPS
-        elif event == LEFT_DOWN:
-            boy.velocity -= RUN_SPEED_PPS
-        elif event == RIGHT_UP:
-            boy.velocity -= RUN_SPEED_PPS
-        elif event == LEFT_UP:
-            boy.velocity += RUN_SPEED_PPS
-        elif event == TOP_DOWN:
-            boy.high += RUN_SPEED_PPS
-        elif event == BOTTOM_DOWN:
-            boy.high -= RUN_SPEED_PPS
-        elif event == TOP_UP:
-            boy.high -= RUN_SPEED_PPS
-        elif event == BOTTOM_UP:
-            boy.high += RUN_SPEED_PPS
-
-    def exit(boy, event):
-        pass
-
-    def do(boy):
-        if boy.hp == 0:
-            boy.add_event(DEAD)
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
-
-    def draw(boy):
-        Boy.images['idle'].clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
-
-
 class RunState:
     soundcheck = 0
     def enter(boy, event):
         if event == RIGHT_DOWN:
             boy.velocity += RUN_SPEED_PPS
-        elif event == LEFT_DOWN:
-            boy.velocity -= RUN_SPEED_PPS
         elif event == RIGHT_UP:
+            boy.velocity -= RUN_SPEED_PPS
+        if event == LEFT_DOWN:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
+
         if event == TOP_DOWN:
             boy.high += RUN_SPEED_PPS
-        elif event == BOTTOM_DOWN:
-            boy.high -= RUN_SPEED_PPS
         elif event == TOP_UP:
+            boy.high -= RUN_SPEED_PPS
+        if event == BOTTOM_DOWN:
             boy.high -= RUN_SPEED_PPS
         elif event == BOTTOM_UP:
             boy.high += RUN_SPEED_PPS
-        boy.dir = clamp(-1, boy.velocity, 1) #좌우 방향
 
 
     def exit(boy, event):
@@ -95,9 +63,10 @@ class RunState:
         if boy.hp == 0:
             boy.add_event(DEAD)
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
+        boy.iframe = (boy.iframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
         boy.x += boy.velocity * game_framework.frame_time
-        boy.x = clamp(25, boy.x, 800 - 25)
         boy.y += boy.high * game_framework.frame_time
+        boy.x = clamp(25, boy.x, 800 - 25)
         boy.y = clamp(25, boy.y, 600 - 25)
         # RunState.soundcheck += 1
         # if RunState.soundcheck == 100:
@@ -105,12 +74,32 @@ class RunState:
         #     RunState.soundcheck = 0
         server.x, server.y = boy.x, boy.y
 
-    @staticmethod
+    # @staticmethod
     def draw(boy):
-        if boy.dir == 1:
+        if boy.velocity > 0:
             Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
-        else:
+            boy.dir = 1
+        elif boy.velocity < 0:
             Boy.images['run'].clip_composite_draw(int(boy.frame) * 100, 0, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
+            boy.dir = -1
+        else:
+            # if boy x_velocity == 0
+            if boy.high > 0 or boy.high < 0:
+                if boy.dir == 1:
+                    Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+                else:
+                    Boy.images['run'].clip_composite_draw(int(boy.frame) * 100, 0, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
+            else:
+                # boy is idle
+                if boy.dir == 1:
+                    Boy.images['idle'].clip_draw(int(boy.iframe) * 100, 0, 100, 100, boy.x, boy.y)
+                else:
+                    Boy.images['idle'].clip_composite_draw(int(boy.iframe) * 100, 0, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
+        #
+        # if boy.dir == 1:
+        #     Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+        # else:
+        #     Boy.images['run'].clip_composite_draw(int(boy.frame) * 100, 0, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
 
 
 class JumpState:
@@ -231,18 +220,14 @@ class DeadState:
 
 
 next_state_table = {
-    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
-                TOP_DOWN: RunState, BOTTOM_DOWN: RunState, TOP_UP: RunState, BOTTOM_UP: RunState,
-                ATTACK_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-                SPACE: JumpState, DEAD: DeadState},
-    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
-               TOP_DOWN: IdleState, BOTTOM_DOWN: IdleState, TOP_UP: IdleState, BOTTOM_UP: IdleState,
+    RunState: {RIGHT_UP: RunState, LEFT_UP: RunState, LEFT_DOWN: RunState, RIGHT_DOWN: RunState,
+               TOP_DOWN: RunState, BOTTOM_DOWN: RunState, TOP_UP: RunState, BOTTOM_UP: RunState,
                ATTACK_DOWN: AttackState, MRIGHT_BUT_DOWN: DefenceState,
-               SPACE: JumpState, READY: IdleState, DEAD: DeadState},
-    AttackState: {READY: IdleState, DEAD: DeadState},
-    DefenceState: {READY: IdleState, DEAD: DeadState},
-    JumpState: {LEFT_DOWN: JumpState, RIGHT_DOWN: JumpState, READY: IdleState, DEAD: DeadState},
-    DeadState: {READY: IdleState}
+               SPACE: JumpState, READY: RunState, DEAD: DeadState},
+    AttackState: {READY: RunState, DEAD: DeadState},
+    DefenceState: {READY: RunState, DEAD: DeadState},
+    JumpState: {LEFT_DOWN: JumpState, RIGHT_DOWN: JumpState, READY: RunState, DEAD: DeadState},
+    DeadState: {READY: RunState}
 }
 
 class Boy:
@@ -267,18 +252,17 @@ class Boy:
         self.parent = None
         self.click = 0
         self.frame = 0
+        self.iframe = 0
         self.timer = 0
         self.event_que = []
-        self.cur_state = IdleState
+        self.cur_state = RunState
         self.cur_state.enter(self, None)
 
     def walking(self):
         self.footsteps.play()
 
     def get_bb(self):
-        if self.cur_state == IdleState:
-            return self.x - 30, self.y - 25, self.x + 5, self.y + 20
-        elif self.cur_state == RunState:
+        if self.cur_state == RunState:
             return self.x - 30, self.y - 25, self.x + 10, self.y + 20
         elif self.cur_state == AttackState:
             return self.x - 30, self.y - 25, self.x + 25, self.y + 25
