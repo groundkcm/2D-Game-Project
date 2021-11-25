@@ -122,7 +122,11 @@ class Mushroom:
 
         patrol_chase_node = SelectorNode("PatrolChase")
         patrol_chase_node.add_children(chase_node, patrol_node)
-        self.bt = BehaviorTree(wander_wait_node)
+
+        wander_chase_node = SelectorNode("WanderChase")
+        wander_chase_node.add_children(chase_node, wander_node)
+
+        self.bt = BehaviorTree(wander_chase_node)
 
     def get_bb(self):
         return self.x - 20, self.y - 25, self.x + 20, self.y + 20
