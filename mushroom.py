@@ -138,7 +138,7 @@ class Mushroom:
             self.hp -= 1
 
     def add_event(self, event):
-        self.event_que.insert(0, event)
+        pass
 
     def update(self):
         if collide(self, server.boy):
