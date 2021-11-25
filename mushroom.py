@@ -48,7 +48,8 @@ class Mushroom:
         self.build_behavior_tree()
         self.dir = random.random() * 2 * math.pi
         self.speed = 0
-        self.frame = 0
+        self.frame8 = 0
+        self.frame4 = 0
         self.timer = 0.0
         self.wait_timer = 2.0
 
@@ -151,10 +152,10 @@ class Mushroom:
             server.boy.set_parent(self)
 
         self.bt.run()
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.frame4 = (self.frame4 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.frame8 = (self.frame8 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         Mushroom.px += self.speed * math.cos(self.dir) * game_framework.frame_time
         Mushroom.py += self.speed * math.sin(self.dir) * game_framework.frame_time
-        print(Mushroom.px)
         Mushroom.px = clamp(-450, Mushroom.px, 770)
         Mushroom.py = clamp(-330, Mushroom.py, 560)
         if server.x >= 640:
@@ -165,21 +166,22 @@ class Mushroom:
             server.y = 480
         elif server.y <= 300:
             server.y = 300
-        self.x, self.y = 1280 - server.x * 2 + 0, 960 - server.y * 2 + 0
-        self.x = clamp(25, self.x, 800 - 25)
-        self.y = clamp(15, self.y, 600 - 25)
+        self.x, self.y = 1280 - server.x * 2 + Mushroom.px, 960 - server.y * 2 + Mushroom.py
+        self.x = clamp(20, self.x, 800 - 20)
+        self.y = clamp(20, self.y, 600 - 20)
 
     def draw(self):
+        print(int(self.frame8))
         if math.cos(self.dir) < 0:
             if self.speed == 0:
-                Mushroom.images['idle'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', self.x, self.y)
+                Mushroom.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', self.x, self.y)
             else:
-                Mushroom.images['walk'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', self.x, self.y)
+                Mushroom.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', self.x, self.y)
         else:
             if self.speed == 0:
-                Mushroom.images['idle'].clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
+                Mushroom.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, self.x, self.y)
             else:
-                Mushroom.images['walk'].clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
+                Mushroom.images['walk'].clip_draw(int(self.frame8) * 150, 0, 150, 150, self.x, self.y)
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
