@@ -1,4 +1,5 @@
 import game_framework
+import math
 from pico2d import *
 from collision import collide
 from BehaviorTree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
@@ -16,131 +17,30 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 4
 
-#
-# HIT, RANGE, DEAD, READY, SLEEP, WALK, DEFENCE = range(7)
-#
-# class IdleState:
-#
-#     def enter(boy, event):
-#         boy.timer = 1000
-#
-#     def exit(boy, event):
-#         pass
-#
-#     def do(boy):
-#         if boy.hp <= 0:
-#             boy.add_event(DEAD)
-#         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-#
-#     def draw(boy):
-#         boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
-#
-#
-# class RunState:
-#
-#     def enter(boy, event):
-#         boy.dir = clamp(-1, boy.velocity, 1)
-#
-#     def exit(boy, event):
-#         pass
-#
-#     def do(boy):
-#         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-#         boy.x += boy.velocity * game_framework.frame_time
-#         boy.x = clamp(25, boy.x, 800 - 25)
-#         boy.y += boy.high * game_framework.frame_time
-#         boy.y = clamp(25, boy.y, 600 - 25)
-#         # boy.camera_move()
-#
-#     # @staticmethod
-#     def draw(boy):
-#         if boy.dir == 1:
-#             boy.run_r.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
-#         else:
-#             boy.run_l.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
-#
-#
-# class AttackState:
-#     def enter(self, event):
-#         pass
-#
-#     def exit(self, event):
-#         pass
-#
-#     def do(boy):
-#         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10 + 16
-#         boy.add_event(READY)
-#         boy.timer -= 10
-#         if boy.timer == 0:
-#             boy.add_event(READY)
-#
-#     def draw(self):
-#         if self.dir == 1:
-#             self.attack_r.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
-#         else:
-#             self.attack_l.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
-#
-#
-# class DefenceState:
-#     def enter(self, event):
-#         self.timer = 200
-#
-#     def exit(gretel, event):
-#         pass
-#
-#     def do(self):
-#         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-#         self.timer -= 10
-#         if self.timer == 0:
-#             self.add_event(READY)
-#
-#     def draw(self):
-#         if self.dir == 1:
-#             self.defence.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
-#         else:
-#             self.defence.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
-#
-#
-# class DeadState:
-#     def enter(self, event):
-#         self.timer = 200
-#
-#     def exit(self, event):
-#         pass
-#
-#     def do(self):
-#         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-#         self.timer -= 1
-#         if self.timer == 0:
-#             game_world.remove_object(self)
-#
-#     def draw(self):
-#         self.died.clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
-#
-#
-# # HIT, RANGE, DEAD, READY, SLEEP, WALK, DEFENCE = range(7)
-# next_state_table = {
-#     IdleState: {DEAD: DeadState},
-#     RunState: {DEAD: DeadState},
-#     AttackState: {DEAD: DeadState, READY: IdleState},
-#     DefenceState: {DEAD: DeadState, READY: IdleState},
-#     DeadState: {READY: IdleState}
-# }
+animation_names = ['attack', 'dead', 'idle', 'walk']
 
 class Mushroom:
+    images = None
     check = 0
     px, py = 0, 0
+
+    def load_images(self):
+        if Mushroom.images == None:
+            Mushroom.images = {}
+            for name in animation_names:
+                Mushroom.images[name] = load_image("./sheets/mushroom/" + name + ".png")
+
     def __init__(self):
         self.x, self.y = 0, 0
         self.hp = 40
         # Boy is only once created, so instance image loading is fine
-        self.run_r = load_image('mushroom run.png')
-        self.run_l = load_image('mushroom run.png')
-        self.attack_r = load_image('mushroom attack.png')
-        self.attack_l = load_image('mushroom attack.png')
-        self.died = load_image('mushroom death.png')
-        self.image = load_image('mushroom stop.png')
-        self.hpbar = load_image('monster hp bar.png')
+        # self.run_r = load_image('mushroom run.png')
+        # self.run_l = load_image('mushroom run.png')
+        # self.attack_r = load_image('mushroom attack.png')
+        # self.attack_l = load_image('mushroom attack.png')
+        # self.died = load_image('mushroom death.png')
+        # self.image = load_image('mushroom stop.png')
+        # self.hpbar = load_image('monster hp bar.png')
         # self.font = load_font('ENCR10B.TTF', 16)
         self.prepare_patrol_points()
         self.patrol_order = 1
@@ -149,6 +49,8 @@ class Mushroom:
         self.speed = 0
         self.frame = 0
         self.timer = 0.0
+        self.wait_timer = 2.0
+
 
 
     def prepare_patrol_points(self):
@@ -273,12 +175,22 @@ class Mushroom:
             server.y = 480
         elif server.y <= 300:
             server.y = 300
-        self.x, self.y = 1280 - server.x * 2 + 770, 960 - server.y * 2 + 560
+        self.x, self.y = 1280 - server.x * 2 + 0, 960 - server.y * 2 + 0
         # self.x = clamp(25, self.x, 800 - 25)
         # self.y = clamp(15, self.y, 600 - 25)
 
     def draw(self):
-        # self.cur_state.draw(self)
+        if math.cos(self.dir) < 0:
+            if self.speed == 0:
+                Mushroom.images['idle'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', self.x, self.y)
+            else:
+                Mushroom.images['walk'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', self.x, self.y)
+        else:
+            if self.speed == 0:
+                Mushroom.images['idle'].clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
+            else:
+                Mushroom.images['walk'].clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
+
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
         self.hpbar.clip_draw(0, 0, self.hp, 3, self.x - (40 - self.hp)/2, self.y + 30)
