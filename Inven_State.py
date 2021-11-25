@@ -6,15 +6,15 @@ import server
 import game_world
 
 name = "InvenState"
-x_but = None
-potion = None
 
 png_names = ['inventory', 'stage1', 'stage2', 'stage3', 'start']
+item_names = ['key', 'red potion', 'big red potion', 'blue potion']
 
 ax, ay = 0, 0
 mx, my = 55, 397
 drag = False
 images = None
+x_but = None
 
 
 def load_images():
@@ -23,18 +23,19 @@ def load_images():
         images = {}
         for name in png_names:
             images[name] = load_image("./sheets/background/" + name + ".png")
+        for name in item_names:
+            images[name] = load_image("./sheets/item/" + name + ".png")
 
 
 def enter():
-    global x_but, potion
+    global x_but
     load_images()
     x_but = load_image('./sheets/UI/X Button.png')
-    potion = load_image('./sheets/item/red potion.png')
 
 
 def exit():
-    global x_but, images, potion
-    del(x_but, potion)
+    global x_but
+    del(x_but)
 
 def handle_events():
     global ax, ay, drag, mx, my
@@ -71,9 +72,9 @@ def draw():
 
     x_but.draw(750, 450)
     if drag:
-        potion.draw(ax, ay)
+        images['red potion'].draw(ax, ay)
     else:
-        potion.draw(mx, my)
+        images['red potion'].draw(mx, my)
     update_canvas()
 
 
