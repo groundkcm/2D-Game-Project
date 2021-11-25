@@ -90,7 +90,7 @@ class DefenceState:
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.timer -= 10
         if self.timer == 0:
-            game_world.remove_object(self)
+            self.add_event(READY)
 
     def draw(self):
         if self.dir == 1:
@@ -110,7 +110,7 @@ class DeadState:
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.timer -= 10
         if self.timer == 0:
-            self.add_event(READY)
+            game_world.remove_object(self)
 
     def draw(self):
         if self.dir == 1:
@@ -196,4 +196,4 @@ class Mushroom:
         self.cur_state.draw(self)
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp, 3, self.x - (40 - self.hp), self.y + 15)
+        self.hpbar.clip_draw(0, 0, self.hp, 3, self.x - (40 - self.hp), self.y + 30)
