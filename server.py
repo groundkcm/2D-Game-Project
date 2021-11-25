@@ -6,6 +6,7 @@ boy = None
 grass = None
 inven = None
 witch = None
+clear = None
 skeletons = []
 skeletons2 = []
 mushrooms = []

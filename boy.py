@@ -297,12 +297,13 @@ class Boy:
         elif self.cur_state == DeadState:
             return self.x - 30, self.y - 20, self.x + 10, self.y + 20
 
-    def stop(self):
+    def stop(self, state):
         if self.dir == 1:
             self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
             self.x += self.velocity * game_framework.frame_time
-        self.hp -= 1
+        if self.frame:# check
+            self.hp -= 1
         # self.add_event(READY)
 
     def set_parent(self, enemy):
@@ -310,7 +311,7 @@ class Boy:
         if self.cur_state == AttackState:
             enemy.stop()
         else:
-            self.stop()
+            self.stop(self.cur_state)
 
     def add_event(self, event):
         self.event_que.insert(0, event)

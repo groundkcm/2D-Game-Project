@@ -17,7 +17,6 @@ class Grass:
         self.bgm.repeat_play()
         self.open = load_music('door.mp3')
         self.open.set_volume(32)
-        self.clear = None
 
     def update(self):
         pass
