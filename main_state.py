@@ -11,7 +11,7 @@ import game_world
 import server
 
 from boy import Boy
-from grass import Grass
+from grass import Grass, Wall
 from witch import Witch
 from mushroom import Mushroom
 from skeleton2 import Skeleton2

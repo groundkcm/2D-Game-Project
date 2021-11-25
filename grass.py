@@ -1,6 +1,6 @@
 from pico2d import *
 import server
-from collision import collide
+from collision import collide_wall
 
 png_names = ['inventory', 'stage1', 'stage2', 'stage3', 'start']
 
@@ -53,12 +53,17 @@ class Grass:
             # self.stage3.draw(WIDTH, HEIGHT)
         self.inven_but.draw(20, 580)
 
-#
-# class Wall:
-#     def __init__(self):
-#         # self.load_images()
-#         self.arrow = load_image('Arrow.png')
-#         self.inventory = load_image('inventory.png')
-#         self.inven_but = load_image('inventory button.png')
-#         self.x_but = load_image('X Button.png')
-#         self.inven = 0
+
+class Wall:
+    def __init__(self):
+        pass
+
+    def update(self):
+        if collide_wall(self, server.boy):
+            server.boy.set_parent(self)
+
+    def get_bb(self):
+        return self.x - 20, self.y - 25, self.x + 20, self.y + 20
+
+    def stop(self):
+        pass
