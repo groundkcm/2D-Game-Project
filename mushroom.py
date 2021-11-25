@@ -129,6 +129,7 @@ next_state_table = {
 
 class Mushroom:
     check = 0
+    px, py = 0, 0
     def __init__(self):
         self.x, self.y = 300, 200
         self.hp = 40
@@ -252,10 +253,8 @@ class Mushroom:
         self.bt.run()
 
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
-        self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
-        self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
-        self.x = clamp(50, self.x, 1280 - 50)
-        self.y = clamp(50, self.y, 1024 - 50)
+        Mushroom.px += self.speed * math.cos(self.dir) * game_framework.frame_time
+        Mushroom.py += self.speed * math.sin(self.dir) * game_framework.frame_time
         # self.cur_state.do(self)
         # if len(self.event_que) > 0:
         #     event = self.event_que.pop()
@@ -274,6 +273,8 @@ class Mushroom:
         elif server.y <= 300:
             server.y = 300
         self.x, self.y = 1280 - server.x * 2 + 0, 960 - server.y * 2 + 0
+        self.x = clamp(50, self.x, 800 - 50)
+        self.y = clamp(50, self.y, 600 - 50)
 
     def draw(self):
         self.cur_state.draw(self)
