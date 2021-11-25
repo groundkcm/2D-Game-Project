@@ -12,7 +12,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 5
+FRAMES_PER_ACTION = 4
 
 
 HIT, RANGE, DEAD, READY, SLEEP, WALK, DEFENCE = range(7)
@@ -26,17 +26,12 @@ class IdleState:
         pass
 
     def do(boy):
+        if boy.hp <= 0:
+            boy.add_event(DEAD)
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-        boy.timer -= 1
-        if boy.timer == 0:
-            boy.add_event(SLEEP)
 
     def draw(boy):
-        # boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, Mushroom.x, Mushroom.y)
-        if boy.hp <= 0:
-            pass
-        else:
-            boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
+        boy.image.clip_draw(int(boy.frame) * 150, 0, 150, 150, boy.x, boy.y)
 
 
 class RunState:
@@ -48,7 +43,7 @@ class RunState:
         pass
 
     def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
+        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         boy.x += boy.velocity * game_framework.frame_time
         boy.x = clamp(25, boy.x, 800 - 25)
         boy.y += boy.high * game_framework.frame_time
@@ -92,15 +87,10 @@ class DefenceState:
         pass
 
     def do(self):
-        self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-        self.velocity = -RUN_SPEED_PPS
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.timer -= 10
         if self.timer == 0:
-            self.velocity += RUN_SPEED_PPS
-            self.add_event(READY)
-        self.x += self.velocity * game_framework.frame_time
-        self.x = clamp(15, self.x, 800 - 15)
-        # self.camera_move()
+            game_world.remove_object(self)
 
     def draw(self):
         if self.dir == 1:
@@ -117,7 +107,7 @@ class DeadState:
         pass
 
     def do(self):
-        self.frame = (self.frame + 0.05 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.timer -= 10
         if self.timer == 0:
             self.add_event(READY)
