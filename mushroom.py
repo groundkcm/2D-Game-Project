@@ -249,15 +249,22 @@ class Mushroom:
         if collide(self, server.boy):
             server.boy.set_parent(self)
 
-        self.cur_state.do(self)
-        if len(self.event_que) > 0:
-            event = self.event_que.pop()
-            # if event not in next_state_table[self.cur_state]:
-            #     pass
-            # else:
-            #     self.cur_state.exit(self, event)
-            #     self.cur_state = next_state_table[self.cur_state][event]
-            #     self.cur_state.enter(self, event)
+        self.bt.run()
+
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
+        self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
+        self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
+        self.x = clamp(50, self.x, 1280 - 50)
+        self.y = clamp(50, self.y, 1024 - 50)
+        # self.cur_state.do(self)
+        # if len(self.event_que) > 0:
+        #     event = self.event_que.pop()
+        #     # if event not in next_state_table[self.cur_state]:
+        #     #     pass
+        #     # else:
+        #     #     self.cur_state.exit(self, event)
+        #     #     self.cur_state = next_state_table[self.cur_state][event]
+        #     #     self.cur_state.enter(self, event)
         if server.x >= 640:
             server.x = 640
         elif server.x <= 400:
