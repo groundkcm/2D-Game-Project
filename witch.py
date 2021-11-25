@@ -36,6 +36,7 @@ class Witch:
 
     def __init__(self):
         self.x, self.y = 100, 100
+        self.hp = 500
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
         # self.font = load_font('ENCR10B.TTF', 16)
@@ -131,9 +132,9 @@ class Witch:
 
     def stop(self):
         if self.dir == 1:
-            self.x -= self.velocity * game_framework.frame_time
+            self.x -= self.speed * math.cos(self.dir) * game_framework.frame_time
         elif self.dir == -1:
-            self.x += self.velocity * game_framework.frame_time
+            self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
         Witch.check += 1
         if Witch.check == 30:
             Witch.check = 0
@@ -166,11 +167,9 @@ class Witch:
     def draw(self):
         if math.cos(self.dir) < 0:
             if self.speed == 0:
-                Witch.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', self.x, self.y,
-                                                            150, 150)
+                Witch.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', self.x, self.y,150, 150)
             else:
-                Witch.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', self.x, self.y,
-                                                            150, 150)
+                Witch.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', self.x, self.y,150, 150)
         else:
             if self.speed == 0:
                 Witch.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, self.x, self.y)

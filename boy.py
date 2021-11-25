@@ -261,11 +261,6 @@ class Boy:
         self.load_images()
         self.hpbar = load_image('./sheets/UI/hp bar.png')
         self.hpbase = load_image('./sheets/UI/Hp base.png')
-        # self.search = load_wav('search item.wav')
-        # self.search.set_volume(32)
-        # self.footsteps = load_wav('walk.wav')
-        # self.footsteps.set_volume(32)
-        # self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.high = 0
         self.velocity = 0

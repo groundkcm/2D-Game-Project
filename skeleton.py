@@ -32,12 +32,11 @@ class Skeleton:
 
     def __init__(self):
         self.x, self.y = 200, 200
-        self.Hp = 50
+        self.hp = 60
         self.width = 20
         self.height = 25
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
-        # self.font = load_font('ENCR10B.TTF', 16)
         self.prepare_patrol_points()
         self.patrol_order = 1
         self.build_behavior_tree()
@@ -130,9 +129,9 @@ class Skeleton:
 
     def stop(self):
         if self.dir == 1:
-            self.x -= self.velocity * game_framework.frame_time
+            self.x -= self.speed * math.cos(self.dir) * game_framework.frame_time
         elif self.dir == -1:
-            self.x += self.velocity * game_framework.frame_time
+            self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
         Skeleton.check += 1
         if Skeleton.check == 30:
             Skeleton.check = 0

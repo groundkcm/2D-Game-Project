@@ -35,7 +35,6 @@ class Mushroom:
         self.hp = 40
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
-        # self.font = load_font('ENCR10B.TTF', 16)
         self.prepare_patrol_points()
         self.patrol_order = 1
         self.build_behavior_tree()
@@ -133,9 +132,9 @@ class Mushroom:
 
     def stop(self):
         if self.dir == 1:
-            self.x -= self.velocity * game_framework.frame_time
+            self.x -= self.speed * math.cos(self.dir) * game_framework.frame_time
         elif self.dir == -1:
-            self.x += self.velocity * game_framework.frame_time
+            self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
         Mushroom.check += 1
         if Mushroom.check == 30:
             Mushroom.check = 0

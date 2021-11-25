@@ -33,10 +33,9 @@ class Skeleton2:
 
     def __init__(self):
         self.x, self.y = 100, 200
-        self.hp = 500
+        self.hp = 50
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
-        # self.font = load_font('ENCR10B.TTF', 16)
         self.prepare_patrol_points()
         self.patrol_order = 1
         self.build_behavior_tree()
@@ -129,9 +128,9 @@ class Skeleton2:
 
     def stop(self):
         if self.dir == 1:
-            self.x -= self.velocity * game_framework.frame_time
+            self.x -= self.speed * math.cos(self.dir) * game_framework.frame_time
         elif self.dir == -1:
-            self.x += self.velocity * game_framework.frame_time
+            self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
         Skeleton2.check += 1
         if Skeleton2.check == 30:
             Skeleton2.check = 0
@@ -164,11 +163,9 @@ class Skeleton2:
     def draw(self):
         if math.cos(self.dir) < 0:
             if self.speed == 0:
-                Skeleton2.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', self.x, self.y,
-                                                            150, 150)
+                Skeleton2.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', self.x, self.y,150, 150)
             else:
-                Skeleton2.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', self.x, self.y,
-                                                            150, 150)
+                Skeleton2.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', self.x, self.y,150, 150)
         else:
             if self.speed == 0:
                 Skeleton2.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, self.x, self.y)
