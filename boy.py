@@ -246,7 +246,7 @@ next_state_table = {
 class Boy:
 
     def __init__(self):
-        self.x, self.y = 400, 300
+        server.x, server.y = self.x, self.y = 400, 300
         self.hp = 100
         # Boy is only once created, so instance image loading is fine
         self.run_r = load_image('gretel run sheet.png')

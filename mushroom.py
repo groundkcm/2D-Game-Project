@@ -196,7 +196,7 @@ class Mushroom:
             server.y = 480
         elif server.y <= 300:
             server.y = 300
-        self.x, self.y = 1280 - server.x * 2 + 100, 960 - server.y * 2 + 100
+        self.x, self.y = 1280 - server.x * 2 + 0, 960 - server.y * 2 + 0
 
     def draw(self):
         self.cur_state.draw(self)
