@@ -317,6 +317,14 @@ class Boy:
         self.event_que.insert(0, event)
 
     def update(self):
+        if server.x >= 640:
+            server.x = 640
+        elif server.x <= 160:
+            server.x = 160
+        if server.y >= 480:
+            server.y = 480
+        elif server.y <= 120:
+            server.y = 120
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
