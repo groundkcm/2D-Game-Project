@@ -127,11 +127,6 @@ class JumpState:
 
     def exit(self, event):
         pass
-        # global fnum
-        # if (event == RIGHT_DOWN or event == LEFT_DOWN) and fnum == 18:
-        #     self.cur_state.exit(self, event)
-        #     self.cur_state = RunState
-        #     self.cur_state.enter(self, event)
 
     def do(self):
         if self.hp == 0:
@@ -317,14 +312,6 @@ class Boy:
         self.event_que.insert(0, event)
 
     def update(self):
-        if server.x >= 640:
-            server.x = 640
-        elif server.x <= 160:
-            server.x = 160
-        if server.y >= 480:
-            server.y = 480
-        elif server.y <= 120:
-            server.y = 120
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
@@ -340,7 +327,7 @@ class Boy:
         self.hpbar.clip_draw(0, 0, self.hp * 2, 13, 150 - (100 - self.hp), 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
-        debug_print('Velocity :' + str(self.velocity) + ' frame:' + str(int(self.frame)) + ' Current State:' + str(self.cur_state))
+        debug_print('server.x:' + str(int(server.x)) + ' server.y:' + str(int(server.y)) + ' frame:' + str(int(self.frame)) + ' Current State:' + str(self.cur_state))
         draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
