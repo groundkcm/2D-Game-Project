@@ -22,7 +22,7 @@ animation_names = ['attack', 'dead', 'idle', 'walk']
 class Mushroom:
     images = None
     check = 0
-    px, py = -130, 50
+    px, py = -30, -220
 
     def load_images(self):
         if Mushroom.images == None:
