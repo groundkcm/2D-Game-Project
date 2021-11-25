@@ -244,7 +244,7 @@ next_state_table = {
 }
 
 class Boy:
-
+    check = 0
     def __init__(self):
         server.x, server.y = self.x, self.y = 400, 300
         self.hp = 100
@@ -297,7 +297,9 @@ class Boy:
             self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
             self.x += self.velocity * game_framework.frame_time
-        if self.frame:# check
+        Boy.check += 1
+        if Boy.check == 10:
+            Boy.check = 0
             self.hp -= 1
         # self.add_event(READY)
 

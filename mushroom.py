@@ -139,6 +139,7 @@ next_state_table = {
 }
 
 class Mushroom:
+    check = 0
     def __init__(self):
         self.x, self.y = 300, 200
         self.hp = 40
@@ -170,7 +171,10 @@ class Mushroom:
             self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
             self.x += self.velocity * game_framework.frame_time
-        self.hp -= 1
+        Mushroom.check += 1
+        if Mushroom.check == 30:
+            Mushroom.check = 0
+            self.hp -= 1
 
     def add_event(self, event):
         self.event_que.insert(0, event)
