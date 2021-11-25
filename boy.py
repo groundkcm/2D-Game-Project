@@ -31,6 +31,8 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_SPACE): SPACE
 }
 
+animation_names = ['attack', 'dead', 'idle', 'run', 'defence', 'jump']
+
 class IdleState:
 
     def enter(boy, event):
@@ -245,6 +247,7 @@ next_state_table = {
 
 class Boy:
     check = 0
+
     def __init__(self):
         server.x, server.y = self.x, self.y = 400, 300
         self.hp = 100

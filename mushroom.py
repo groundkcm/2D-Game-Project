@@ -34,13 +34,6 @@ class Mushroom:
         self.x, self.y = 0, 0
         self.hp = 40
         self.load_images()
-        # Boy is only once created, so instance image loading is fine
-        # self.run_r = load_image('mushroom run.png')
-        # self.run_l = load_image('mushroom run.png')
-        # self.attack_r = load_image('mushroom attack.png')
-        # self.attack_l = load_image('mushroom attack.png')
-        # self.died = load_image('mushroom death.png')
-        # self.image = load_image('mushroom stop.png')
         self.hpbar = load_image('monster hp bar.png')
         # self.font = load_font('ENCR10B.TTF', 16)
         self.prepare_patrol_points()
@@ -167,16 +160,14 @@ class Mushroom:
         elif server.y <= 300:
             server.y = 300
         self.x, self.y = 1280 - server.x * 2 + Mushroom.px, 960 - server.y * 2 + Mushroom.py
-        self.x = clamp(20, self.x, 800 - 20)
-        self.y = clamp(20, self.y, 600 - 20)
 
     def draw(self):
         print(int(self.frame8))
         if math.cos(self.dir) < 0:
             if self.speed == 0:
-                Mushroom.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', self.x, self.y)
+                Mushroom.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', self.x, self.y, 150, 150)
             else:
-                Mushroom.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', self.x, self.y)
+                Mushroom.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', self.x, self.y, 150, 150)
         else:
             if self.speed == 0:
                 Mushroom.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, self.x, self.y)
