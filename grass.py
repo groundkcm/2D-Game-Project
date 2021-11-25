@@ -32,11 +32,11 @@ class Grass:
             HEIGHT = 480
         elif HEIGHT <= 120:
             HEIGHT = 120
-        if self.clear == 1:
+        if server.clear == 1:
             self.stage1.draw(WIDTH, HEIGHT)
-        elif self.clear == 2:
+        elif server.clear == 2:
             self.stage2.draw(WIDTH, HEIGHT)
-        elif self.clear == 3:
+        elif server.clear == 3:
             self.stage3.draw(WIDTH, HEIGHT)
         else:
             # self.start.draw(WIDTH, HEIGHT)
@@ -56,4 +56,3 @@ class Wall:
         self.inven_but = load_image('inventory button.png')
         self.x_but = load_image('X Button.png')
         self.inven = 0
-        self.clear = None
