@@ -25,6 +25,15 @@ def enter():
     server.grass = Grass()
     game_world.add_object(server.grass, 0)
 
+    # server.walls0 = [Wall() for i in range(len(server.start_bound))]
+    # server.walls1 = [Wall() for i in range(len(server.stage1_bound))]
+    # server.walls2 = [Wall() for i in range(len(server.stage2_bound))]
+    # server.walls3 = [Wall() for i in range(len(server.stage3_bound))]
+    # game_world.add_object(server.walls0, 1)
+    # game_world.add_object(server.walls1, 1)
+    # game_world.add_object(server.walls2, 1)
+    # game_world.add_object(server.walls3, 1)
+
     server.witch = Witch()
     # game_world.add_object(server.witch, 1)
 

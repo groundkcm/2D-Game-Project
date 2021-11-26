@@ -274,7 +274,7 @@ class Boy:
         elif self.cur_state == DeadState:
             return self.x - 30, self.y - 20, self.x + 10, self.y + 20
 
-    def stop(self, state):
+    def stop(self, state):#튕기기 다시
         if self.dir == 1:
             self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
@@ -291,6 +291,13 @@ class Boy:
             enemy.stop()
         else:
             self.stop(self.cur_state)
+
+    def set_parent_wall(self, wall):
+        self.parent = wall
+        if self.dir == 1:
+            self.x -= self.velocity * game_framework.frame_time
+        elif self.dir == -1:
+            self.x += self.velocity * game_framework.frame_time
 
     def add_event(self, event):
         self.event_que.insert(0, event)

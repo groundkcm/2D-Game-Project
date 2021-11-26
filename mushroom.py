@@ -131,10 +131,7 @@ class Mushroom:
         return self.x - 20, self.y - 25, self.x + 20, self.y + 20
 
     def stop(self):
-        if self.dir == 1:
-            self.x -= self.speed * math.cos(self.dir) * game_framework.frame_time
-        elif self.dir == -1:
-            self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
+        self.speed = 0
         Mushroom.check += 1
         if Mushroom.check == 30:
             Mushroom.check = 0
