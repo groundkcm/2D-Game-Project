@@ -318,7 +318,7 @@ class Boy:
         self.hpbar.clip_draw(0, 0, self.hp * 2, 13, 150 - (100 - self.hp), 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
-        debug_print('server.y:' + str(int(server.y)) + ' frame:' + str(int(self.frame)) + ' Current State:' + str(self.cur_state))
+        debug_print('dir:' + str(self.dir) + ' frame:' + str(int(self.frame)) + ' Current State:' + str(self.cur_state))
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
 
