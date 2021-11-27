@@ -274,13 +274,17 @@ class Boy:
         elif self.cur_state == DeadState:
             return self.x - 30, self.y - 20, self.x + 10, self.y + 20
 
-    def stop(self, state):#튕기기 다시
+    def stop(self):#튕기기 다시
         if self.dir == 1:
             self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
             self.x += self.velocity * game_framework.frame_time
+        if self.high > 0:
+            self.y -= self.high * game_framework.frame_time
+        elif self.high < 0:
+            self.y += self.high * game_framework.frame_time
         Boy.check += 1
-        if Boy.check == 10:
+        if Boy.check == 50:
             Boy.check = 0
             self.hp -= 1
         # self.add_event(READY)
@@ -290,7 +294,7 @@ class Boy:
         if self.cur_state == AttackState:
             enemy.stop()
         else:
-            self.stop(self.cur_state)
+            self.stop()
 
     def set_parent_wall(self, wall):
         self.parent = wall
