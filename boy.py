@@ -277,12 +277,21 @@ class Boy:
     def stop(self):#튕기기 다시
         if self.dir == 1:
             self.x -= self.velocity * game_framework.frame_time
+            self.velocity = 0
         elif self.dir == -1:
-            self.x += self.velocity * game_framework.frame_time
+            self.velocity = 0
         if self.high > 0:
-            self.y -= self.high * game_framework.frame_time
+            self.high = 0
         elif self.high < 0:
-            self.y += self.high * game_framework.frame_time
+            self.high = 0
+        # if self.dir == 1:
+        #     self.x -= self.velocity * game_framework.frame_time
+        # elif self.dir == -1:
+        #     self.x += self.velocity * game_framework.frame_time
+        # if self.high > 0:
+        #     self.y -= self.high * game_framework.frame_time
+        # elif self.high < 0:
+        #     self.y += self.high * game_framework.frame_time
         Boy.check += 1
         if Boy.check == 50:
             Boy.check = 0
