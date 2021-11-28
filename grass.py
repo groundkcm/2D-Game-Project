@@ -1,5 +1,6 @@
 from pico2d import *
 import server
+from BehaviorTree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 from collision import collide_wall
 
 png_names = ['inventory', 'stage1', 'stage2', 'stage3', 'start']
@@ -25,7 +26,7 @@ class Grass:
         self.open.set_volume(32)
 
     def update(self):
-        pass
+        self.bt.run()
 
     def draw(self):
         # hide_cursor()
@@ -50,6 +51,16 @@ class Grass:
             # self.stage2.draw(WIDTH, HEIGHT)
             # self.stage3.draw(WIDTH, HEIGHT)
         self.inven_but.draw(20, 580)
+
+
+    def build_behavior_tree(self):
+        wander_node = LeafNode("Wander", self.wander)
+
+        wait_node = LeafNode('Wait', self.wait)
+        wander_wait_node = SequenceNode('WanderWait')
+        wander_wait_node.add_children(wander_node, wait_node)
+
+        self.bt = BehaviorTree(wait_node)
 
 
 class Wall:
