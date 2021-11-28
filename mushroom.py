@@ -141,6 +141,9 @@ class Mushroom:
         pass
 
     def update(self):
+        if self.hp <= 0:
+            game_world.remove_object(self)
+
         if collide(self, server.boy):
             server.boy.set_parent(self)
 
