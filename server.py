@@ -3,11 +3,17 @@ x, y = 0, 0
 gameover = 0
 end = 0
 debugmode = 1
+red_potion = 0
+big_red_potion = 0
+blue_potion = 0
+
 boy = None
 grass = None
 inven = None
 witch = None
 clear = None
+key = None
+
 skeletons = []
 skeletons2 = []
 mushrooms = []

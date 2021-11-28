@@ -66,8 +66,18 @@ def draw():
     elif HEIGHT <= 120:
         HEIGHT = 120
     clear_canvas()
+    if server.clear == 1:
+        images['stage1'].draw(WIDTH, HEIGHT)
+    elif server.clear == 2:
+        images['stage2'].draw(WIDTH, HEIGHT)
+    elif server.clear == 3:
+        images['stage3'].draw(WIDTH, HEIGHT)
+    else:
+        # images['start'].draw(WIDTH, HEIGHT)
+        images['stage1'].draw(WIDTH, HEIGHT)
+        # images['stage2'].draw(WIDTH, HEIGHT)
+        # images['stage3'].draw(WIDTH, HEIGHT)
 
-    images['stage1'].draw(WIDTH, HEIGHT)
     images['inventory'].draw(400, 300)
 
     x_but.draw(750, 450)
