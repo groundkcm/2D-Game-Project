@@ -292,19 +292,22 @@ class Boy:
             self.y -= self.high * game_framework.frame_time
         elif self.high < 0:
             self.y += self.high * game_framework.frame_time
+        # self.add_event(READY)
+
+    def hit(self):
         Boy.check += 1
         if Boy.check == 50:
             Boy.check = 0
             self.hp -= 1
-        # self.add_event(READY)
 
     def set_parent(self, enemy):
         self.parent = enemy
         if self.cur_state == AttackState:
-            enemy.stop()
+            enemy.x -= enemy.speed * math.cos(enemy.dir) * game_framework.frame_time
             enemy.hit()
-        if self.velocity == 0 and self.high == 0:
+        elif self.velocity == 0 and self.high == 0:
             enemy.stop()
+            # self.hit()
         else:
             self.stop()
 
@@ -334,7 +337,7 @@ class Boy:
         self.hpbar.clip_draw(0, 0, self.hp * 2, 13, 150 - (100 - self.hp), 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
-        debug_print('dir:' + str(self.dir) + ' frame:' + str(int(self.frame)) + ' Current State:' + str(self.cur_state))
+        debug_print('velocity:' + str(self.velocity) + ' high:' + str(self.high) + ' Current State:' + str(self.cur_state))
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
 
