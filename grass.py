@@ -26,7 +26,8 @@ class Grass:
         self.open.set_volume(32)
 
     def update(self):
-        self.bt.run()
+        pass
+        # self.bt.run()
 
     def draw(self):
         # hide_cursor()
@@ -53,14 +54,14 @@ class Grass:
         self.inven_but.draw(20, 580)
 
 
-    def build_behavior_tree(self):
-        wander_node = LeafNode("Wander", self.wander)
-
-        wait_node = LeafNode('Wait', self.wait)
-        wander_wait_node = SequenceNode('WanderWait')
-        wander_wait_node.add_children(wander_node, wait_node)
-
-        self.bt = BehaviorTree(wait_node)
+    # def build_behavior_tree(self):
+    #     wander_node = LeafNode("Wander", self.wander)
+    #
+    #     wait_node = LeafNode('Wait', self.wait)
+    #     wander_wait_node = SequenceNode('WanderWait')
+    #     wander_wait_node.add_children(wander_node, wait_node)
+    #
+    #     self.bt = BehaviorTree(wait_node)
 
 
 class Wall:

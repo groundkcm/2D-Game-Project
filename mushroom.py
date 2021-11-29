@@ -125,13 +125,15 @@ class Mushroom:
         wander_chase_node = SelectorNode("WanderChase")
         wander_chase_node.add_children(chase_node, wander_node)
 
-        self.bt = BehaviorTree(wait_node)
+        self.bt = BehaviorTree(wander_chase_node)
 
     def get_bb(self):
         return self.x - 20, self.y - 25, self.x + 20, self.y + 20
 
     def stop(self):
         self.speed = 0
+
+    def hit(self):
         Mushroom.check += 1
         if Mushroom.check == 30:
             Mushroom.check = 0

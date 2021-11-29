@@ -302,6 +302,9 @@ class Boy:
         self.parent = enemy
         if self.cur_state == AttackState:
             enemy.stop()
+            enemy.hit()
+        if self.velocity == 0 and self.high == 0:
+            enemy.stop()
         else:
             self.stop()
 
