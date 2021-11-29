@@ -3,6 +3,7 @@ from pico2d import *
 from collision import collide
 import server
 import game_world
+import math
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 0.5
@@ -303,7 +304,7 @@ class Boy:
     def set_parent(self, enemy):
         self.parent = enemy
         if self.cur_state == AttackState:
-            enemy.x -= enemy.speed * math.cos(enemy.dir) * game_framework.frame_time
+            enemy.x += enemy.speed * math.cos(enemy.dir) * game_framework.frame_time
             enemy.hit()
         elif self.velocity == 0 and self.high == 0:
             enemy.stop()
