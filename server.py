@@ -9,6 +9,7 @@ blue_potion = 0
 
 boy = None
 grass = None
+mushroom = None
 inven = None
 witch = None
 clear = None
@@ -16,7 +17,6 @@ key = None
 
 skeletons = []
 skeletons2 = []
-mushrooms = []
 item_que = []
 walls0 = []
 walls1 = []

@@ -32,11 +32,9 @@ def enter():
     # server.skeletons = [Skeleton() for i in range(10)] + [Skeleton2() for i in range(10)]
     # game_world.add_objects(server.skeletons, 1)
 
-    server.mushrooms = [Mushroom() for i in range(1)]
-    game_world.add_objects(server.mushrooms, 1)
+    server.mushroom = title_state.get_mushroom()
 
-    server.boy = Boy()
-    game_world.add_object(server.boy, 1)
+    server.boy = title_state.get_boy()
 
 
 def exit():
