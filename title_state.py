@@ -16,6 +16,10 @@ exitb = None
 tname = None
 arrow = None
 
+boy = None
+zombie = None
+zombies = [0,0,0,0,0]
+
 def enter():
     global image, play, exitb, tname, arrow
     image = load_image('./sheets/background/title.jpg')
@@ -31,6 +35,34 @@ def enter():
 def exit():
     global image, play, exitb, tname, arrow
     del(image, play, exitb, tname, arrow)
+
+def get_boy():
+    return boy
+
+def get_zombie():
+    return zombie
+
+def create_new_world():
+    global boy
+    boy = Boy()
+    game_world.add_object(boy, 1)
+
+    with open('zombie_data.json', 'r') as f:
+        zombie_data_list = json.load(f)
+    for data in zombie_data_list:
+        zombie = Zombie(data['name'], data['x'], data['y'], data['size'])
+        game_world.add_object(zombie, 1)
+
+
+def load_saved_world():
+    global boy
+
+    # fill here
+    game_world.load()
+    for o in game_world.all_objects():
+        if isinstance(o,Boy):
+            boy = o
+            break
 
 ax, ay = 0, 0
 def handle_events():
