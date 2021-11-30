@@ -257,6 +257,15 @@ class Boy:
     # def walking(self):
     #     self.footsteps.play()
 
+    def __getstate__(self):
+        state = {'x' : self.x, 'y':self.y, 'dir':self.dir,'cur_state': self.cur_state , 'time' : get_time() - self.start_time}
+        return state
+
+    def __setstate__(self, state):
+        # fill here
+        self.__init__()
+        self.__dict__.update(state)
+
     def get_bb(self):
         if self.cur_state == RunState:
             if self.dir == 1:

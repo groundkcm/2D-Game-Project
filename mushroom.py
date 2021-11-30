@@ -45,6 +45,16 @@ class Mushroom:
         self.timer = 0.0
         self.wait_timer = 2.0
 
+    def __getstate__(self):
+        # fill here
+        state = {'x' : self.x, 'y':self.y, 'dir':self.dir,
+                  'name' : self.name,'size':self.size}
+        return state
+
+    def __setstate__(self, state):
+        # fill here
+        self.__init__()
+        self.__dict__.update(state)
 
 
     def prepare_patrol_points(self):
