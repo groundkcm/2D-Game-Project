@@ -7,7 +7,10 @@ import game_framework
 import game_world
 import main_state
 from pico2d import *
+import server
 
+from boy import Boy
+from mushroom import Mushroom
 
 name = "TitleState"
 image = None
@@ -16,9 +19,7 @@ exitb = None
 tname = None
 arrow = None
 
-boy = None
-zombie = None
-zombies = [0,0,0,0,0]
+mushrooms = [0,0,0,0,0]
 
 def enter():
     global image, play, exitb, tname, arrow
@@ -37,10 +38,10 @@ def exit():
     del(image, play, exitb, tname, arrow)
 
 def get_boy():
-    return boy
+    return server.boy
 
-def get_zombie():
-    return zombie
+def get_mushroom():
+    return server.mushroom
 
 def create_new_world():
     global boy
@@ -48,10 +49,10 @@ def create_new_world():
     game_world.add_object(boy, 1)
 
     with open('zombie_data.json', 'r') as f:
-        zombie_data_list = json.load(f)
-    for data in zombie_data_list:
-        zombie = Zombie(data['name'], data['x'], data['y'], data['size'])
-        game_world.add_object(zombie, 1)
+        mushroom_data_list = json.load(f)
+    for data in mushroom_data_list:
+        mushroom = Mushroom(data['name'], data['x'], data['y'], data['size'])
+        game_world.add_object(mushroom, 1)
 
 
 def load_saved_world():
@@ -60,7 +61,7 @@ def load_saved_world():
     # fill here
     game_world.load()
     for o in game_world.all_objects():
-        if isinstance(o,Boy):
+        if isinstance(o, Boy):
             boy = o
             break
 
