@@ -33,7 +33,7 @@ class Mushroom:
     def __init__(self, name='NONAME', x=0, y=0, hp=1):
         self.name = name
         self.x = self.y = 0, 0
-        Mushroom.px, Mushroom.py = x * PIXEL_PER_METER, y * PIXEL_PER_METER
+        Mushroom.px, Mushroom.py = x, y
         self.hp = hp
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
@@ -52,7 +52,6 @@ class Mushroom:
         return state
 
     def __setstate__(self, state):
-        # fill here
         self.__init__()
         self.__dict__.update(state)
 
