@@ -135,7 +135,9 @@ class Mushroom:
         self.bt = BehaviorTree(wait_node)
 
     def get_bb(self):
-        return self.x - 20, self.y - 25, self.x + 20, self.y + 20
+        cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
+
+        return cx - 20, cy - 25, cx + 20, cy + 20
 
     def stop(self):
         self.speed = 0
@@ -163,22 +165,21 @@ class Mushroom:
         self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
         self.x = clamp(50, self.x, server.background.w - 50)
         self.y = clamp(50, self.y, server.background.h - 50)
-        self.x, self.y = self.x - server.background.window_left, self.y - server.background.window_bottom
-
 
     def draw(self):
+        cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
         if math.cos(self.dir) < 0:
             if self.speed == 0:
-                Mushroom.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', self.x, self.y, 150, 150)
+                Mushroom.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
             else:
-                Mushroom.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', self.x, self.y, 150, 150)
+                Mushroom.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
         else:
             if self.speed == 0:
-                Mushroom.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, self.x, self.y)
+                Mushroom.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, cx, cy)
             else:
-                Mushroom.images['walk'].clip_draw(int(self.frame8) * 150, 0, 150, 150, self.x, self.y)
+                Mushroom.images['walk'].clip_draw(int(self.frame8) * 150, 0, 150, 150, cx, cy)
         debug_print('x:' + str(int(self.x)) + ' y:' + str(int(self.y)))
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp, 3, self.x - (40 - self.hp)/2, self.y + 30)
+        self.hpbar.clip_draw(0, 0, self.hp, 3, cx - (40 - self.hp)/2, cy + 30)
