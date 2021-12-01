@@ -42,6 +42,12 @@ def get_boy():
 def get_mushroom():
     return server.mushroom
 
+def get_boy():
+    return server.boy
+
+def get_mushroom():
+    return server.mushroom
+
 def create_new_world():
     server.boy = Boy()
     game_world.add_object(server.boy, 1)
@@ -49,7 +55,7 @@ def create_new_world():
     with open('mushroom.json', 'r') as f:
         mushroom_data_list = json.load(f)
     for data in mushroom_data_list:
-        server.mushroom = Mushroom(data['name'], data['x'], data['y'])
+        server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'])
         game_world.add_object(server.mushroom, 1)
 
 

@@ -32,7 +32,8 @@ class Mushroom:
 
     def __init__(self, name='NONAME', x=0, y=0, hp=1):
         self.name = name
-        self.x, self.y = x * PIXEL_PER_METER, y * PIXEL_PER_METER
+        self.x = self.y = 0, 0
+        Mushroom.px, Mushroom.py = x * PIXEL_PER_METER, y * PIXEL_PER_METER
         self.hp = hp
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
@@ -47,7 +48,7 @@ class Mushroom:
         self.wait_timer = 2.0
 
     def __getstate__(self):
-        state = {'x' : self.x, 'y':self.y, 'dir':self.dir,'name' : self.name,'hp':self.hp}
+        state = {'x' : Mushroom.px, 'y':Mushroom.py, 'dir':self.dir,'name' : self.name,'hp':self.hp}
         return state
 
     def __setstate__(self, state):
@@ -155,8 +156,8 @@ class Mushroom:
         if self.hp <= 0:
             game_world.remove_object(self)
 
-        if collide(self, server.boy):
-            server.boy.set_parent(self)
+        # if collide(self, server.boy):
+        #     server.boy.set_parent(self)
 
         self.bt.run()
         self.frame4 = (self.frame4 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
