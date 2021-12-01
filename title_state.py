@@ -46,7 +46,7 @@ def create_new_world():
     server.boy = Boy()
     game_world.add_object(server.boy, 1)
 
-    with open('zombie_data.json', 'r') as f:
+    with open('mushroom.json', 'r') as f:
         mushroom_data_list = json.load(f)
     for data in mushroom_data_list:
         server.mushroom = Mushroom(data['name'], data['x'], data['y'])
