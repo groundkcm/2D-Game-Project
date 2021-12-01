@@ -6,7 +6,7 @@ import game_world
 import math
 
 PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 1
+RUN_SPEED_KMPH = 40.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 10000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -237,7 +237,7 @@ class Boy:
                 Boy.images[name] = load_image("./sheets/gretel/" + name + ".png")
 
     def __init__(self):
-        server.x, server.y = self.x, self.y = 400, 300
+        self.x, self.y = 400, 300
         self.hp = 100
         self.load_images()
         self.hpbar = load_image('./sheets/UI/hp bar.png')
@@ -348,15 +348,15 @@ class Boy:
                 self.cur_state = next_state_table[self.cur_state][event]
                 self.cur_state.enter(self, event)
 
-        self.x = clamp(50, self.x, server.background.w - 50)
-        self.y = clamp(50, self.y, server.background.h - 50)
+        self.x = clamp(20, self.x, server.background.w - 20)
+        self.y = clamp(20, self.y, server.background.h - 20)
 
     def draw(self):
         self.hpbase.draw(150, 575)
         self.hpbar.clip_draw(0, 0, self.hp * 2, 13, 150 - (100 - self.hp), 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
-        debug_print('velocity:' + str(self.velocity) + ' high:' + str(self.high) + ' Current State:' + str(self.cur_state))
+        debug_print('x:' + str(self.x) + ' y:' + str(self.y) + ' Current State:' + str(self.cur_state))
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
 
