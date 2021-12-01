@@ -42,7 +42,7 @@ def enter():
 
 def exit():
     game_world.clear()
-    server.grass.bgm.stop()
+    server.background.bgm.stop()
 
 def pause():
     pass

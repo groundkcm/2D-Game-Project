@@ -6,8 +6,8 @@ import game_world
 import math
 
 PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 40.0
-RUN_SPEED_MPM = (RUN_SPEED_KMPH * 10000.0 / 60.0)
+RUN_SPEED_KMPH = 20.0
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
@@ -67,35 +67,36 @@ class RunState:
         boy.iframe = (boy.iframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
         boy.x += boy.velocity * game_framework.frame_time
         boy.y += boy.high * game_framework.frame_time
-        boy.x = clamp(25, boy.x, 800 - 25)
-        boy.y = clamp(25, boy.y, 600 - 25)
+        # boy.x = clamp(25, boy.x, 800 - 25)
+        # boy.y = clamp(25, boy.y, 600 - 25)
         # RunState.soundcheck += 1
         # if RunState.soundcheck == 100:
         #     boy.walking()
         #     RunState.soundcheck = 0
-        server.x, server.y = boy.x, boy.y
 
     # @staticmethod
     def draw(boy):
+        cx, cy = boy.x - server.background.window_left, boy.y - server.background.window_bottom
+
         if boy.velocity > 0:
-            Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+            Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, cx, cy)
             boy.dir = 1
         elif boy.velocity < 0:
-            Boy.images['run'].clip_composite_draw(int(boy.frame) * 100, 0, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
+            Boy.images['run'].clip_composite_draw(int(boy.frame) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
             boy.dir = -1
         else:
             # if boy x_velocity == 0
             if boy.high > 0 or boy.high < 0:
                 if boy.dir == 1:
-                    Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+                    Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, cx, cy)
                 else:
-                    Boy.images['run'].clip_composite_draw(int(boy.frame) * 100, 0, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
+                    Boy.images['run'].clip_composite_draw(int(boy.frame) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
             else:
                 # boy is idle
                 if boy.dir == 1:
-                    Boy.images['idle'].clip_draw(int(boy.iframe) * 100, 0, 100, 100, boy.x, boy.y)
+                    Boy.images['idle'].clip_draw(int(boy.iframe) * 100, 0, 100, 100, cx, cy)
                 else:
-                    Boy.images['idle'].clip_composite_draw(int(boy.iframe) * 100, 0, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
+                    Boy.images['idle'].clip_composite_draw(int(boy.iframe) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
 
 
 class JumpState:
@@ -125,15 +126,15 @@ class JumpState:
             self.high = -RUN_SPEED_PPS * 0.5
         self.y += self.high * game_framework.frame_time
         self.x += self.velocity * game_framework.frame_time
-        self.y = clamp(20, self.y, 600 - 20)
-        self.x = clamp(15, self.x, 800 - 15)
-        server.x, server.y = self.x, self.y
+        # self.y = clamp(20, self.y, 600 - 20)
+        # self.x = clamp(15, self.x, 800 - 15)
         if int(self.frame) >= 18:
             self.high = 0
             self.add_event(READY)
 
     def draw(self):
-        Boy.images['jump'].clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+        cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
+        Boy.images['jump'].clip_draw(int(self.frame) * 100, 0, 100, 100, cx, cy)
 
 
 class AttackState:
@@ -160,10 +161,11 @@ class AttackState:
             boy.add_event(READY)
 
     def draw(self):
+        cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
         if self.dir == 1:
-            Boy.images['attack'].clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            Boy.images['attack'].clip_draw(int(self.frame) * 100, 0, 100, 100, cx, cy)
         else:
-            Boy.images['attack'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
+            Boy.images['attack'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
 
 
 class DefenceState:
@@ -183,14 +185,15 @@ class DefenceState:
             self.velocity += RUN_SPEED_PPS
             self.add_event(READY)
         self.x += self.velocity * game_framework.frame_time
-        self.x = clamp(15, self.x, 800 - 15)
-        server.x = self.x
+        # self.x = clamp(15, self.x, 800 - 15)
 
     def draw(self):
+        cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
+
         if self.dir == 1:
-            Boy.images['defence'].clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            Boy.images['defence'].clip_draw(int(self.frame) * 100, 0, 100, 100, cx, cy)
         else:
-            Boy.images['defence'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
+            Boy.images['defence'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
 
 
 class DeadState:
@@ -209,10 +212,11 @@ class DeadState:
             # self.add_event(READY)
 
     def draw(self):
+        cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
         if self.dir == 1:
-            Boy.images['dead'].clip_draw(int(self.frame) * 100, 0, 100, 100, self.x, self.y)
+            Boy.images['dead'].clip_draw(int(self.frame) * 100, 0, 100, 100, cx, cy)
         else:
-            Boy.images['dead'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', self.x, self.y, 100, 100)
+            Boy.images['dead'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
 
 
 next_state_table = {
@@ -321,11 +325,6 @@ class Boy:
             # self.hit()
         else:
             self.stop()
-    #
-    # def set_background(self, bg):
-    #     self.bg = bg
-    #     self.x = self.bg.w / 2
-    #     self.y = self.bg.h / 2
 
     def set_parent_wall(self, wall):
         self.parent = wall
@@ -333,6 +332,11 @@ class Boy:
             self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
             self.x += self.velocity * game_framework.frame_time
+
+    def set_background(self, bg):
+        self.bg = bg
+        self.x = self.bg.w / 2
+        self.y = self.bg.h / 2
 
     def add_event(self, event):
         self.event_que.insert(0, event)
