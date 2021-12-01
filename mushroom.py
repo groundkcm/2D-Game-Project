@@ -8,8 +8,8 @@ import math
 import game_world
 
 PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 0.5
-RUN_SPEED_MPM = (RUN_SPEED_KMPH * 10000.0 / 60.0)
+RUN_SPEED_KMPH = 15.0
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
@@ -163,14 +163,8 @@ class Mushroom:
         self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
         self.x = clamp(50, self.x, server.background.w - 50)
         self.y = clamp(50, self.y, server.background.h - 50)
-        # if server.x >= 640:
-        #     server.x = 640
-        # elif server.x <= 400:
-        #     server.x = 400
-        # if server.y >= 480:
-        #     server.y = 480
-        # elif server.y <= 300:
-        #     server.y = 300
+        self.x, self.y = self.x - server.background.window_left, self.y - server.background.window_bottom
+
 
     def draw(self):
         if math.cos(self.dir) < 0:
@@ -183,6 +177,7 @@ class Mushroom:
                 Mushroom.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, self.x, self.y)
             else:
                 Mushroom.images['walk'].clip_draw(int(self.frame8) * 150, 0, 150, 150, self.x, self.y)
+        debug_print('x:' + str(int(self.x)) + ' y:' + str(int(self.y)))
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
