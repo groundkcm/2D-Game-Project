@@ -48,7 +48,7 @@ class Mushroom:
         self.wait_timer = 2.0
 
     def __getstate__(self):
-        state = {'x' : Mushroom.px, 'y':Mushroom.py, 'dir':self.dir,'name' : self.name,'hp':self.hp}
+        state = {'x': Mushroom.px, 'y': Mushroom.py, 'dir':self.dir,'name' : self.name,'hp':self.hp}
         return state
 
     def __setstate__(self, state):

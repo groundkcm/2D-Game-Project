@@ -42,12 +42,6 @@ def get_boy():
 def get_mushroom():
     return server.mushroom
 
-def get_boy():
-    return server.boy
-
-def get_mushroom():
-    return server.mushroom
-
 def create_new_world():
     server.boy = Boy()
     game_world.add_object(server.boy, 1)
