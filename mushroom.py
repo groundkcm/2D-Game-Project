@@ -30,9 +30,10 @@ class Mushroom:
             for name in animation_names:
                 Mushroom.images[name] = load_image("./sheets/mushroom/" + name + ".png")
 
-    def __init__(self):
-        self.x, self.y = 0, 0
-        self.hp = 40
+    def __init__(self, name='NONAME', x=0, y=0, hp=1):
+        self.name = name
+        self.x, self.y = x * PIXEL_PER_METER, y * PIXEL_PER_METER
+        self.hp = hp
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
         self.prepare_patrol_points()
@@ -46,9 +47,7 @@ class Mushroom:
         self.wait_timer = 2.0
 
     def __getstate__(self):
-        # fill here
-        state = {'x' : self.x, 'y':self.y, 'dir':self.dir,
-                  'name' : self.name,'size':self.size}
+        state = {'x' : self.x, 'y':self.y, 'dir':self.dir,'name' : self.name,'hp':self.hp}
         return state
 
     def __setstate__(self, state):

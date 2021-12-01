@@ -253,6 +253,7 @@ class Boy:
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self, None)
+        self.start_time = get_time()
     #
     # def walking(self):
     #     self.footsteps.play()
