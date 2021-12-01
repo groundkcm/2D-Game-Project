@@ -22,7 +22,6 @@ animation_names = ['attack', 'dead', 'idle', 'walk']
 class Mushroom:
     images = None
     check = 0
-    px, py = 0, 0
 
     def load_images(self):
         if Mushroom.images == None:
@@ -32,8 +31,7 @@ class Mushroom:
 
     def __init__(self, name='NONAME', x=0, y=0, hp=1):
         self.name = name
-        self.x = self.y = 0, 0
-        Mushroom.px, Mushroom.py = x, y
+        self.x, self.y = x * PIXEL_PER_METER, y * PIXEL_PER_METER
         self.hp = hp
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
@@ -48,7 +46,7 @@ class Mushroom:
         self.wait_timer = 2.0
 
     def __getstate__(self):
-        state = {'x': Mushroom.px, 'y': Mushroom.py, 'dir':self.dir,'name' : self.name,'hp':self.hp}
+        state = {'x': self.x, 'y': self.y, 'dir':self.dir,'name' : self.name,'hp':self.hp}
         return state
 
     def __setstate__(self, state):
@@ -161,19 +159,18 @@ class Mushroom:
         self.bt.run()
         self.frame4 = (self.frame4 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.frame8 = (self.frame8 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        Mushroom.px += self.speed * math.cos(self.dir) * game_framework.frame_time
-        Mushroom.py += self.speed * math.sin(self.dir) * game_framework.frame_time
-        Mushroom.px = clamp(-450, Mushroom.px, 770)
-        Mushroom.py = clamp(-330, Mushroom.py, 560)
-        if server.x >= 640:
-            server.x = 640
-        elif server.x <= 400:
-            server.x = 400
-        if server.y >= 480:
-            server.y = 480
-        elif server.y <= 300:
-            server.y = 300
-        self.x, self.y = 1280 - server.x * 2 + Mushroom.px, 960 - server.y * 2 + Mushroom.py
+        self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
+        self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
+        self.x = clamp(-450, self.x, 770)
+        self.y = clamp(-330, self.y, 560)
+        # if server.x >= 640:
+        #     server.x = 640
+        # elif server.x <= 400:
+        #     server.x = 400
+        # if server.y >= 480:
+        #     server.y = 480
+        # elif server.y <= 300:
+        #     server.y = 300
 
     def draw(self):
         if math.cos(self.dir) < 0:
