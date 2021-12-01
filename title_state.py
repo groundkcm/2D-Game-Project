@@ -11,6 +11,7 @@ import server
 
 from boy import Boy
 from mushroom import Mushroom
+from grass import Wall
 
 name = "TitleState"
 image = None
@@ -42,9 +43,18 @@ def get_boy():
 def get_mushroom():
     return server.mushroom
 
+def get_wall0():
+    return server.walls0
+
 def create_new_world():
     server.boy = Boy()
     game_world.add_object(server.boy, 1)
+
+    # with open('start.json', 'r') as f:
+    #     start_wall = json.load(f)
+    # for data in start_wall:
+    #     server.walls0 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+    #     game_world.add_object(server.walls0, 1)
 
     with open('mushroom.json', 'r') as f:
         mushroom_data_list = json.load(f)

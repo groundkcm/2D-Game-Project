@@ -16,13 +16,13 @@ witch = None
 clear = None
 key = None
 
-skeletons = []
-skeletons2 = []
-item_que = []
-walls0 = []
-walls1 = []
-walls2 = []
-walls3 = []
+skeletons = None
+skeletons2 = None
+item_que = None
+walls0 = None
+walls1 = None
+walls2 = None
+walls3 = None
 
 start_bound = [(-420,25,-230,190), (-150,25,100,190), (-100,190,430,395), (-30,-220,300,-80), (230,25,480,190), (540,25,630,190)]
 stage1_bound = [(), (), (), (), (), (), (), (), (), (), (), (), (), ()]
