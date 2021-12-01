@@ -31,7 +31,7 @@ class Mushroom:
 
     def __init__(self, name='NONAME', x=0, y=0, hp=1):
         self.name = name
-        self.x, self.y = x * PIXEL_PER_METER, y * PIXEL_PER_METER
+        self.x, self.y = x, y
         self.hp = hp
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
@@ -161,8 +161,8 @@ class Mushroom:
         self.frame8 = (self.frame8 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
         self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
-        self.x = clamp(-450, self.x, 770)
-        self.y = clamp(-330, self.y, 560)
+        self.x = clamp(50, self.x, server.background.w - 50)
+        self.y = clamp(50, self.y, server.background.h - 50)
         # if server.x >= 640:
         #     server.x = 640
         # elif server.x <= 400:

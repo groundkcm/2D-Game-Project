@@ -272,22 +272,24 @@ class Boy:
         self.__dict__.update(state)
 
     def get_bb(self):
+        cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
+
         if self.cur_state == RunState:
             if self.dir == 1:
-                return self.x - 30, self.y - 25, self.x + 10, self.y + 20
+                return cx - 30, cy - 25, cx + 10, cy + 20
             else:
-                return self.x - 10, self.y - 25, self.x + 30, self.y + 20
+                return cx - 10, cy - 25, cx + 30, cy + 20
         elif self.cur_state == AttackState:
-            return self.x - 30, self.y - 25, self.x + 25, self.y + 25
+            return cx - 30, cy - 25, cx + 25, cy + 25
         elif self.cur_state == DefenceState:
-            return self.x - 30, self.y - 35, self.x + 5, self.y + 5
+            return cx - 30, cy - 35, cx + 5, cy + 5
         elif self.cur_state == JumpState:
             if self.dir == 1:
-                return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+                return cx - 30, cy - 20, cx + 10, cy + 20
             else:
-                return self.x - 10, self.y - 20, self.x + 30, self.y + 20
+                return cx - 10, cy - 20, cx + 30, cy + 20
         elif self.cur_state == DeadState:
-            return self.x - 30, self.y - 20, self.x + 10, self.y + 20
+            return cx - 30, cy - 20, cx + 10, cy + 20
 
     def stop(self):#튕기기 다시
         # if self.dir == 1:
