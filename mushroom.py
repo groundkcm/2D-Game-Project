@@ -8,7 +8,7 @@ import math
 import game_world
 
 PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 15.0
+RUN_SPEED_KMPH = 5.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -132,7 +132,7 @@ class Mushroom:
         wander_chase_node = SelectorNode("WanderChase")
         wander_chase_node.add_children(chase_node, wander_node)
 
-        self.bt = BehaviorTree(wait_node)
+        self.bt = BehaviorTree(wander_chase_node)
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
@@ -155,8 +155,8 @@ class Mushroom:
         if self.hp <= 0:
             game_world.remove_object(self)
 
-        # if collide(self, server.boy):
-        #     server.boy.set_parent(self)
+        if collide(self, server.boy):
+            server.boy.set_parent(self)
 
         self.bt.run()
         self.frame4 = (self.frame4 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
@@ -178,7 +178,6 @@ class Mushroom:
                 Mushroom.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, cx, cy)
             else:
                 Mushroom.images['walk'].clip_draw(int(self.frame8) * 150, 0, 150, 150, cx, cy)
-        debug_print('x:' + str(int(self.x)) + ' y:' + str(int(self.y)))
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())

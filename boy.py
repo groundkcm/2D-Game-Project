@@ -6,7 +6,7 @@ import game_world
 import math
 
 PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 20.0
+RUN_SPEED_KMPH = 15.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -304,11 +304,11 @@ class Boy:
         if self.dir == 1:
             self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
-            self.x += self.velocity * game_framework.frame_time
+            self.x -= -self.velocity * game_framework.frame_time
         if self.high > 0:
             self.y -= self.high * game_framework.frame_time
         elif self.high < 0:
-            self.y += self.high * game_framework.frame_time
+            self.y -= -self.high * game_framework.frame_time
         # self.add_event(READY)
 
     def hit(self):
@@ -327,6 +327,7 @@ class Boy:
             # self.hit()
         else:
             self.stop()
+            self.hit()
 
     def set_parent_wall(self, wall):
         self.parent = wall
