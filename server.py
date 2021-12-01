@@ -9,6 +9,7 @@ blue_potion = 0
 
 boy = None
 grass = None
+background = None
 mushroom = None
 inven = None
 witch = None

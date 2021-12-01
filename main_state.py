@@ -12,7 +12,8 @@ import game_world
 import server
 
 from boy import Boy
-from grass import Grass, Wall
+from grass import FixedBackground as Grass
+# from grass import Grass, Wall
 from witch import Witch
 from mushroom import Mushroom
 from skeleton2 import Skeleton2
@@ -23,8 +24,10 @@ name = "MainState"
 
 
 def enter():
-    server.grass = Grass()
-    game_world.add_object(server.grass, 0)
+    server.background = Grass()
+    game_world.add_object(server.background, 0)
+    # server.grass = Grass()
+    # game_world.add_object(server.grass, 0)
 
     server.witch = Witch()
     # game_world.add_object(server.witch, 1)

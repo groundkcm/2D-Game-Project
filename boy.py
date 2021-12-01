@@ -322,6 +322,11 @@ class Boy:
         else:
             self.stop()
 
+    def set_background(self, bg):
+        self.bg = bg
+        self.x = self.bg.w / 2
+        self.y = self.bg.h / 2
+
     def set_parent_wall(self, wall):
         self.parent = wall
         if self.dir == 1:
@@ -342,6 +347,9 @@ class Boy:
                 self.cur_state.exit(self, event)
                 self.cur_state = next_state_table[self.cur_state][event]
                 self.cur_state.enter(self, event)
+
+        self.x = clamp(50, self.x, server.background.w - 50)
+        self.y = clamp(50, self.y, server.background.h - 50)
 
     def draw(self):
         self.hpbase.draw(150, 575)
