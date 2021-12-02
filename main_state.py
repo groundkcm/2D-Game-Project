@@ -29,6 +29,14 @@ def enter():
     # game_world.add_object(server.grass, 0)
 
     server.walls0 = title_state.get_wall0()
+    server.walls1 = title_state.get_wall1()
+    server.walls2 = title_state.get_wall2()
+    server.walls3 = title_state.get_wall3()
+
+    server.trigger0 = title_state.get_trigger0()
+    server.trigger1 = title_state.get_trigger1()
+    server.trigger2 = title_state.get_trigger2()
+    server.trigger3 = title_state.get_trigger3()
 
     server.witch = Witch()
     # game_world.add_object(server.witch, 1)
@@ -73,6 +81,7 @@ def handle_events():
 
 
 def update():
+
     for game_object in game_world.all_objects():
         game_object.update()
 
