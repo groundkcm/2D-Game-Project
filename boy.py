@@ -246,8 +246,8 @@ class Boy:
             for name in animation_names:
                 Boy.images[name] = load_image("./sheets/gretel/" + name + ".png")
 
-    def __init__(self):
-        self.x, self.y = 400, 300
+    def __init__(self, x = 0 ,y = 0):
+        self.x, self.y = x, y
         self.hp = 100
         self.load_images()
         self.hpbar = load_image('./sheets/UI/hp bar.png')
