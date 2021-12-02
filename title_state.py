@@ -104,7 +104,7 @@ def create_new_world():
         with open('./data/stage1_skeleton2.json', 'r') as f:
             skeleton2_data_list = json.load(f)
         for data in skeleton2_data_list:
-            server.skeleton2 = Mushroom(data['name'], data['x'], data['y'], data['hp'])
+            server.skeleton2 = Skeleton2(data['name'], data['x'], data['y'], data['hp'])
             game_world.add_object(server.skeleton2, 1)
 
     elif server.clear == 2:
