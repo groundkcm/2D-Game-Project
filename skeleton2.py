@@ -41,7 +41,8 @@ class Skeleton2:
         self.build_behavior_tree()
         self.dir = random.random() * 2 * math.pi
         self.speed = 0
-        self.frame = 0
+        self.frame4 = 0
+        self.frame8 = 0
         self.timer = 0.0
         self.wait_timer = 2.0
 
