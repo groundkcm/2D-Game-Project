@@ -42,7 +42,8 @@ class Skeleton:
         self.build_behavior_tree()
         self.dir = random.random() * 2 * math.pi
         self.speed = 0
-        self.frame = 0
+        self.frame4 = 0
+        self.frame8 = 0
         self.timer = 0
         self.wait_timer = 2.0
 
@@ -129,12 +130,12 @@ class Skeleton:
 
         patrol_chase_node = SelectorNode("PatrolChase")
         patrol_chase_node.add_children(chase_node, patrol_node)
-        self.bt = BehaviorTree(wander_wait_node)
+        self.bt = BehaviorTree(wait_node)
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
 
-        return cx - 20, cy - 25, cx + 20, cy + 20
+        return cx - 25, cy - 30, cx + 25, cy + 30
 
     def stop(self):
         self.speed = 0
@@ -169,12 +170,12 @@ class Skeleton:
             if self.speed == 0:
                 Skeleton.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
             else:
-                Skeleton.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
+                Skeleton.images['walk'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
         else:
             if self.speed == 0:
                 Skeleton.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, cx, cy)
             else:
-                Skeleton.images['walk'].clip_draw(int(self.frame8) * 150, 0, 150, 150, cx, cy)
+                Skeleton.images['walk'].clip_draw(int(self.frame4) * 150, 0, 150, 150, cx, cy)
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())

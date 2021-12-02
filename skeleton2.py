@@ -129,11 +129,11 @@ class Skeleton2:
         patrol_chase_node = SelectorNode("PatrolChase")
         patrol_chase_node.add_children(chase_node, patrol_node)
 
-        self.bt = BehaviorTree(wander_node)
+        self.bt = BehaviorTree(wait_node)
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
-        return cx - 20, cy - 25, cx + 20, cy + 20
+        return cx - 40, cy - 50, cx + 40, cy + 50
 
     def stop(self):
         self.speed = 0
@@ -155,29 +155,30 @@ class Skeleton2:
             server.boy.set_parent(self)
 
         self.bt.run()
-        self.frame4 = (self.frame4 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-        self.frame8 = (self.frame8 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        self.frame4 = (self.frame4 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 11
+        self.frame8 = (self.frame8 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 13
         self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
         self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
         self.x = clamp(50, self.x, server.background.w - 50)
         self.y = clamp(50, self.y, server.background.h - 50)
 
     def draw(self):
+        tw, th = int(24 * 2), int(32 * 2)
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
 
         if math.cos(self.dir) < 0:
             if self.speed == 0:
-                Skeleton2.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', cx, cy,150, 150)
+                Skeleton2.images['idle'].clip_composite_draw(int(self.frame4) * 24, 0, 24, 32, 0, 'h', cx, cy, tw, th)
             else:
-                Skeleton2.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', cx, cy,150, 150)
+                Skeleton2.images['walk'].clip_composite_draw(int(self.frame8) * 22, 0, 22, 32, 0, 'h', cx, cy, tw, th)
         else:
             if self.speed == 0:
-                Skeleton2.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, cx, cy)
+                Skeleton2.images['idle'].clip_draw(int(self.frame4) * 24, 0, 24, 32, cx, cy, tw, th)
             else:
-                Skeleton2.images['walk'].clip_draw(int(self.frame8) * 150, 0, 150, 150, cx, cy)
+                Skeleton2.images['walk'].clip_draw(int(self.frame8) * 22, 0, 22, 32, cx, cy, tw, th)
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp, 3, cx - (40 - self.hp) / 2, cy + 30)
+        self.hpbar.clip_draw(0, 0, self.hp, 3, cx - (25 - self.hp) / 2, cy + 30)
 
 
