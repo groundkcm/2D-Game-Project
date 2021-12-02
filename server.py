@@ -2,6 +2,7 @@
 gameover = 0
 end = 0
 debugmode = 1
+clear = 0
 yes = 0
 no = 0
 
@@ -18,7 +19,6 @@ skeleton = None
 skeleton2 = None
 witch = None
 inven = None
-clear = None
 
 
 item_que = None

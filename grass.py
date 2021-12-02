@@ -87,6 +87,7 @@ class Wall:
 
     def update(self):
         if collide_wall(self, server.boy):
+            # print('stop')
             server.boy.set_parent_wall(self)
 
     def get_bb(self):
@@ -101,9 +102,11 @@ class Wall:
 
 class Trigger:
     font = None
+    check = 0
 
     def __init__(self, x1=0, y1=0, x2=0, y2=0, num = 0):
         self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
+        self.num = num
         # self.build_behavior_tree(num)
         if Trigger.font is None:
             Trigger.font = load_font('ENCR10B.TTF', 16)
@@ -199,7 +202,12 @@ class Trigger:
 
 
     def update(self):
-        pass
+        if collide_wall(self, server.boy):
+            Trigger.check += 1
+            if self.num == 4 and Trigger.check == 1:
+                server.clear += 1
+                game_world.clear()
+        # pass
         # if collide_wall(self, server.boy):
         #     self.bt.run()
 
