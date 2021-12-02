@@ -19,17 +19,17 @@ key = None
 skeletons = None
 skeletons2 = None
 item_que = None
+
 walls0 = None
 walls1 = None
 walls2 = None
 walls3 = None
 
+trigger0 = None
+trigger1 = None
+trigger2 = None
+trigger3 = None
+
 start_tri = [(-350,390,-230,450), (100,25,230,190), (600,390,630,420)]
-stage1_tri = [(), (), (), (), (), (), (), ()]
-stage2_tri = [(), (), (), (), ()]
-stage3_tri = []#none
 
 start_mon = [(305,-25)]
-stage1_mon = [(), (), (), (), ()]
-stage2_mon = [(), (), (), ()]
-stage3_mon = [()]

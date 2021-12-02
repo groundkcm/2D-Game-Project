@@ -5,62 +5,62 @@ from collision import collide_wall
 
 png_names = ['inventory', 'stage1', 'stage2', 'stage3', 'start']
 
-class Grass:
-    images = None
-
-    def load_images(self):
-        if Grass.images == None:
-            Grass.images = {}
-            for name in png_names:
-                Grass.images[name] = load_image("./sheets/background/" + name + ".png")
-
-    def __init__(self):
-        self.load_images()
-        self.arrow = load_image('./sheets/UI/Arrow.png')
-        self.inven_but = load_image('./sheets/UI/inventory button.png')
-        self.bgm = load_music('stage bgm.mp3')
-        self.bgm.set_volume(64)
-        self.bgm.repeat_play()
-        self.open = load_music('door.mp3')
-        self.open.set_volume(32)
-
-    def update(self):
-        pass
-        # self.bt.run()
-
-    def draw(self):
-        # hide_cursor()
-        WIDTH, HEIGHT = 1280 - server.x * 2 + 160, 960 - server.y * 2 + 120
-        if WIDTH >= 640:
-            WIDTH = 640
-        elif WIDTH <= 160:
-            WIDTH = 160
-        if HEIGHT >= 480:
-            HEIGHT = 480
-        elif HEIGHT <= 120:
-            HEIGHT = 120
-        if server.clear == 1:
-            Grass.images['stage1'].draw(WIDTH, HEIGHT)
-        elif server.clear == 2:
-            Grass.images['stage2'].draw(WIDTH, HEIGHT)
-        elif server.clear == 3:
-            Grass.images['stage3'].draw(WIDTH, HEIGHT)
-        else:
-            # Grass.images['start'].draw(WIDTH, HEIGHT)
-            Grass.images['stage1'].draw(WIDTH, HEIGHT)
-            # self.stage2.draw(WIDTH, HEIGHT)
-            # self.stage3.draw(WIDTH, HEIGHT)
-        self.inven_but.draw(20, 580)
-
-
-    # def build_behavior_tree(self):
-    #     wander_node = LeafNode("Wander", self.wander)
-    #
-    #     wait_node = LeafNode('Wait', self.wait)
-    #     wander_wait_node = SequenceNode('WanderWait')
-    #     wander_wait_node.add_children(wander_node, wait_node)
-    #
-    #     self.bt = BehaviorTree(wait_node)
+# class Grass:
+#     images = None
+#
+#     def load_images(self):
+#         if Grass.images == None:
+#             Grass.images = {}
+#             for name in png_names:
+#                 Grass.images[name] = load_image("./sheets/background/" + name + ".png")
+#
+#     def __init__(self):
+#         self.load_images()
+#         self.arrow = load_image('./sheets/UI/Arrow.png')
+#         self.inven_but = load_image('./sheets/UI/inventory button.png')
+#         self.bgm = load_music('stage bgm.mp3')
+#         self.bgm.set_volume(64)
+#         self.bgm.repeat_play()
+#         self.open = load_music('door.mp3')
+#         self.open.set_volume(32)
+#
+#     def update(self):
+#         pass
+#         # self.bt.run()
+#
+#     def draw(self):
+#         # hide_cursor()
+#         WIDTH, HEIGHT = 1280 - server.x * 2 + 160, 960 - server.y * 2 + 120
+#         if WIDTH >= 640:
+#             WIDTH = 640
+#         elif WIDTH <= 160:
+#             WIDTH = 160
+#         if HEIGHT >= 480:
+#             HEIGHT = 480
+#         elif HEIGHT <= 120:
+#             HEIGHT = 120
+#         if server.clear == 1:
+#             Grass.images['stage1'].draw(WIDTH, HEIGHT)
+#         elif server.clear == 2:
+#             Grass.images['stage2'].draw(WIDTH, HEIGHT)
+#         elif server.clear == 3:
+#             Grass.images['stage3'].draw(WIDTH, HEIGHT)
+#         else:
+#             # Grass.images['start'].draw(WIDTH, HEIGHT)
+#             Grass.images['stage1'].draw(WIDTH, HEIGHT)
+#             # self.stage2.draw(WIDTH, HEIGHT)
+#             # self.stage3.draw(WIDTH, HEIGHT)
+#         self.inven_but.draw(20, 580)
+#
+#
+#     # def build_behavior_tree(self):
+#     #     wander_node = LeafNode("Wander", self.wander)
+#     #
+#     #     wait_node = LeafNode('Wait', self.wait)
+#     #     wander_wait_node = SequenceNode('WanderWait')
+#     #     wander_wait_node.add_children(wander_node, wait_node)
+#     #
+#     #     self.bt = BehaviorTree(wait_node)
 
 class FixedBackground:
     images = None
@@ -107,10 +107,10 @@ class FixedBackground:
         elif server.clear == 3:
             FixedBackground.images['stage3'].clip_draw_to_origin(self.window_left, self.window_bottom, server.background.canvas_width, server.background.canvas_height,0, 0)
         else:
-            FixedBackground.images['start'].clip_draw_to_origin(self.window_left, self.window_bottom, server.background.canvas_width, server.background.canvas_height,0, 0)
-            # FixedBackground.images['stage1'].clip_draw_to_origin(self.window_left, self.window_bottom, server.background.canvas_width, server.background.canvas_height,0, 0)
-            # self.stage2.draw(WIDTH, HEIGHT)
-            # self.stage3.draw(WIDTH, HEIGHT)
+            # FixedBackground.images['start'].clip_draw_to_origin(self.window_left, self.window_bottom, server.background.canvas_width, server.background.canvas_height,0, 0)
+            FixedBackground.images['stage1'].clip_draw_to_origin(self.window_left, self.window_bottom, server.background.canvas_width, server.background.canvas_height,0, 0)
+            # FixedBackground.images['stage2'].clip_draw_to_origin(self.window_left, self.window_bottom, server.background.canvas_width, server.background.canvas_height, 0, 0)
+            # FixedBackground.images['stage3'].clip_draw_to_origin(self.window_left, self.window_bottom, server.background.canvas_width, server.background.canvas_height, 0, 0)
 
         self.inven_but.draw(20, 580)
 
