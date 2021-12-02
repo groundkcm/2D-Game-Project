@@ -1,5 +1,6 @@
 from pico2d import *
 import server
+import title_state
 from BehaviorTree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 from collision import collide_wall
 import random
@@ -207,6 +208,8 @@ class Trigger:
             if self.num == 4 and Trigger.check == 1:
                 server.clear += 1
                 game_world.clear()
+                title_state.create_new_world()
+
         # pass
         # if collide_wall(self, server.boy):
         #     self.bt.run()

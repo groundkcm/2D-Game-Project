@@ -11,55 +11,26 @@ import pass_state
 import game_world
 import server
 
-from boy import Boy
-from grass import FixedBackground as Grass
 from witch import Witch
-from mushroom import Mushroom
-from skeleton2 import Skeleton2
-# from skeleton import Skeleton
 from collision import collide
 
 name = "MainState"
 
 
 def enter():
-    server.background = Grass()
-    game_world.add_object(server.background, 0)
-    # server.grass = Grass()
-    # game_world.add_object(server.grass, 0)
+    server.background = title_state.get_background()
 
-    server.walls0 = title_state.get_wall0()
-    server.trigger0 = title_state.get_trigger0()
-
-    # with open('./data/stage1.json', 'r') as f:
-    #     stage1_wall = json.load(f)
-    # for data in stage1_wall:
-    #     server.walls1 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
-    #     game_world.add_object(server.walls1, 1)
-    #
-    # with open('./data/stage1_tri.json', 'r') as f: # 트리거 클래스 만들기
-    #     stage1_tri = json.load(f)
-    # for data in stage1_tri:
-    #     server.trigger1 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
-    #     game_world.add_object(server.trigger1, 1)
-
-    # with open('./data/stage2.json', 'r') as f:
-    #     stage2_wall = json.load(f)
-    # for data in stage2_wall:
-    #     server.walls2 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
-    #     game_world.add_object(server.walls2, 1)
-    #
-    # with open('./data/stage2_tri.json', 'r') as f:
-    #     stage2_tri = json.load(f)
-    # for data in stage2_tri:
-    #     server.trigger2 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
-    #     game_world.add_object(server.trigger2, 1)
-
-    # with open('./data/stage3.json', 'r') as f:
-    #     stage3_wall = json.load(f)
-    # for data in stage3_wall:
-    #     server.walls3 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
-    #     game_world.add_object(server.walls3, 1)
+    if server.clear == 1:
+        server.walls1 = title_state.get_wall1()
+        server.trigger1 = title_state.get_trigger1()
+    elif server.clear == 2:
+        server.walls2 = title_state.get_wall2()
+        server.trigger2 = title_state.get_trigger2()
+    elif server.clear == 3:
+        server.walls3 = title_state.get_wall3()
+    else:
+        server.walls0 = title_state.get_wall0()
+        server.trigger0 = title_state.get_trigger0()
 
     server.witch = Witch()
     # game_world.add_object(server.witch, 1)

@@ -12,8 +12,11 @@ import server
 from boy import Boy
 from mushroom import Mushroom
 from skeleton2 import Skeleton2
+from skeleton import Skeleton
+from skeleton2 import Skeleton2
 # from skeleton import Skeleton
 from grass import Wall, Trigger
+from grass import FixedBackground as Grass
 
 name = "TitleState"
 image = None
@@ -42,30 +45,87 @@ def exit():
 def get_boy():
     return server.boy
 
+def get_background():
+    return server.background
+
 def get_mushroom():
     return server.mushroom
 
 def get_wall0():
     return server.walls0
 
+def get_wall1():
+    return server.walls1
+
+def get_wall2():
+    return server.walls2
+
+def get_wall3():
+    return server.walls3
+
 def get_trigger0():
     return server.trigger0
 
+def get_trigger1():
+    return server.trigger1
+
+def get_trigger2():
+    return server.trigger2
+
+def get_trigger3():
+    return server.trigger3
+
 def create_new_world():
+    server.background = Grass()
+    game_world.add_object(server.background, 0)
+
+
     server.boy = Boy()
     game_world.add_object(server.boy, 1)
 
-    with open('./data/start.json', 'r') as f:
-        start_wall = json.load(f)
-    for data in start_wall:
-        server.walls0 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
-        game_world.add_object(server.walls0, 1)
 
-    with open('./data/start_tri.json', 'r') as f:
-        start_tri = json.load(f)
-    for data in start_tri:
-        server.trigger0 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
-        game_world.add_object(server.trigger0, 1)
+    if server.clear == 1:
+        with open('./data/stage1.json', 'r') as f:
+            stage1_wall = json.load(f)
+        for data in stage1_wall:
+            server.walls1 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+            game_world.add_object(server.walls1, 1)
+
+        with open('./data/stage1_tri.json', 'r') as f:  # 트리거 클래스 만들기
+            stage1_tri = json.load(f)
+        for data in stage1_tri:
+            server.trigger1 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
+            game_world.add_object(server.trigger1, 1)
+    elif server.clear == 2:
+        with open('./data/stage2.json', 'r') as f:
+            stage2_wall = json.load(f)
+        for data in stage2_wall:
+            server.walls2 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+            game_world.add_object(server.walls2, 1)
+
+        with open('./data/stage2_tri.json', 'r') as f:
+            stage2_tri = json.load(f)
+        for data in stage2_tri:
+            server.trigger2 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
+            game_world.add_object(server.trigger2, 1)
+    elif server.clear == 3:
+        with open('./data/stage3.json', 'r') as f:
+            stage3_wall = json.load(f)
+        for data in stage3_wall:
+            server.walls3 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+            game_world.add_object(server.walls3, 1)
+    else:
+        with open('./data/start.json', 'r') as f:
+            start_wall = json.load(f)
+        for data in start_wall:
+            server.walls0 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+            game_world.add_object(server.walls0, 1)
+
+        with open('./data/start_tri.json', 'r') as f:
+            start_tri = json.load(f)
+        for data in start_tri:
+            server.trigger0 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
+            game_world.add_object(server.trigger0, 1)
 
     with open('./data/stage1_mushroom.json', 'r') as f:
         mushroom_data_list = json.load(f)
