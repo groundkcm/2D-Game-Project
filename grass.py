@@ -87,6 +87,18 @@ class Wall:
 
 
     def update(self):
+        for mushroom in server.mushroom:
+            if collide_wall(self, mushroom):
+                mushroom.set_parent_wall(self)
+                break
+        for skeleton2 in server.skeleton2:
+            if collide_wall(self, skeleton2):
+                skeleton2.set_parent_wall(self)
+                break
+        for skeleton in server.skeleton:
+            if collide_wall(self, skeleton):
+                skeleton.set_parent_wall(self)
+                break
         if collide_wall(self, server.boy):
             # print('stop')
             server.boy.set_parent_wall(self)

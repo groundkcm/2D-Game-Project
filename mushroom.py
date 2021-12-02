@@ -40,6 +40,7 @@ class Mushroom:
         self.build_behavior_tree()
         self.dir = random.random() * 2 * math.pi
         self.speed = 0
+        self.parent = None
         self.frame8 = 0
         self.frame4 = 0
         self.timer = 0.0
@@ -150,6 +151,17 @@ class Mushroom:
 
     def add_event(self, event):
         pass
+
+    def set_parent(self, enemy):
+        self.parent = enemy
+        if math.cos(self.dir) > 0:
+            self.x -= self.speed * game_framework.frame_time * 10
+        elif math.cos(self.dir) < 0:
+            self.x -= self.speed * game_framework.frame_time * 10
+        if math.sin(self.dir) > 0:
+            self.y -= self.speed * game_framework.frame_time * 10
+        elif math.sin(self.dir) < 0:
+            self.y -= self.speed * game_framework.frame_time * 10
 
     def update(self):
         if self.hp <= 0:

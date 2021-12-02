@@ -33,8 +33,7 @@ class Skeleton:
         self.name = name
         self.x, self.y = x, y
         self.hp = hp
-        self.width = 20
-        self.height = 25
+        self.parent = None
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
         self.prepare_patrol_points()
@@ -148,6 +147,17 @@ class Skeleton:
 
     def add_event(self, event):
         pass
+
+    def set_parent(self, enemy):
+        self.parent = enemy
+        if math.cos(self.dir) > 0:
+            self.x -= self.speed * game_framework.frame_time * 10
+        elif math.cos(self.dir) < 0:
+            self.x -= self.speed * game_framework.frame_time * 10
+        if math.sin(self.dir) > 0:
+            self.y -= self.speed * game_framework.frame_time * 10
+        elif math.sin(self.dir) < 0:
+            self.y -= self.speed * game_framework.frame_time * 10
 
     def update(self):
         if self.hp <= 0:
