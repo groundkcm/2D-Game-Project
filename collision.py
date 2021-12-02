@@ -15,7 +15,7 @@ def collide_wall(a, b):
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
     if left_a > right_b: return False
-    if right_a + 2 < left_b: return False
+    if right_a < left_b: return False
     if top_a + 2 < bottom_b: return False
     if bottom_a - 2 > bottom_b: return False
 
