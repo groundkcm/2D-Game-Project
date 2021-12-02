@@ -332,13 +332,13 @@ class Boy:
     def set_parent_wall(self, wall):
         self.parent = wall
         if self.dir == 1:
-            self.x -= self.velocity * game_framework.frame_time
+            self.x -= self.velocity * game_framework.frame_time * 10
         if self.dir == -1:
-            self.x += self.velocity * game_framework.frame_time
+            self.x += -self.velocity * game_framework.frame_time * 10
         if self.high > 0:
-            self.y -= self.high * game_framework.frame_time
+            self.y -= self.high * game_framework.frame_time * 10
         if self.high < 0:
-            self.y += self.high * game_framework.frame_time
+            self.y += -self.high * game_framework.frame_time * 10
 
     def set_background(self, bg):
         self.bg = bg
@@ -379,7 +379,7 @@ class Boy:
         self.hpbar.clip_draw(0, 0, self.hp * 2, 13, 150 - (100 - self.hp), 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
-        debug_print('x:' + str(int(self.x)) + ' y:' + str(int(self.y)) + ' Current State:' + str(self.cur_state))
+        debug_print('dir:' + str(self.dir) + ' high:' + str(self.high))
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
 
