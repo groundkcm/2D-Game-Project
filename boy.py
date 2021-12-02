@@ -178,11 +178,17 @@ class DefenceState:
     def do(self):
         if self.hp == 0:
             self.add_event(DEAD)
-        self.frame = (self.frame + 0.1 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-        self.velocity = -RUN_SPEED_PPS
+        self.frame = (self.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        if self.dir == 1:
+            self.velocity = RUN_SPEED_PPS
+        else:
+            self.velocity = -RUN_SPEED_PPS
         self.timer -= 2
         if self.timer == 0:
-            self.velocity += RUN_SPEED_PPS
+            if self.dir == 1:
+                self.velocity -= RUN_SPEED_PPS
+            else:
+                self.velocity += RUN_SPEED_PPS
             self.add_event(READY)
         self.x += self.velocity * game_framework.frame_time
         # self.x = clamp(15, self.x, 800 - 15)
@@ -190,10 +196,10 @@ class DefenceState:
     def draw(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
 
-        if self.dir == 1:
-            Boy.images['defence'].clip_draw(int(self.frame) * 100, 0, 100, 100, cx, cy)
+        if self.dir == -1:
+            Boy.images['defence'].clip_draw(int(self.frame) * 112, 0, 112, 100, cx, cy)
         else:
-            Boy.images['defence'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
+            Boy.images['defence'].clip_composite_draw(int(self.frame) * 112, 0, 112, 100, 0, 'h', cx, cy, 112, 100)
 
 
 class DeadState:
@@ -362,10 +368,10 @@ class Boy:
             self.x = clamp(20, self.x, server.background.w - 100)
             self.y = clamp(20, self.y, server.background.h - 20)
         elif server.clear == 3:
-            self.x = clamp(20, self.x, server.background.w - 20)
+            self.x = clamp(250, self.x, server.background.w - 20)
             self.y = clamp(20, self.y, server.background.h - 20)
         else:
-            self.x = clamp(100, self.x, server.background.w - 20)
+            self.x = clamp(20, self.x, server.background.w - 20)
             self.y = clamp(20, self.y, server.background.h - 20)
             # self.x = clamp(80, self.x, server.background.w - 80)
             # self.y = clamp(150, self.y, server.background.h - 180)
