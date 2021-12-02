@@ -366,7 +366,7 @@ class Boy:
             self.x = clamp(20, self.x, server.background.w - 100)
             self.y = clamp(20, self.y, server.background.h - 20)
         elif server.clear == 3:
-            self.x = clamp(250, self.x, server.background.w - 20)
+            self.x = clamp(250, self.x, server.background.w - 200)
             self.y = clamp(20, self.y, server.background.h - 20)
         else:
             self.x = clamp(80, self.x, server.background.w - 80)
