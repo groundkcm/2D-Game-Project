@@ -139,7 +139,7 @@ class Wall:
 
     def update(self):
         if collide_wall(self, server.boy):
-            print('fff')
+            # print('fff')
             server.boy.set_parent_wall(self)
 
     def get_bb(self):
