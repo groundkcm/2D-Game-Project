@@ -79,8 +79,6 @@ def create_new_world():
     server.background = Grass()
     game_world.add_object(server.background, 0)
 
-
-
     if server.clear == 1:
         server.boy = Boy(400, 100)
         game_world.add_object(server.boy, 1)
@@ -96,6 +94,19 @@ def create_new_world():
         for data in stage1_tri:
             server.trigger1 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
             game_world.add_object(server.trigger1, 1)
+
+        with open('./data/stage1_mushroom.json', 'r') as f:
+            mushroom_data_list = json.load(f)
+        for data in mushroom_data_list:
+            server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'])
+            game_world.add_object(server.mushroom, 1)
+
+        with open('./data/stage1_skeleton2.json', 'r') as f:
+            skeleton2_data_list = json.load(f)
+        for data in skeleton2_data_list:
+            server.skeleton2 = Mushroom(data['name'], data['x'], data['y'], data['hp'])
+            game_world.add_object(server.skeleton2, 1)
+
     elif server.clear == 2:
         server.boy = Boy(50, 750)
         game_world.add_object(server.boy, 1)
@@ -136,12 +147,8 @@ def create_new_world():
             server.trigger0 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
             game_world.add_object(server.trigger0, 1)
 
-    with open('./data/stage1_mushroom.json', 'r') as f:
-        mushroom_data_list = json.load(f)
-    for data in mushroom_data_list:
-        server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'])
+        server.mushroom = Mushroom("ff", 550, 200, 40)
         game_world.add_object(server.mushroom, 1)
-
 
 
 def load_saved_world():

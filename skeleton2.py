@@ -127,7 +127,8 @@ class Skeleton2:
 
         patrol_chase_node = SelectorNode("PatrolChase")
         patrol_chase_node.add_children(chase_node, patrol_node)
-        self.bt = BehaviorTree(wander_wait_node)
+
+        self.bt = BehaviorTree(wander_node)
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
