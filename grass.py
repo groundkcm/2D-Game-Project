@@ -28,6 +28,7 @@ class FixedBackground:
         self.canvas_height = get_canvas_height()
         self.window_left = 0
         self.window_bottom = 0
+
         if server.clear == 1:
             self.w = FixedBackground.images['stage1'].w
             self.h = FixedBackground.images['stage1'].h
@@ -100,10 +101,13 @@ class Wall:
 
 
 class Trigger:
+    font = None
+
     def __init__(self, x1=0, y1=0, x2=0, y2=0, num = 0):
         self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
-        self.build_behavior_tree(num)
-        self.font = load_font('ENCR10B.TTF', 16)
+        # self.build_behavior_tree(num)
+        if Trigger.font is None:
+            Trigger.font = load_font('ENCR10B.TTF', 16)
 
     def __getstate__(self):
         state = {'x1': self.x1, 'y1': self.y1, 'x2': self.x2, 'y2': self.y2}
@@ -114,12 +118,19 @@ class Trigger:
         self.__dict__.update(state)
 
     def order(self, num):
+        # server.background = FixedBackground
+        cx1, cy1 = self.x1 - server.background.window_left, self.y1 - server.background.window_bottom
+        cx2, cy2 = self.x2 - server.background.window_left, self.y2 - server.background.window_bottom
+
         if num == 4:
-            self.font.draw((self.x1 + self.x2) / 2, (self.y1 + self.y2) / 2, "잠겨있다", (255, 255, 255))
+            # Trigger.font.draw((self.x1 + self.x2) / 2, (self.y1 + self.y2) / 2, '잠겨있다', (255, 255, 255))
+            # self.font.draw((self.x1 + self.x2) / 2, (self.y1 + self.y2) / 2, '잠겨있다', (255, 255, 255))
             return BehaviorTree.SUCCESS
         else:
-            self.font.draw((self.x1 + self.x2)/2, (self.y1 + self.y2)/2, "주변을 살펴본다(y/n)", (255, 255, 255))
+            # Trigger.font.draw(cx1, (cy1 + cy2) / 2, 'look around(y/n)', (255, 255, 255))
+            # self.font.draw((self.x1 + self.x2)/2, (self.y1 + self.y2)/2, '주변을 살펴본다(y/n)', (255, 255, 255))
             if server.yes == 1:
+                server.yes = 0
                 return BehaviorTree.SUCCESS
             else:
                 return BehaviorTree.FAIL
@@ -153,8 +164,9 @@ class Trigger:
 
     def opendoor(self):
         if server.key == 1:
-            self.font.draw((self.x1 + self.x2) / 2, (self.y1 + self.y2) / 2, "열쇠로 문을 연다(y/n)", (255, 255, 255))
+            # self.font.draw((self.x1 + self.x2) / 2, (self.y1 + self.y2) / 2, '열쇠로 문을 연다(y/n)', (255, 255, 255))
             if server.yes == 1:
+                server.yes, server.key = 0, 0
                 server.clear += 1
                 return BehaviorTree.SUCCESS
             else:
@@ -188,8 +200,9 @@ class Trigger:
 
 
     def update(self):
-        if collide_wall(self, server.boy):
-            self.bt.run()
+        pass
+        # if collide_wall(self, server.boy):
+        #     self.bt.run()
 
     def get_bb(self):
         cx1, cy1 = self.x1 - server.background.window_left, self.y1 - server.background.window_bottom
@@ -197,6 +210,8 @@ class Trigger:
         return cx1, cy1, cx2, cy2
 
     def draw(self):
+
+        # Trigger.font.draw(cx1, (cy1 + cy2) / 2, 'look around(y/n)', (255, 255, 255))
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
 

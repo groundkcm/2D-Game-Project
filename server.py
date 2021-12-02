@@ -8,7 +8,7 @@ no = 0
 red_potion = 0
 big_red_potion = 0
 blue_potion = 0
-key = None
+key = 0
 
 boy = None
 grass = None
