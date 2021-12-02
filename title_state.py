@@ -71,17 +71,17 @@ def create_new_world():
     server.boy = Boy()
     game_world.add_object(server.boy, 1)
 
-    # with open('./data/start.json', 'r') as f:
-    #     start_wall = json.load(f)
-    # for data in start_wall:
-    #     server.walls0 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
-    #     game_world.add_object(server.walls0, 1)
-    #
-    # with open('./data/start_tri.json', 'r') as f:
-    #     start_tri = json.load(f)
-    # for data in start_tri:
-    #     server.trigger0 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'])
-    #     game_world.add_object(server.trigger0, 1)
+    with open('./data/start.json', 'r') as f:
+        start_wall = json.load(f)
+    for data in start_wall:
+        server.walls0 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+        game_world.add_object(server.walls0, 1)
+
+    with open('./data/start_tri.json', 'r') as f:
+        start_tri = json.load(f)
+    for data in start_tri:
+        server.trigger0 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'])
+        game_world.add_object(server.trigger0, 1)
 
     # with open('./data/stage1.json', 'r') as f:
     #     stage1_wall = json.load(f)
@@ -107,11 +107,11 @@ def create_new_world():
     #     server.trigger2 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'])
     #     game_world.add_object(server.trigger2, 1)
 
-    with open('./data/stage3.json', 'r') as f:
-        stage3_wall = json.load(f)
-    for data in stage3_wall:
-        server.walls3 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
-        game_world.add_object(server.walls3, 1)
+    # with open('./data/stage3.json', 'r') as f:
+    #     stage3_wall = json.load(f)
+    # for data in stage3_wall:
+    #     server.walls3 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+    #     game_world.add_object(server.walls3, 1)
 
     # with open('./data/stage1_mushroom.json', 'r') as f:
     #     mushroom_data_list = json.load(f)

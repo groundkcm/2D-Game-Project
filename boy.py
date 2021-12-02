@@ -288,7 +288,10 @@ class Boy:
         elif self.cur_state == AttackState:
             return cx - 30, cy - 25, cx + 25, cy + 25
         elif self.cur_state == DefenceState:
-            return cx - 30, cy - 35, cx + 5, cy + 5
+            if self.dir == 1:
+                return cx - 30, cy - 35, cx + 5, cy + 5
+            else:
+                return cx - 5, cy - 35, cx + 30, cy + 5
         elif self.cur_state == JumpState:
             if self.dir == 1:
                 return cx - 30, cy - 20, cx + 10, cy + 20
@@ -298,15 +301,6 @@ class Boy:
             return cx - 30, cy - 20, cx + 10, cy + 20
 
     def stop(self):#튕기기 다시
-        # if self.dir == 1:
-        #     self.x -= self.velocity * game_framework.frame_time
-        #     self.velocity = 0
-        # elif self.dir == -1:
-        #     self.velocity = 0
-        # if self.high > 0:
-        #     self.high = 0
-        # elif self.high < 0:
-        #     self.high = 0
         if self.dir == 1:
             self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
