@@ -302,13 +302,13 @@ class Boy:
 
     def stop(self):#튕기기 다시
         if self.dir == 1:
-            self.x -= self.velocity * game_framework.frame_time
+            self.x -= self.velocity * game_framework.frame_time * 10
         elif self.dir == -1:
-            self.x += self.velocity * game_framework.frame_time
+            self.x -= self.velocity * game_framework.frame_time * 10
         if self.high > 0:
-            self.y -= self.high * game_framework.frame_time
+            self.y -= self.high * game_framework.frame_time * 10
         elif self.high < 0:
-            self.y += self.high * game_framework.frame_time
+            self.y -= self.high * game_framework.frame_time * 10
         # self.add_event(READY)
 
     def hit(self):
@@ -369,10 +369,8 @@ class Boy:
             self.x = clamp(250, self.x, server.background.w - 20)
             self.y = clamp(20, self.y, server.background.h - 20)
         else:
-            self.x = clamp(20, self.x, server.background.w - 20)
-            self.y = clamp(20, self.y, server.background.h - 20)
-            # self.x = clamp(80, self.x, server.background.w - 80)
-            # self.y = clamp(150, self.y, server.background.h - 180)
+            self.x = clamp(80, self.x, server.background.w - 80)
+            self.y = clamp(150, self.y, server.background.h - 180)
 
     def draw(self):
         self.hpbase.draw(150, 575)

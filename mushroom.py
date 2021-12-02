@@ -132,7 +132,7 @@ class Mushroom:
         wander_chase_node = SelectorNode("WanderChase")
         wander_chase_node.add_children(chase_node, wander_node)
 
-        self.bt = BehaviorTree(wander_chase_node)
+        self.bt = BehaviorTree(wait_node)
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
