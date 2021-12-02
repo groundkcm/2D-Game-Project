@@ -365,8 +365,8 @@ class Boy:
             self.x = clamp(20, self.x, server.background.w - 20)
             self.y = clamp(20, self.y, server.background.h - 20)
         else:
-            self.x = clamp(20, self.x, server.background.w - 20)
-            self.y = clamp(100, self.y, server.background.h - 300)
+            self.x = clamp(80, self.x, server.background.w - 80)
+            self.y = clamp(200, self.y, server.background.h - 180)
 
     def draw(self):
         self.hpbase.draw(150, 575)
