@@ -50,13 +50,13 @@ def create_new_world():
     server.boy = Boy()
     game_world.add_object(server.boy, 1)
 
-    with open('start.json', 'r') as f:
+    with open('./data/start.json', 'r') as f:
         start_wall = json.load(f)
     for data in start_wall:
         server.walls0 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
         game_world.add_object(server.walls0, 1)
 
-    # with open('mushroom.json', 'r') as f:
+    # with open('./data/stage1_mushroom.json', 'r') as f:
     #     mushroom_data_list = json.load(f)
     # for data in mushroom_data_list:
     #     server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'])
