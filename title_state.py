@@ -62,24 +62,24 @@ def create_new_world():
     #     server.trigger0 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
     #     game_world.add_object(server.trigger0, 1)
 
-    with open('./data/stage1.json', 'r') as f:
-        stage1_wall = json.load(f)
-    for data in stage1_wall:
-        server.walls1 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
-        game_world.add_object(server.walls1, 1)
-
-    with open('./data/stage1_tri.json', 'r') as f: # 트리거 클래스 만들기
-        stage1_tri = json.load(f)
-    for data in stage1_tri:
-        server.trigger1 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
-        game_world.add_object(server.trigger1, 1)
-
-    # with open('./data/stage2.json', 'r') as f:
-    #     stage2_wall = json.load(f)
-    # for data in stage2_wall:
-    #     server.walls2 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
-    #     game_world.add_object(server.walls2, 1)
+    # with open('./data/stage1.json', 'r') as f:
+    #     stage1_wall = json.load(f)
+    # for data in stage1_wall:
+    #     server.walls1 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+    #     game_world.add_object(server.walls1, 1)
     #
+    # with open('./data/stage1_tri.json', 'r') as f: # 트리거 클래스 만들기
+    #     stage1_tri = json.load(f)
+    # for data in stage1_tri:
+    #     server.trigger1 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+    #     game_world.add_object(server.trigger1, 1)
+
+    with open('./data/stage2.json', 'r') as f:
+        stage2_wall = json.load(f)
+    for data in stage2_wall:
+        server.walls2 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+        game_world.add_object(server.walls2, 1)
+
     # with open('./data/stage3.json', 'r') as f:
     #     stage3_wall = json.load(f)
     # for data in stage3_wall:
