@@ -29,7 +29,7 @@ def enter():
     # server.grass = Grass()
     # game_world.add_object(server.grass, 0)
 
-    # server.walls0 = title_state.get_wall0()
+    server.walls0 = title_state.get_wall0()
 
     server.witch = Witch()
     # game_world.add_object(server.witch, 1)

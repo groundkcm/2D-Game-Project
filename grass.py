@@ -142,7 +142,9 @@ class Wall:
             server.boy.set_parent_wall(self)
 
     def get_bb(self):
-        return self.x1, self.y1, self.x2, self.y2
+        cx1, cy1 = self.x1 - server.background.window_left, self.y1 - server.background.window_bottom
+        cx2, cy2 = self.x2 - server.background.window_left, self.y2 - server.background.window_bottom
+        return cx1, cy1, cx2, cy2
 
     def draw(self):
         draw_rectangle(*self.get_bb())
