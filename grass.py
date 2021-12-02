@@ -2,6 +2,12 @@ from pico2d import *
 import server
 from BehaviorTree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 from collision import collide_wall
+import random
+import game_world
+
+from mushroom import Mushroom
+from skeleton2 import Skeleton2
+from skeleton import Skeleton
 
 png_names = ['inventory', 'stage1', 'stage2', 'stage3', 'start']
 
@@ -97,6 +103,7 @@ class Trigger:
     def __init__(self, x1=0, y1=0, x2=0, y2=0):
         self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
         self.build_behavior_tree()
+        self.font = load_font('ENCR10B.TTF', 16)
 
     def __getstate__(self):
         state = {'x1': self.x1, 'y1': self.y1, 'x2': self.x2, 'y2': self.y2}
@@ -105,6 +112,47 @@ class Trigger:
     def __setstate__(self, state):
         self.__init__()
         self.__dict__.update(state)
+
+    def order(self):
+        self.font.draw((self.x1 + self.x2)/2, (self.y1 + self.y2)/2, "주변을 살펴본다(y/n)", (255, 255, 255))
+        if server.yes == 1:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
+    def popkey(self):
+        server.key = 1
+        return BehaviorTree.SUCCESS
+
+    def popitem(self):
+        num = random.randrange(1, 3)
+        if num == 1:
+            server.red_potion += 1
+        elif num == 2:
+            server.big_red_potion += 1
+        elif num == 3:
+            server.blue_potion += 1
+        return BehaviorTree.SUCCESS
+
+    def popmonster(self):
+        num = random.randrange(1, 3)
+        if num == 1:
+            server.mushroom = Mushroom("new", self.x2, self.y2, 40)
+            game_world.add_object(server.mushroom, 1)
+        elif num == 2:
+            server.skeleton = Skeleton("new", self.x2, self.y2, 40)
+            game_world.add_object(server.skeleton, 1)
+        elif num == 3:
+            server.skeleton2 = Skeleton2("new", self.x2, self.y2, 40)
+            game_world.add_object(server.skeleton2, 1)
+        return BehaviorTree.SUCCESS
+
+    def opendoor(self):
+        if server.key == 1:
+            server.clear += 1
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
 
     def build_behavior_tree(self):
         wander_node = LeafNode("Wander", self.wander)

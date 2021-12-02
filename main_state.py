@@ -76,6 +76,10 @@ def handle_events():
             server.debugmode = 1
         elif event.type == SDL_KEYDOWN and event.key == SDLK_o:
             server.debugmode = 0
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_n:
+            server.no = 1
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_y:
+            server.yes = 1
         else:
             server.boy.handle_event(event)
 
