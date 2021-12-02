@@ -137,13 +137,13 @@ class Trigger:
     def popmonster(self):
         num = random.randrange(1, 3)
         if num == 1:
-            server.mushroom = Mushroom("new", self.x2, self.y2, 40)
+            server.mushroom = Mushroom("new", self.x2 + 50, self.y2 - 50, 40)
             game_world.add_object(server.mushroom, 1)
         elif num == 2:
-            server.skeleton = Skeleton("new", self.x2, self.y2, 40)
+            server.skeleton = Skeleton("new", self.x2 + 50, self.y2 - 50, 40)
             game_world.add_object(server.skeleton, 1)
         elif num == 3:
-            server.skeleton2 = Skeleton2("new", self.x2, self.y2, 40)
+            server.skeleton2 = Skeleton2("new", self.x2 + 50, self.y2 - 50, 40)
             game_world.add_object(server.skeleton2, 1)
         return BehaviorTree.SUCCESS
 
@@ -155,29 +155,25 @@ class Trigger:
             return BehaviorTree.FAIL
 
     def build_behavior_tree(self):
-        wander_node = LeafNode("Wander", self.wander)
+        order_node = LeafNode("Order", self.order)
 
-        wait_node = LeafNode('Wait', self.wait)
-        wander_wait_node = SequenceNode('WanderWait')
-        wander_wait_node.add_children(wander_node, wait_node)
+        key_node = LeafNode('Key', self.popkey())
+        popkey_node = SequenceNode('PopKey')
+        popkey_node.add_children(order_node, key_node)
 
-        get_next_position_node = LeafNode("Get Next Position", self.get_next_position)
-        move_to_target_node = LeafNode("Move to Target", self.move_to_target)
-        patrol_node = SequenceNode("Patrol")
-        patrol_node.add_children(get_next_position_node, move_to_target_node)
+        item_node = LeafNode('Item', self.popitem())
+        popitem_node = SequenceNode('PopItem')
+        popitem_node.add_children(order_node, item_node)
 
-        find_player_node = LeafNode("Find Player", self.find_player)
-        move_to_player_node = LeafNode("Move to Player", self.move_to_player)
-        chase_node = SequenceNode("Chase")
-        chase_node.add_children(find_player_node, move_to_player_node)
+        monster_node = LeafNode('Monster', self.popmonster())
+        popmonster_node = SequenceNode('PopMonster')
+        popmonster_node.add_children(order_node, monster_node)
 
-        patrol_chase_node = SelectorNode("PatrolChase")
-        patrol_chase_node.add_children(chase_node, patrol_node)
+        door_node = LeafNode('Door', self.opendoor())
+        opendoor_node = SequenceNode('OpenDoor')
+        opendoor_node.add_children(order_node, door_node)
 
-        wander_chase_node = SelectorNode("WanderChase")
-        wander_chase_node.add_children(chase_node, wander_node)
-
-        self.bt = BehaviorTree(wander_chase_node)
+        self.bt = BehaviorTree(popkey_node)
 
     def update(self):
         self.bt.run()
