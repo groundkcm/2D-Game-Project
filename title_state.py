@@ -94,7 +94,7 @@ def create_new_world():
     # with open('./data/stage1_tri.json', 'r') as f: # 트리거 클래스 만들기
     #     stage1_tri = json.load(f)
     # for data in stage1_tri:
-    #     server.trigger1 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'])
+    #     server.trigger1 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
     #     game_world.add_object(server.trigger1, 1)
 
     # with open('./data/stage2.json', 'r') as f:
@@ -106,7 +106,7 @@ def create_new_world():
     # with open('./data/stage2_tri.json', 'r') as f:
     #     stage2_tri = json.load(f)
     # for data in stage2_tri:
-    #     server.trigger2 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'])
+    #     server.trigger2 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
     #     game_world.add_object(server.trigger2, 1)
 
     # with open('./data/stage3.json', 'r') as f:

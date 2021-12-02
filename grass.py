@@ -188,7 +188,8 @@ class Trigger:
 
 
     def update(self):
-        self.bt.run()
+        if collide_wall(self, server.boy):
+            self.bt.run()
 
     def get_bb(self):
         cx1, cy1 = self.x1 - server.background.window_left, self.y1 - server.background.window_bottom
