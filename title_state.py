@@ -50,11 +50,11 @@ def create_new_world():
     server.boy = Boy()
     game_world.add_object(server.boy, 1)
 
-    # with open('./data/start.json', 'r') as f:
-    #     start_wall = json.load(f)
-    # for data in start_wall:
-    #     server.walls0 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
-    #     game_world.add_object(server.walls0, 1)
+    with open('./data/start.json', 'r') as f:
+        start_wall = json.load(f)
+    for data in start_wall:
+        server.walls0 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+        game_world.add_object(server.walls0, 1)
 
     with open('./data/start_tri.json', 'r') as f:
         start_tri = json.load(f)
@@ -62,11 +62,11 @@ def create_new_world():
         server.trigger0 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
         game_world.add_object(server.trigger0, 1)
 
-    with open('./data/stage1.json', 'r') as f:
-        stage1_wall = json.load(f)
-    for data in stage1_wall:
-        server.walls1 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
-        game_world.add_object(server.walls1, 1)
+    # with open('./data/stage1.json', 'r') as f:
+    #     stage1_wall = json.load(f)
+    # for data in stage1_wall:
+    #     server.walls1 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
+    #     game_world.add_object(server.walls1, 1)
 
     # with open('./data/stage2.json', 'r') as f:
     #     stage2_wall = json.load(f)
