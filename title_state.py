@@ -142,7 +142,7 @@ def create_new_world():
             game_world.add_object(server.skeleton, 1)
 
     elif server.clear == 3:
-        server.boy = Boy(1280, 100)
+        server.boy = Boy(1440, 100)
         game_world.add_object(server.boy, 1)
 
         with open('./data/stage3.json', 'r') as f:
