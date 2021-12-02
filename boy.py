@@ -365,7 +365,7 @@ class Boy:
             self.x = clamp(20, self.x, server.background.w - 20)
             self.y = clamp(20, self.y, server.background.h - 20)
         else:
-            self.x = clamp(20, self.x, server.background.w - 100)
+            self.x = clamp(100, self.x, server.background.w - 20)
             self.y = clamp(20, self.y, server.background.h - 20)
             # self.x = clamp(80, self.x, server.background.w - 80)
             # self.y = clamp(150, self.y, server.background.h - 180)
