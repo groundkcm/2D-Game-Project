@@ -304,11 +304,11 @@ class Boy:
         if self.dir == 1:
             self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
-            self.x -= -self.velocity * game_framework.frame_time
+            self.x += self.velocity * game_framework.frame_time
         if self.high > 0:
             self.y -= self.high * game_framework.frame_time
         elif self.high < 0:
-            self.y -= -self.high * game_framework.frame_time
+            self.y += self.high * game_framework.frame_time
         # self.add_event(READY)
 
     def hit(self):
@@ -355,8 +355,18 @@ class Boy:
                 self.cur_state = next_state_table[self.cur_state][event]
                 self.cur_state.enter(self, event)
 
-        self.x = clamp(20, self.x, server.background.w - 20)
-        self.y = clamp(20, self.y, server.background.h - 20)
+        if server.clear == 1:
+            self.x = clamp(20, self.x, server.background.w - 20)
+            self.y = clamp(20, self.y, server.background.h - 20)
+        elif server.clear == 2:
+            self.x = clamp(20, self.x, server.background.w - 20)
+            self.y = clamp(20, self.y, server.background.h - 20)
+        elif server.clear == 3:
+            self.x = clamp(20, self.x, server.background.w - 20)
+            self.y = clamp(20, self.y, server.background.h - 20)
+        else:
+            self.x = clamp(20, self.x, server.background.w - 20)
+            self.y = clamp(100, self.y, server.background.h - 300)
 
     def draw(self):
         self.hpbase.draw(150, 575)

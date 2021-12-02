@@ -139,6 +139,7 @@ class Wall:
 
     def update(self):
         if collide_wall(self, server.boy):
+            print('fff')
             server.boy.set_parent_wall(self)
 
     def get_bb(self):
@@ -147,5 +148,6 @@ class Wall:
         return cx1, cy1, cx2, cy2
 
     def draw(self):
-        draw_rectangle(*self.get_bb())
+        if server.debugmode == 1:
+            draw_rectangle(*self.get_bb())
 
