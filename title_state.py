@@ -82,7 +82,7 @@ def create_new_world():
     with open('./data/start_tri.json', 'r') as f:
         start_tri = json.load(f)
     for data in start_tri:
-        server.trigger0 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'])
+        server.trigger0 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
         game_world.add_object(server.trigger0, 1)
 
     # with open('./data/stage1.json', 'r') as f:

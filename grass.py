@@ -100,9 +100,9 @@ class Wall:
 
 
 class Trigger:
-    def __init__(self, x1=0, y1=0, x2=0, y2=0):
+    def __init__(self, x1=0, y1=0, x2=0, y2=0, num = 0):
         self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
-        self.build_behavior_tree()
+        self.build_behavior_tree(num)
         self.font = load_font('ENCR10B.TTF', 16)
 
     def __getstate__(self):
@@ -113,12 +113,16 @@ class Trigger:
         self.__init__()
         self.__dict__.update(state)
 
-    def order(self):
-        self.font.draw((self.x1 + self.x2)/2, (self.y1 + self.y2)/2, "주변을 살펴본다(y/n)", (255, 255, 255))
-        if server.yes == 1:
+    def order(self, num):
+        if num == 4:
+            self.font.draw((self.x1 + self.x2) / 2, (self.y1 + self.y2) / 2, "잠겨있다", (255, 255, 255))
             return BehaviorTree.SUCCESS
         else:
-            return BehaviorTree.FAIL
+            self.font.draw((self.x1 + self.x2)/2, (self.y1 + self.y2)/2, "주변을 살펴본다(y/n)", (255, 255, 255))
+            if server.yes == 1:
+                return BehaviorTree.SUCCESS
+            else:
+                return BehaviorTree.FAIL
 
     def popkey(self):
         server.key = 1
@@ -149,31 +153,39 @@ class Trigger:
 
     def opendoor(self):
         if server.key == 1:
-            server.clear += 1
-            return BehaviorTree.SUCCESS
+            self.font.draw((self.x1 + self.x2) / 2, (self.y1 + self.y2) / 2, "열쇠로 문을 연다(y/n)", (255, 255, 255))
+            if server.yes == 1:
+                server.clear += 1
+                return BehaviorTree.SUCCESS
+            else:
+                return BehaviorTree.FAIL
         else:
             return BehaviorTree.FAIL
 
-    def build_behavior_tree(self):
-        order_node = LeafNode("Order", self.order)
+    def build_behavior_tree(self, num):
+        order_node = LeafNode("Order", self.order(num))
 
-        key_node = LeafNode('Key', self.popkey())
-        popkey_node = SequenceNode('PopKey')
-        popkey_node.add_children(order_node, key_node)
+        if num == 1:
+            key_node = LeafNode('Key', self.popkey())
+            popkey_node = SequenceNode('PopKey')
+            popkey_node.add_children(order_node, key_node)
+            self.bt = BehaviorTree(popkey_node)
+        elif num == 2:
+            item_node = LeafNode('Item', self.popitem())
+            popitem_node = SequenceNode('PopItem')
+            popitem_node.add_children(order_node, item_node)
+            self.bt = BehaviorTree(popitem_node)
+        elif num == 3:
+            monster_node = LeafNode('Monster', self.popmonster())
+            popmonster_node = SequenceNode('PopMonster')
+            popmonster_node.add_children(order_node, monster_node)
+            self.bt = BehaviorTree(popmonster_node)
+        elif num == 4:
+            door_node = LeafNode('Door', self.opendoor())
+            opendoor_node = SequenceNode('OpenDoor')
+            opendoor_node.add_children(order_node, door_node)
+            self.bt = BehaviorTree(opendoor_node)
 
-        item_node = LeafNode('Item', self.popitem())
-        popitem_node = SequenceNode('PopItem')
-        popitem_node.add_children(order_node, item_node)
-
-        monster_node = LeafNode('Monster', self.popmonster())
-        popmonster_node = SequenceNode('PopMonster')
-        popmonster_node.add_children(order_node, monster_node)
-
-        door_node = LeafNode('Door', self.opendoor())
-        opendoor_node = SequenceNode('OpenDoor')
-        opendoor_node.add_children(order_node, door_node)
-
-        self.bt = BehaviorTree(popkey_node)
 
     def update(self):
         self.bt.run()
