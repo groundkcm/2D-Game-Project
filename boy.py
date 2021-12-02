@@ -333,8 +333,12 @@ class Boy:
         self.parent = wall
         if self.dir == 1:
             self.x -= self.velocity * game_framework.frame_time
-        elif self.dir == -1:
+        if self.dir == -1:
             self.x += self.velocity * game_framework.frame_time
+        if self.high > 0:
+            self.y -= self.high * game_framework.frame_time
+        if self.high < 0:
+            self.y += self.high * game_framework.frame_time
 
     def set_background(self, bg):
         self.bg = bg
