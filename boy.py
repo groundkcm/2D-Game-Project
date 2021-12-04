@@ -320,13 +320,15 @@ class Boy:
     def set_parent(self, enemy):
         self.parent = enemy
         if self.cur_state == AttackState:
-            enemy.x += enemy.speed * math.cos(enemy.dir) * game_framework.frame_time
+            enemy.set_parent(self)
             enemy.hit()
-        elif self.velocity == 0 and self.high == 0:
-            enemy.stop()
-            # self.hit()
+        # elif self.velocity == 0 and self.high == 0:
+        #     # enemy.stop()
+        #     enemy.set_parent(self)
+        #     self.hit()
         else:
-            self.stop()
+            enemy.set_parent(self)
+            # self.stop()
             self.hit()
 
     def set_parent_wall(self, wall):

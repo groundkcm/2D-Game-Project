@@ -133,7 +133,7 @@ class Mushroom:
         wander_chase_node = SelectorNode("WanderChase")
         wander_chase_node.add_children(chase_node, wander_node)
 
-        self.bt = BehaviorTree(wait_node)
+        self.bt = BehaviorTree(wander_chase_node)
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
@@ -155,13 +155,13 @@ class Mushroom:
     def set_parent(self, enemy):
         self.parent = enemy
         if math.cos(self.dir) > 0:
-            self.x -= self.speed * game_framework.frame_time * 10
+            self.x -= self.speed * game_framework.frame_time
         elif math.cos(self.dir) < 0:
-            self.x += self.speed * game_framework.frame_time * 10
+            self.x += self.speed * game_framework.frame_time
         if math.sin(self.dir) > 0:
-            self.y -= self.speed * game_framework.frame_time * 10
+            self.y -= self.speed * game_framework.frame_time
         elif math.sin(self.dir) < 0:
-            self.y += self.speed * game_framework.frame_time * 10
+            self.y += self.speed * game_framework.frame_time
 
     def update(self):
         if self.hp <= 0:
