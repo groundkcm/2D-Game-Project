@@ -236,7 +236,7 @@ class Trigger:
                 server.clear += 1
                 game_world.clear()
                 title_state.create_new_world()
-                Trigger.check = 0
+            Trigger.check = 0
 
 
         # pass
