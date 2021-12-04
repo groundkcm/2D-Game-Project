@@ -93,27 +93,13 @@ class Wall:
             if isinstance(o, Mushroom):
                 if collide_wall(self, o):
                     server.mushroom.set_parent(self)
-                    break
-            if isinstance(o, Skeleton2):
+            elif isinstance(o, Skeleton2):
                 if collide_wall(self, o):
                     server.skeleton2.set_parent(self)
-                    break
-            if isinstance(o, Skeleton):
+            elif isinstance(o, Skeleton):
                 if collide_wall(self, o):
                     server.skeleton.set_parent(self)
-                    break
-        # for mushroom in server.mushroom:
-        #     if collide_wall(self, mushroom):
-        #         mushroom.set_parent_wall(self)
-        #         break
-        # for skeleton2 in server.skeleton2:
-        #     if collide_wall(self, skeleton2):
-        #         skeleton2.set_parent_wall(self)
-        #         break
-        # for skeleton in server.skeleton:
-        #     if collide_wall(self, skeleton):
-        #         skeleton.set_parent_wall(self)
-        #         break
+
         if collide_wall(self, server.boy):
             # print('stop')
             server.boy.set_parent_wall(self)
