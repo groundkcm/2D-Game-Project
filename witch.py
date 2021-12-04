@@ -125,10 +125,10 @@ class Witch:
 
         patrol_chase_node = SelectorNode("PatrolChase")
         patrol_chase_node.add_children(chase_node, patrol_node)
-        self.bt = BehaviorTree(wander_wait_node)
+        self.bt = BehaviorTree(wait_node)
 
     def get_bb(self):
-        return self.x - 20, self.y - 25, self.x + 20, self.y + 20
+        return self.x - 75, self.y - 75, self.x + 75, self.y + 50
 
     def stop(self):
         if self.dir == 1:
@@ -148,33 +148,23 @@ class Witch:
             server.boy.set_parent(self)
 
         self.bt.run()
-        self.frame4 = (self.frame4 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-        self.frame8 = (self.frame8 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
         Witch.px += self.speed * math.cos(self.dir) * game_framework.frame_time
         Witch.py += self.speed * math.sin(self.dir) * game_framework.frame_time
         Witch.px = clamp(-450, Witch.px, 770)
         Witch.py = clamp(-330, Witch.py, 560)
-        if server.x >= 640:
-            server.x = 640
-        elif server.x <= 400:
-            server.x = 400
-        if server.y >= 480:
-            server.y = 480
-        elif server.y <= 300:
-            server.y = 300
-        self.x, self.y = 1280 - server.x * 2 + Witch.px, 960 - server.y * 2 + Witch.py
 
     def draw(self):
         if math.cos(self.dir) < 0:
             if self.speed == 0:
-                Witch.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', self.x, self.y,150, 150)
+                Witch.images['idle'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', self.x, self.y, 150, 150)
             else:
-                Witch.images['walk'].clip_composite_draw(int(self.frame8) * 150, 0, 150, 150, 0, 'h', self.x, self.y,150, 150)
+                Witch.images['walk'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', self.x, self.y, 150, 150)
         else:
             if self.speed == 0:
-                Witch.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, self.x, self.y)
+                Witch.images['idle'].clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
             else:
-                Witch.images['walk'].clip_draw(int(self.frame8) * 150, 0, 150, 150, self.x, self.y)
+                Witch.images['walk'].clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
