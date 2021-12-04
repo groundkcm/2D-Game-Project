@@ -302,13 +302,13 @@ class Boy:
 
     def stop(self):#튕기기 다시
         if self.dir == 1:
-            self.x -= self.velocity * game_framework.frame_time * 10
+            self.x -= self.velocity * game_framework.frame_time
         elif self.dir == -1:
-            self.x -= self.velocity * game_framework.frame_time * 10
+            self.x -= self.velocity * game_framework.frame_time
         if self.high > 0:
-            self.y -= self.high * game_framework.frame_time * 10
+            self.y -= self.high * game_framework.frame_time
         elif self.high < 0:
-            self.y -= self.high * game_framework.frame_time * 10
+            self.y -= self.high * game_framework.frame_time
         # self.add_event(READY)
 
     def hit(self):
@@ -322,13 +322,11 @@ class Boy:
         if self.cur_state == AttackState:
             enemy.set_parent(self)
             enemy.hit()
-        # elif self.velocity == 0 and self.high == 0:
-        #     # enemy.stop()
-        #     enemy.set_parent(self)
-        #     self.hit()
+        if enemy.speed == 0:
+            self.stop()
+            self.hit()
         else:
             enemy.set_parent(self)
-            # self.stop()
             self.hit()
 
     def set_parent_wall(self, wall):

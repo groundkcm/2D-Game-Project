@@ -153,15 +153,16 @@ class Skeleton:
         if math.cos(self.dir) > 0:
             self.x -= self.speed * game_framework.frame_time * 10
         elif math.cos(self.dir) < 0:
-            self.x -= self.speed * game_framework.frame_time * 10
+            self.x += self.speed * game_framework.frame_time * 10
         if math.sin(self.dir) > 0:
             self.y -= self.speed * game_framework.frame_time * 10
         elif math.sin(self.dir) < 0:
-            self.y -= self.speed * game_framework.frame_time * 10
+            self.y += self.speed * game_framework.frame_time * 10
 
     def update(self):
         if self.hp <= 0:
             game_world.remove_object(self)
+
         if collide(self, server.boy):
             server.boy.set_parent(self)
 
