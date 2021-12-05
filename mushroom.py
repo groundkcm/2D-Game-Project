@@ -65,9 +65,7 @@ class Mushroom:
         positions = []
         if self.pnum == 2:
             positions = [self.p1, self.p2]
-        if self.pnum == 3:
-            positions = [self.p1, self.p2, self.p3]
-        if self.pnum == 4:
+        elif self.pnum == 4:
             positions = [self.p1, self.p2, self.p3, self.p4]
 
         self.patrol_positions = []

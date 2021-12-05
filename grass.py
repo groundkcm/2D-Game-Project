@@ -9,6 +9,7 @@ import game_world
 from mushroom import Mushroom
 from skeleton2 import Skeleton2
 from skeleton import Skeleton
+from witch import Witch
 
 png_names = ['inventory', 'stage1', 'stage2', 'stage3', 'start']
 
@@ -99,6 +100,9 @@ class Wall:
             elif isinstance(o, Skeleton):
                 if collide_wall(self, o):
                     server.skeleton.set_parent(self)
+            elif isinstance(o, Witch):
+                if collide_wall(self, o):
+                    server.witch.set_parent(self)
 
         if collide_wall(self, server.boy):
             # print('stop')
@@ -224,10 +228,6 @@ class Trigger:
                 title_state.create_new_world()
             Trigger.check = 0
 
-
-        # pass
-        # if collide_wall(self, server.boy):
-        #     self.bt.run()
 
     def get_bb(self):
         cx1, cy1 = self.x1 - server.background.window_left, self.y1 - server.background.window_bottom
