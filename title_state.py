@@ -11,7 +11,6 @@ import server
 
 from boy import Boy
 from mushroom import Mushroom
-from skeleton2 import Skeleton2
 from skeleton import Skeleton
 from skeleton2 import Skeleton2
 from witch import Witch

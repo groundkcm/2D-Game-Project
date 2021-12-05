@@ -1,9 +1,13 @@
 import game_framework
 from pico2d import *
-from collision import collide
 import server
 import game_world
 import math
+
+from mushroom import Mushroom
+from skeleton import Skeleton
+from skeleton2 import Skeleton2
+from witch import Witch
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 15.0
@@ -63,12 +67,12 @@ class RunState:
         global soundcheck
         if boy.hp == 0:
             boy.add_event(DEAD)
+        if Skeleton2.atk == 1:
+            boy.hframe = (boy.hframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
         boy.iframe = (boy.iframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
         boy.x += boy.velocity * game_framework.frame_time
         boy.y += boy.high * game_framework.frame_time
-        # boy.x = clamp(25, boy.x, 800 - 25)
-        # boy.y = clamp(25, boy.y, 600 - 25)
         # RunState.soundcheck += 1
         # if RunState.soundcheck == 100:
         #     boy.walking()
@@ -77,8 +81,12 @@ class RunState:
     # @staticmethod
     def draw(boy):
         cx, cy = boy.x - server.background.window_left, boy.y - server.background.window_bottom
-
-        if boy.velocity > 0:
+        if Skeleton2.atk == 1:
+            if boy.dir == 1:
+                Boy.images['hit'].clip_composite_draw(int(boy.hframe) * 112, 0, 112, 100, 0, 'h', cx, cy, 112, 100)
+            else:
+                Boy.images['hit'].clip_draw(int(boy.hframe) * 112, 0, 112, 100, cx, cy)
+        elif boy.velocity > 0:
             Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, cx, cy)
             boy.dir = 1
         elif boy.velocity < 0:
@@ -259,6 +267,7 @@ class Boy:
         self.click = 0
         self.frame = 0
         self.iframe = 0
+        self.hframe = 0
         self.timer = 0
         self.event_que = []
         self.cur_state = RunState
@@ -377,7 +386,8 @@ class Boy:
         self.hpbar.clip_draw(0, 0, self.hp * 2, 13, 150 - (100 - self.hp), 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
-        debug_print('x:' + str(int(self.x)) + ' y:' + str(int(self.y)))
+        # debug_print('x:' + str(int(self.x)) + ' y:' + str(int(self.y)))
+        debug_print('atk:' + str(Skeleton2.atk))
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
 
