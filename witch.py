@@ -34,9 +34,11 @@ class Witch:
             for name in animation_names:
                 Witch.images[name] = load_image("./sheets/witch/" + name + ".png")
 
-    def __init__(self):
-        self.x, self.y = 100, 100
-        self.hp = 500
+    def __init__(self, name='NONAME', x=0, y=0, hp=1):
+        self.name = name
+        self.x, self.y = x, y
+        self.hp = hp
+        self.parent = None
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
         # self.font = load_font('ENCR10B.TTF', 16)
@@ -128,7 +130,9 @@ class Witch:
         self.bt = BehaviorTree(patrol_node)
 
     def get_bb(self):
-        return self.x - 75, self.y - 75, self.x + 75, self.y + 50
+        cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
+
+        return cx - 75, cy - 75, cx + 75, cy + 50
 
     def stop(self):
         if self.dir == 1:
@@ -149,25 +153,27 @@ class Witch:
 
         self.bt.run()
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
-        Witch.px += self.speed * math.cos(self.dir) * game_framework.frame_time
-        Witch.py += self.speed * math.sin(self.dir) * game_framework.frame_time
-        Witch.px = clamp(-450, Witch.px, 770)
-        Witch.py = clamp(-330, Witch.py, 560)
+        self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
+        self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
+        self.x = clamp(50, self.x, server.background.w - 50)
+        self.y = clamp(50, self.y, server.background.h - 50)
 
     def draw(self):
+        cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
+
         if math.cos(self.dir) < 0:
             if self.speed == 0:
-                Witch.images['idle'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', self.x, self.y, 150, 150)
+                Witch.images['idle'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
             else:
-                Witch.images['walk'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', self.x, self.y, 150, 150)
+                Witch.images['walk'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
         else:
             if self.speed == 0:
-                Witch.images['idle'].clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
+                Witch.images['idle'].clip_draw(int(self.frame) * 150, 0, 150, 150, cx, cy)
             else:
-                Witch.images['walk'].clip_draw(int(self.frame) * 150, 0, 150, 150, self.x, self.y)
+                Witch.images['walk'].clip_draw(int(self.frame) * 150, 0, 150, 150, cx, cy)
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp, 3, self.x - (40 - self.hp) / 2, self.y + 30)
+        self.hpbar.clip_draw(0, 0, self.hp * 40 // 400, 3, cx - (40 - self.hp * 40 // 15)/2, cy + 50)
 
 
