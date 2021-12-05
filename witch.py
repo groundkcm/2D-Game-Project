@@ -21,7 +21,7 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 5
 
-animation_names = ['idle']
+animation_names = ['idle', 'attack']
 
 class Witch:
     images = None
@@ -143,7 +143,7 @@ class Witch:
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
 
-        return cx - 75, cy - 75, cx + 75, cy + 50
+        return cx - 40, cy - 40, cx + 40, cy + 50
 
     def stop(self):
         if self.dir == 1:
@@ -171,17 +171,17 @@ class Witch:
 
         if math.cos(self.dir) < 0:
             if self.speed == 0:
-                Witch.images['idle'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
+                Witch.images['idle'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
             else:
-                Witch.images['idle'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
+                Witch.images['idle'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
         else:
             if self.speed == 0:
-                Witch.images['idle'].clip_draw(int(self.frame) * 150, 0, 150, 150, cx, cy)
+                Witch.images['idle'].clip_draw(int(self.frame) * 100, 0, 100, 100, cx, cy)
             else:
-                Witch.images['idle'].clip_draw(int(self.frame) * 150, 0, 150, 150, cx, cy)
+                Witch.images['idle'].clip_draw(int(self.frame) * 100, 0, 100, 100, cx, cy)
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp * 40 // 400, 3, cx - (40 - self.hp * 40 // 15)/2, cy + 50)
+        self.hpbar.clip_draw(0, 0, self.hp * 40 // 400, 3, cx - (40 - self.hp * 40 // 400)/2, cy + 50)
 
 
