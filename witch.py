@@ -46,7 +46,7 @@ class Witch:
         self.patrol_order = 1
         self.build_behavior_tree()
         self.dir = random.random() * 2 * math.pi
-        self.spped = 0
+        self.speed = 0
         self.click = 0
         self.wait_timer = 2.0
         self.frame = 0
