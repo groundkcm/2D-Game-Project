@@ -27,6 +27,7 @@ class Witch:
     images = None
     check = 0
     px, py = 0, 0
+    atk = 0
 
     def load_images(self):
         if Witch.images == None:
@@ -42,7 +43,6 @@ class Witch:
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
         # self.font = load_font('ENCR10B.TTF', 16)
-        self.prepare_patrol_points()
         self.patrol_order = 1
         self.build_behavior_tree()
         self.dir = random.random() * 2 * math.pi
@@ -50,14 +50,9 @@ class Witch:
         self.click = 0
         self.wait_timer = 2.0
         self.frame = 0
+        self.aframe = 0
         self.timer = 0
 
-
-    def prepare_patrol_points(self):
-        positions = [(43, 750), (1118, 750), (1050, 530), (575, 220), (235, 33), (575, 220), (1050, 530), (1118, 750)]
-        self.patrol_positions = []
-        for p in positions:
-            self.patrol_positions.append((p[0], 1024 - p[1]))
 
     def wander(self):
         self.speed = RUN_SPEED_PPS
@@ -83,7 +78,8 @@ class Witch:
 
     def find_player(self):
         distance = (server.boy.x - self.x) ** 2 + (server.boy.y - self.y) ** 2
-        if distance < (PIXEL_PER_METER * 10) ** 2:
+        if distance < (PIXEL_PER_METER * 40) ** 2:
+            Witch.atk = 1
             return BehaviorTree.SUCCESS
         else:
             self.speed = 0
@@ -94,20 +90,6 @@ class Witch:
         self.dir = math.atan2(server.boy.y - self.y, server.boy.x - self.x)
         return BehaviorTree.SUCCESS
 
-    def get_next_position(self):
-        self.target_x, self.target_y = self.patrol_positions[self.patrol_order % len(self.patrol_positions)]
-        self.patrol_order += 1
-        self.dir = math.atan2(self.target_y - self.y, self.target_x - self.x)
-        return BehaviorTree.SUCCESS
-
-    def move_to_target(self):
-        self.speed = RUN_SPEED_PPS
-        distance = (self.target_x - self.x) ** 2 + (self.target_y - self.y) ** 2
-        if distance < PIXEL_PER_METER ** 2:
-            return BehaviorTree.SUCCESS
-        else:
-            return BehaviorTree.RUNNING
-
     def build_behavior_tree(self):
         wander_node = LeafNode("Wander", self.wander)
 
@@ -115,19 +97,15 @@ class Witch:
         wander_wait_node = SequenceNode('WanderWait')
         wander_wait_node.add_children(wander_node, wait_node)
 
-        get_next_position_node = LeafNode("Get Next Position", self.get_next_position)
-        move_to_target_node = LeafNode("Move to Target", self.move_to_target)
-        patrol_node = SequenceNode("Patrol")
-        patrol_node.add_children(get_next_position_node, move_to_target_node)
-
         find_player_node = LeafNode("Find Player", self.find_player)
         move_to_player_node = LeafNode("Move to Player", self.move_to_player)
         chase_node = SequenceNode("Chase")
         chase_node.add_children(find_player_node, move_to_player_node)
 
-        patrol_chase_node = SelectorNode("PatrolChase")
-        patrol_chase_node.add_children(chase_node, patrol_node)
-        self.bt = BehaviorTree(patrol_node)
+        Chase_wander_node = SelectorNode('ChaseWander')
+        Chase_wander_node.add_children(chase_node, wander_node)
+
+        self.bt = BehaviorTree(Chase_wander_node)
 
     def set_parent(self, enemy):
         self.parent = enemy
@@ -143,24 +121,28 @@ class Witch:
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
 
-        return cx - 40, cy - 40, cx + 40, cy + 50
+        return cx - 40, cy - 50, cx + 40, cy + 45
 
     def stop(self):
-        if self.dir == 1:
-            self.x -= self.speed * math.cos(self.dir) * game_framework.frame_time
-        elif self.dir == -1:
-            self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
+        self.speed = 0
+
+    def hit(self):
+        Witch.ht = 1
         Witch.check += 1
         if Witch.check == 30:
             Witch.check = 0
             self.hp -= 1
 
     def update(self):
+        if self.hp <= 0:
+            game_world.remove_object(self)
+
         if collide(self, server.boy):
             server.boy.set_parent(self)
 
         self.bt.run()
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
+        self.aframe = (self.aframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 17
         self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
         self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
         self.x = clamp(50, self.x, server.background.w - 50)
@@ -169,7 +151,13 @@ class Witch:
     def draw(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
 
-        if math.cos(self.dir) < 0:
+        if Witch.atk == 1:
+            if math.cos(self.dir) < 0:
+                Witch.images['attack'].clip_composite_draw(int(self.aframe) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
+            else:
+                Witch.images['attack'].clip_draw(int(self.aframe) * 100, 0, 100, 100, cx, cy, 100, 100)
+            Witch.atk = 0
+        elif math.cos(self.dir) < 0:
             if self.speed == 0:
                 Witch.images['idle'].clip_composite_draw(int(self.frame) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
             else:
@@ -182,6 +170,6 @@ class Witch:
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp * 40 // 400, 3, cx - (40 - self.hp * 40 // 400)/2, cy + 50)
+        self.hpbar.clip_draw(0, 0, self.hp * 40 // 200, 3, cx - (40 - self.hp * 40 // 200)/2, cy + 50)
 
 
