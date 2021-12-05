@@ -247,7 +247,6 @@ next_state_table = {
 class Boy:
     images = None
     check = 0
-    left, right, top, bottom = 0, 0, 0, 0
 
     def load_images(self):
         if Boy.images == None:

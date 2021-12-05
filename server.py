@@ -6,6 +6,8 @@ clear = 0
 yes = 0
 no = 0
 
+left, right, top, bottom = 0, 0, 0, 0
+
 red_potion = 0
 big_red_potion = 0
 blue_potion = 0

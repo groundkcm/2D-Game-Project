@@ -183,6 +183,7 @@ class Skeleton:
         if self.hp <= 0:
             self.dframe = (self.dframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
 
+        server.left, server.right, server.top, server.bottom = 0, 0, 0, 0
         if collide(self, server.boy):
             Skeleton.atk = 1
             server.boy.set_parent(self)
