@@ -62,6 +62,7 @@ class Skeleton2:
         self.__dict__.update(state)
 
     def prepare_patrol_points(self):
+        positions = []
         if self.pnum == 2:
             positions = [self.p1, self.p2]
         if self.pnum == 3:
