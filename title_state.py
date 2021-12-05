@@ -14,7 +14,7 @@ from mushroom import Mushroom
 from skeleton2 import Skeleton2
 from skeleton import Skeleton
 from skeleton2 import Skeleton2
-# from skeleton import Skeleton
+from witch import Witch
 from grass import Wall, Trigger
 from grass import FixedBackground as Grass
 
@@ -98,13 +98,13 @@ def create_new_world():
         with open('./data/stage1_mushroom.json', 'r') as f:
             mushroom_data_list = json.load(f)
         for data in mushroom_data_list:
-            server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'])
+            server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'], data['num'])
             game_world.add_object(server.mushroom, 1)
 
         with open('./data/stage1_skeleton2.json', 'r') as f:
             skeleton2_data_list = json.load(f)
         for data in skeleton2_data_list:
-            server.skeleton2 = Skeleton2(data['name'], data['x'], data['y'], data['hp'])
+            server.skeleton2 = Skeleton2(data['name'], data['x'], data['y'], data['hp'], data['num'])
             game_world.add_object(server.skeleton2, 1)
 
     elif server.clear == 2:
@@ -126,19 +126,19 @@ def create_new_world():
         with open('./data/stage2_mushroom.json', 'r') as f:
             mushroom_data_list = json.load(f)
         for data in mushroom_data_list:
-            server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'])
+            server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'], data['num'])
             game_world.add_object(server.mushroom, 1)
 
         with open('./data/stage2_skeleton2.json', 'r') as f:
             skeleton2_data_list = json.load(f)
         for data in skeleton2_data_list:
-            server.skeleton2 = Skeleton2(data['name'], data['x'], data['y'], data['hp'])
+            server.skeleton2 = Skeleton2(data['name'], data['x'], data['y'], data['hp'], data['num'])
             game_world.add_object(server.skeleton2, 1)
 
         with open('./data/stage2_skeleton.json', 'r') as f:
             skeleton_data_list = json.load(f)
         for data in skeleton_data_list:
-            server.skeleton = Skeleton(data['name'], data['x'], data['y'], data['hp'])
+            server.skeleton = Skeleton(data['name'], data['x'], data['y'], data['hp'], data['num'])
             game_world.add_object(server.skeleton, 1)
 
     elif server.clear == 3:
@@ -150,6 +150,9 @@ def create_new_world():
         for data in stage3_wall:
             server.walls3 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
             game_world.add_object(server.walls3, 1)
+
+        server.witch = Witch("ff", 700, 400, 15)
+        game_world.add_object(server.witch, 1)
     else:
         server.boy = Boy(300, 600)
         game_world.add_object(server.boy, 1)

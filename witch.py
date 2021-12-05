@@ -125,7 +125,7 @@ class Witch:
 
         patrol_chase_node = SelectorNode("PatrolChase")
         patrol_chase_node.add_children(chase_node, patrol_node)
-        self.bt = BehaviorTree(wait_node)
+        self.bt = BehaviorTree(patrol_node)
 
     def get_bb(self):
         return self.x - 75, self.y - 75, self.x + 75, self.y + 50
