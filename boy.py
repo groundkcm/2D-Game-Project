@@ -247,6 +247,7 @@ next_state_table = {
 class Boy:
     images = None
     check = 0
+    left, right, top, bottom = 0, 0, 0, 0
 
     def load_images(self):
         if Boy.images == None:
@@ -305,7 +306,7 @@ class Boy:
             if self.dir == 1:
                 return cx - 30, cy - 20, cx + 10, cy + 20
             else:
-                return cx - 10, cy - 20, cx + 30, cy + 20
+                return cx - 5, cy - 20, cx + 25, cy + 20
         elif self.cur_state == DeadState:
             return cx - 30, cy - 20, cx + 10, cy + 20
 
