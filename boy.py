@@ -340,14 +340,22 @@ class Boy:
 
     def set_parent_wall(self, wall):
         self.parent = wall
-        if self.dir == 1:
-            self.x -= self.velocity * game_framework.frame_time * 10
-        elif self.dir == -1:
-            self.x -= self.velocity * game_framework.frame_time * 10
-        if self.high > 0:
-            self.y -= self.high * game_framework.frame_time * 10
-        elif self.high < 0:
-            self.y -= self.high * game_framework.frame_time * 10
+        if server.left:
+            self.x -= self.velocity * game_framework.frame_time * 5
+        if server.right:
+            self.x += self.velocity * game_framework.frame_time * 5
+        if server.top:
+            self.y -= self.high * game_framework.frame_time * 5
+        if server.bottom:
+            self.y += self.high * game_framework.frame_time * 5
+        # if self.dir == 1:
+        #     self.x -= self.velocity * game_framework.frame_time * 10
+        # elif self.dir == -1:
+        #     self.x -= self.velocity * game_framework.frame_time * 10
+        # if self.high > 0:
+        #     self.y -= self.high * game_framework.frame_time * 10
+        # elif self.high < 0:
+        #     self.y -= self.high * game_framework.frame_time * 10
 
     def set_background(self, bg):
         self.bg = bg
@@ -387,7 +395,7 @@ class Boy:
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
         # debug_print('x:' + str(int(self.x)) + ' y:' + str(int(self.y)))
-        debug_print('atk:' + str(Skeleton2.atk))
+        debug_print('atk:' + str(Mushroom.atk))
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
 
