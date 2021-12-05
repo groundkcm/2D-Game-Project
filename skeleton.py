@@ -100,7 +100,7 @@ class Skeleton:
 
     def find_player(self):
         distance = (server.boy.x - self.x) ** 2 + (server.boy.y - self.y) ** 2
-        if distance < (PIXEL_PER_METER * 30) ** 2 and self.num == 1:
+        if distance < (PIXEL_PER_METER * 20) ** 2 and self.num == 1:
             return BehaviorTree.SUCCESS
         elif distance < (PIXEL_PER_METER * 10) ** 2 and self.num == 2:
             return BehaviorTree.SUCCESS

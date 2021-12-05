@@ -100,7 +100,7 @@ class Mushroom:
 
     def find_player(self):
         distance = (server.boy.x - self.x) ** 2 + (server.boy.y - self.y) ** 2
-        if distance < (PIXEL_PER_METER * 4) ** 2:
+        if distance < (PIXEL_PER_METER * 10) ** 2:
             return BehaviorTree.SUCCESS
         else:
             self.speed = 0
