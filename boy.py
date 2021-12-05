@@ -68,7 +68,7 @@ class RunState:
         if boy.hp == 0:
             boy.add_event(DEAD)
         if Skeleton2.atk == 1:
-            boy.hframe = (boy.hframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
+            boy.hframe = (0.5 * boy.hframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
         boy.iframe = (boy.iframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
         boy.x += boy.velocity * game_framework.frame_time
@@ -81,12 +81,12 @@ class RunState:
     # @staticmethod
     def draw(boy):
         cx, cy = boy.x - server.background.window_left, boy.y - server.background.window_bottom
-        if Skeleton2.atk == 1:
-            if boy.dir == 1:
-                Boy.images['hit'].clip_composite_draw(int(boy.hframe) * 112, 0, 112, 100, 0, 'h', cx, cy, 112, 100)
-            else:
-                Boy.images['hit'].clip_draw(int(boy.hframe) * 112, 0, 112, 100, cx, cy)
-        elif boy.velocity > 0:
+        # if Skeleton2.atk == 1:
+        #     if boy.dir == 1:
+        #         Boy.images['hit'].clip_composite_draw(int(boy.hframe) * 112, 0, 112, 100, 0, 'h', cx, cy, 112, 100)
+        #     else:
+        #         Boy.images['hit'].clip_draw(int(boy.hframe) * 112, 0, 112, 100, cx, cy)
+        if boy.velocity > 0:
             Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, cx, cy)
             boy.dir = 1
         elif boy.velocity < 0:
@@ -289,18 +289,18 @@ class Boy:
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
 
-        if self.cur_state == RunState:
+        if self.cur_state == DefenceState:
+            if self.dir == 1:
+                return cx - 30, cy - 35, cx + 5, cy + 5
+            else:
+                return cx - 5, cy - 35, cx + 30, cy + 5
+        elif self.cur_state == RunState:
             if self.dir == 1:
                 return cx - 30, cy - 25, cx + 10, cy + 20
             else:
                 return cx - 10, cy - 25, cx + 30, cy + 20
         elif self.cur_state == AttackState:
             return cx - 30, cy - 25, cx + 25, cy + 25
-        elif self.cur_state == DefenceState:
-            if self.dir == 1:
-                return cx - 30, cy - 35, cx + 5, cy + 5
-            else:
-                return cx - 5, cy - 35, cx + 30, cy + 5
         elif self.cur_state == JumpState:
             if self.dir == 1:
                 return cx - 30, cy - 20, cx + 10, cy + 20

@@ -140,13 +140,13 @@ class Skeleton2:
 
         wait_node = LeafNode('Wait', self.wait)
         if self.num == 1:
-            Chase_wait_node = SequenceNode('ChaseWait')
+            Chase_wait_node = SelectorNode('ChaseWait')
             Chase_wait_node.add_children(chase_node, wait_node)
-            self.bt = BehaviorTree(Chase_wait_node)
+            self.bt = BehaviorTree(wait_node)
         elif self.num == 2:
             patrol_chase_node = SelectorNode("PatrolChase")
             patrol_chase_node.add_children(chase_node, patrol_node)
-            self.bt = BehaviorTree(patrol_chase_node)
+            self.bt = BehaviorTree(wait_node)
 
 
     def get_bb(self):
@@ -204,6 +204,7 @@ class Skeleton2:
             else:
                 Skeleton2.images['dead'].clip_draw(int(self.dframe) * 33, 0, 33, 32, cx, cy, tw, th)
             if self.dframe >= 14:
+                Skeleton2.atk = 0
                 game_world.remove_object(self)
         elif Skeleton2.ht == 1:
             tw, th = int(30 * 2), int(32 * 2)
