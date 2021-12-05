@@ -29,11 +29,16 @@ class Mushroom:
             for name in animation_names:
                 Mushroom.images[name] = load_image("./sheets/mushroom/" + name + ".png")
 
-    def __init__(self, name='NONAME', x=0, y=0, hp=1, num=0):
+    def __init__(self, name='NONAME', x=0, y=0, hp=1, num=0, pnum=0, p1x=None, p2x=None, p3x=None, p4x=None, p1y=None, p2y=None, p3y=None, p4y=None):
         self.name = name
         self.x, self.y = x, y
         self.hp = hp
         self.num = num
+        self.pnum = pnum
+        self.p1 = p1x, p1y
+        self.p2 = p2x, p2y
+        self.p3 = p3x, p3y
+        self.p4 = p4x, p4y
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
         self.prepare_patrol_points()
@@ -48,7 +53,7 @@ class Mushroom:
         self.wait_timer = 2.0
 
     def __getstate__(self):
-        state = {'x': self.x, 'y': self.y, 'dir':self.dir,'name' : self.name,'hp':self.hp}
+        state = {'x': self.x, 'y': self.y, 'dir':self.dir, 'name' : self.name, 'hp':self.hp}
         return state
 
     def __setstate__(self, state):
@@ -57,7 +62,13 @@ class Mushroom:
 
 
     def prepare_patrol_points(self):
-        positions = [(43, 750), (1118, 750), (1050, 530), (575, 220), (235, 33), (575, 220), (1050, 530), (1118, 750)]
+        if self.pnum == 2:
+            positions = [self.p1, self.p2]
+        if self.pnum == 3:
+            positions = [self.p1, self.p2, self.p3]
+        if self.pnum == 4:
+            positions = [self.p1, self.p2, self.p3, self.p4]
+
         self.patrol_positions = []
         for p in positions:
             self.patrol_positions.append((p[0], 1024 - p[1]))

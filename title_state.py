@@ -98,13 +98,13 @@ def create_new_world():
         with open('./data/stage1_mushroom.json', 'r') as f:
             mushroom_data_list = json.load(f)
         for data in mushroom_data_list:
-            server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'], data['num'])
+            server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'], data['num'], data['pnum'], data['p1x'], data['p2x'], data['p3x'], data['p4x'], data['p1y'], data['p2y'], data['p3y'], data['p4y'])
             game_world.add_object(server.mushroom, 1)
 
         with open('./data/stage1_skeleton2.json', 'r') as f:
             skeleton2_data_list = json.load(f)
         for data in skeleton2_data_list:
-            server.skeleton2 = Skeleton2(data['name'], data['x'], data['y'], data['hp'], data['num'])
+            server.skeleton2 = Skeleton2(data['name'], data['x'], data['y'], data['hp'], data['num'], data['pnum'], data['p1x'], data['p2x'], data['p3x'], data['p4x'], data['p1y'], data['p2y'], data['p3y'], data['p4y'])
             game_world.add_object(server.skeleton2, 1)
 
     elif server.clear == 2:
@@ -126,19 +126,19 @@ def create_new_world():
         with open('./data/stage2_mushroom.json', 'r') as f:
             mushroom_data_list = json.load(f)
         for data in mushroom_data_list:
-            server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'], data['num'])
+            server.mushroom = Mushroom(data['name'], data['x'], data['y'], data['hp'], data['num'], data['pnum'], data['p1x'], data['p2x'], data['p3x'], data['p4x'], data['p1y'], data['p2y'], data['p3y'], data['p4y'])
             game_world.add_object(server.mushroom, 1)
 
         with open('./data/stage2_skeleton2.json', 'r') as f:
             skeleton2_data_list = json.load(f)
         for data in skeleton2_data_list:
-            server.skeleton2 = Skeleton2(data['name'], data['x'], data['y'], data['hp'], data['num'])
+            server.skeleton2 = Skeleton2(data['name'], data['x'], data['y'], data['hp'], data['num'], data['pnum'], data['p1x'], data['p2x'], data['p3x'], data['p4x'], data['p1y'], data['p2y'], data['p3y'], data['p4y'])
             game_world.add_object(server.skeleton2, 1)
 
         with open('./data/stage2_skeleton.json', 'r') as f:
             skeleton_data_list = json.load(f)
         for data in skeleton_data_list:
-            server.skeleton = Skeleton(data['name'], data['x'], data['y'], data['hp'], data['num'])
+            server.skeleton = Skeleton(data['name'], data['x'], data['y'], data['hp'], data['num'], data['pnum'], data['p1x'], data['p2x'], data['p3x'], data['p4x'], data['p1y'], data['p2y'], data['p3y'], data['p4y'])
             game_world.add_object(server.skeleton, 1)
 
     elif server.clear == 3:
