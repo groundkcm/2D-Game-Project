@@ -1,6 +1,6 @@
 [
-  {"name": "Nayeon", "x":  100, "y": 250, "hp" : 15, "num": 1},
-  {"name": "Momo"  , "x": 400, "y":  700, "hp" : 15, "num": 2},
-  {"name": "Mina"  , "x": 950, "y":  250, "hp" : 15, "num": 2},
-  {"name": "Zwi"   , "x": 1100, "y": 700, "hp" : 15, "num": 1}
+  {"name": "Nayeon", "x":  100, "y": 250, "hp" : 15, "num": 1, "pnum":  0},
+  {"name": "Momo"  , "x": 400, "y":  700, "hp" : 15, "num": 2, "pnum":  2},
+  {"name": "Mina"  , "x": 950, "y":  250, "hp" : 15, "num": 2, "pnum":  2},
+  {"name": "Zwi"   , "x": 1100, "y": 700, "hp" : 15, "num": 1, "pnum":  0}
 ]
