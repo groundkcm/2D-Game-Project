@@ -21,7 +21,7 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
-animation_names = ['attack']
+animation_names = ['idle']
 
 class Witch:
     images = None
@@ -144,9 +144,6 @@ class Witch:
             Witch.check = 0
             self.hp -= 1
 
-    def add_event(self, event):
-        self.event_que.insert(0, event)
-
     def update(self):
         if collide(self, server.boy):
             server.boy.set_parent(self)
@@ -165,12 +162,12 @@ class Witch:
             if self.speed == 0:
                 Witch.images['idle'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
             else:
-                Witch.images['walk'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
+                Witch.images['idle'].clip_composite_draw(int(self.frame) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
         else:
             if self.speed == 0:
                 Witch.images['idle'].clip_draw(int(self.frame) * 150, 0, 150, 150, cx, cy)
             else:
-                Witch.images['walk'].clip_draw(int(self.frame) * 150, 0, 150, 150, cx, cy)
+                Witch.images['idle'].clip_draw(int(self.frame) * 150, 0, 150, 150, cx, cy)
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
