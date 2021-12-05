@@ -98,7 +98,9 @@ class Skeleton:
 
     def find_player(self):
         distance = (server.boy.x - self.x) ** 2 + (server.boy.y - self.y) ** 2
-        if distance < (PIXEL_PER_METER * 10) ** 2:
+        if distance < (PIXEL_PER_METER * 30) ** 2 and self.num == 1:
+            return BehaviorTree.SUCCESS
+        elif distance < (PIXEL_PER_METER * 10) ** 2 and self.num == 2:
             return BehaviorTree.SUCCESS
         else:
             self.speed = 0
@@ -138,9 +140,9 @@ class Skeleton:
 
         if self.num == 1:
             wait_node = LeafNode('Wait', self.wait)
-            wander_wait_node = SequenceNode('WanderWait')
-            wander_wait_node.add_children(wander_node, wait_node)
-            self.bt = BehaviorTree(wander_wait_node)
+            Chase_wait_node = SequenceNode('ChaseWait')
+            Chase_wait_node.add_children(chase_node, wait_node)
+            self.bt = BehaviorTree(Chase_wait_node)
         elif self.num == 2:
             patrol_chase_node = SelectorNode("PatrolChase")
             patrol_chase_node.add_children(chase_node, patrol_node)
