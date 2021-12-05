@@ -32,7 +32,7 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_SPACE): SPACE
 }
 
-animation_names = ['attack', 'dead', 'idle', 'run', 'defence', 'jump']
+animation_names = ['attack', 'dead', 'idle', 'run', 'defence', 'jump', 'hit']
 
 class RunState:
     soundcheck = 0
