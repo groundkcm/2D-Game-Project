@@ -20,13 +20,13 @@ def collide_wall(a, b):
     if top_a < bottom_b: return False
     if bottom_a > bottom_b: return False
 
-    if left_a - 1 < right_b and top_a + 1 > bottom_b and bottom_a - 1 < bottom_b and left_a + 1 > left_b:
+    if left_a < right_b and top_a > bottom_b and bottom_a < bottom_b and left_a > left_b:
         server.left = 1
-    elif right_a + 1 > left_b and right_a - 1 < right_b and top_a + 1 > bottom_b and bottom_a - 1 < bottom_b:
+    elif right_a > left_b and right_a < right_b and top_a > bottom_b and bottom_a < bottom_b:
         server.right = 1
-    elif top_a + 1 > bottom_b and top_a - 1 < top_a and left_a - 1 < right_b and right_a + 1 > left_b:
+    elif top_a > bottom_b and top_a < top_a and ((left_a < right_b and right_a > right_b) or (left_a < left_b and right_a > left_b)):
         server.top = 1
-    elif bottom_a - 1 < bottom_b:
+    elif bottom_a < bottom_b:
         server.bottom = 1
 
     return True

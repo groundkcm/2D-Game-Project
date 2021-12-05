@@ -38,16 +38,20 @@ key_event_table = {
 
 animation_names = ['attack', 'dead', 'idle', 'run', 'defence', 'jump', 'hit']
 
+trans = 0
 class RunState:
     soundcheck = 0
     def enter(boy, event):
+        global trans
         if event == RIGHT_DOWN:
             boy.velocity += RUN_SPEED_PPS
         elif event == RIGHT_UP:
             boy.velocity -= RUN_SPEED_PPS
         if event == LEFT_DOWN:
+            trans += 1
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
+            trans = 0
             boy.velocity += RUN_SPEED_PPS
 
         if event == TOP_DOWN:
@@ -64,14 +68,18 @@ class RunState:
         pass
 
     def do(boy):
-        global soundcheck
+        global soundcheck, trans
         if boy.hp == 0:
             boy.add_event(DEAD)
         if Skeleton2.atk == 1:
             boy.hframe = (0.5 * boy.hframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
         boy.iframe = (boy.iframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
-        boy.x += boy.velocity * game_framework.frame_time
+
+        if trans == 1:
+            boy.x += boy.velocity * game_framework.frame_time * 2
+        else:
+            boy.x += boy.velocity * game_framework.frame_time
         boy.y += boy.high * game_framework.frame_time
         # RunState.soundcheck += 1
         # if RunState.soundcheck == 100:
@@ -341,13 +349,13 @@ class Boy:
     def set_parent_wall(self, wall):
         self.parent = wall
         if server.left:
-            self.x -= self.velocity * game_framework.frame_time * 5
+            self.x -= self.velocity * game_framework.frame_time
         if server.right:
-            self.x += self.velocity * game_framework.frame_time * 5
+            self.x += self.velocity * game_framework.frame_time
         if server.top:
-            self.y -= self.high * game_framework.frame_time * 5
+            self.y -= self.high * game_framework.frame_time
         if server.bottom:
-            self.y += self.high * game_framework.frame_time * 5
+            self.y += self.high * game_framework.frame_time
         # if self.dir == 1:
         #     self.x -= self.velocity * game_framework.frame_time * 10
         # elif self.dir == -1:
