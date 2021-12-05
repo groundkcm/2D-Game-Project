@@ -114,13 +114,9 @@ class Mushroom:
     def build_behavior_tree(self):
         wander_node = LeafNode("Wander", self.wander)
 
-        wait_node = LeafNode('Wait', self.wait)
-        wander_wait_node = SequenceNode('WanderWait')
-        wander_wait_node.add_children(wander_node, wait_node)
-
+        patrol_node = SequenceNode("Patrol")
         get_next_position_node = LeafNode("Get Next Position", self.get_next_position)
         move_to_target_node = LeafNode("Move to Target", self.move_to_target)
-        patrol_node = SequenceNode("Patrol")
         patrol_node.add_children(get_next_position_node, move_to_target_node)
 
         find_player_node = LeafNode("Find Player", self.find_player)
@@ -128,13 +124,15 @@ class Mushroom:
         chase_node = SequenceNode("Chase")
         chase_node.add_children(find_player_node, move_to_player_node)
 
-        patrol_chase_node = SelectorNode("PatrolChase")
-        patrol_chase_node.add_children(chase_node, patrol_node)
-
-        wander_chase_node = SelectorNode("WanderChase")
-        wander_chase_node.add_children(chase_node, wander_node)
-
-        self.bt = BehaviorTree(wander_chase_node)
+        if self.num == 1:
+            wait_node = LeafNode('Wait', self.wait)
+            wander_wait_node = SequenceNode('WanderWait')
+            wander_wait_node.add_children(wander_node, wait_node)
+            self.bt = BehaviorTree(wander_wait_node)
+        elif self.num == 2:
+            patrol_chase_node = SelectorNode("PatrolChase")
+            patrol_chase_node.add_children(chase_node, patrol_node)
+            self.bt = BehaviorTree(patrol_chase_node)
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom

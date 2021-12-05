@@ -113,25 +113,29 @@ class Skeleton2:
 
     def build_behavior_tree(self):
         wander_node = LeafNode("Wander", self.wander)
+
         patrol_node = SequenceNode("Patrol")
-        if self.num == 1:
-            wait_node = LeafNode('Wait', self.wait)
-            wander_wait_node = SequenceNode('WanderWait')
-            wander_wait_node.add_children(wander_node, wait_node)
-            self.bt = BehaviorTree(wander_wait_node)
-        elif self.num == 2:
-            get_next_position_node = LeafNode("Get Next Position", self.get_next_position)
-            move_to_target_node = LeafNode("Move to Target", self.move_to_target)
-            patrol_node.add_children(get_next_position_node, move_to_target_node)
-            self.bt = BehaviorTree(patrol_node)
+        get_next_position_node = LeafNode("Get Next Position", self.get_next_position)
+        move_to_target_node = LeafNode("Move to Target", self.move_to_target)
+        patrol_node.add_children(get_next_position_node, move_to_target_node)
 
         find_player_node = LeafNode("Find Player", self.find_player)
         move_to_player_node = LeafNode("Move to Player", self.move_to_player)
         chase_node = SequenceNode("Chase")
         chase_node.add_children(find_player_node, move_to_player_node)
 
-        patrol_chase_node = SelectorNode("PatrolChase")
-        patrol_chase_node.add_children(chase_node, patrol_node)
+        if self.num == 1:
+            wait_node = LeafNode('Wait', self.wait)
+            wander_wait_node = SequenceNode('WanderWait')
+            wander_wait_node.add_children(wander_node, wait_node)
+            self.bt = BehaviorTree(wander_wait_node)
+        elif self.num == 2:
+            patrol_chase_node = SelectorNode("PatrolChase")
+            patrol_chase_node.add_children(chase_node, patrol_node)
+            self.bt = BehaviorTree(patrol_chase_node)
+
+
+
 
         # self.bt = BehaviorTree(wait_node)
 
