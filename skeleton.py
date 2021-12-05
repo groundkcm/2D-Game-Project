@@ -29,10 +29,11 @@ class Skeleton:
             for name in animation_names:
                 Skeleton.images[name] = load_image("./sheets/skeleton/" + name + ".png")
 
-    def __init__(self, name='NONAME', x=0, y=0, hp=1):
+    def __init__(self, name='NONAME', x=0, y=0, hp=1, num=0):
         self.name = name
         self.x, self.y = x, y
         self.hp = hp
+        self.num = num
         self.parent = None
         self.load_images()
         self.hpbar = load_image('./sheets/UI/monster hp bar.png')
