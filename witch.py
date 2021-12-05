@@ -9,9 +9,9 @@ import game_world
 
 # Boy Run Speed
 # fill expressions correctly
-PIXEL_PER_METER = (3.0 / 0.3)
-RUN_SPEED_KMPH = 5.0
-RUN_SPEED_MPM = (RUN_SPEED_KMPH * 10000.0 / 60.0)
+PIXEL_PER_METER = (10.0 / 0.3)
+RUN_SPEED_KMPH = 3.0
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
@@ -19,7 +19,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # fill expressions correctly
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8
+FRAMES_PER_ACTION = 5
 
 animation_names = ['idle']
 
@@ -128,6 +128,17 @@ class Witch:
         patrol_chase_node = SelectorNode("PatrolChase")
         patrol_chase_node.add_children(chase_node, patrol_node)
         self.bt = BehaviorTree(patrol_node)
+
+    def set_parent(self, enemy):
+        self.parent = enemy
+        if math.cos(self.dir) > 0:
+            self.x -= self.speed * game_framework.frame_time
+        elif math.cos(self.dir) < 0:
+            self.x += self.speed * game_framework.frame_time
+        if math.sin(self.dir) > 0:
+            self.y -= self.speed * game_framework.frame_time
+        elif math.sin(self.dir) < 0:
+            self.y += self.speed * game_framework.frame_time
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
