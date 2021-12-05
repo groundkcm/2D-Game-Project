@@ -142,7 +142,7 @@ class Mushroom:
         if self.num == 1:
             Chase_wait_node = SelectorNode('ChaseWait')
             Chase_wait_node.add_children(chase_node, wait_node)
-            self.bt = BehaviorTree(wait_node)
+            self.bt = BehaviorTree(Chase_wait_node)
         elif self.num == 2:
             patrol_chase_node = SelectorNode("PatrolChase")
             patrol_chase_node.add_children(chase_node, patrol_node)

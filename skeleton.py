@@ -22,6 +22,7 @@ animation_names = ['attack', 'dead', 'idle', 'walk', 'defence', 'hit', 'sword']
 class Skeleton:
     images = None
     check = 0
+    atk, ht, dead = 0, 0, 0
 
     def load_images(self):
         if Skeleton.images == None:
@@ -47,8 +48,11 @@ class Skeleton:
         self.build_behavior_tree()
         self.dir = random.random() * 2 * math.pi
         self.speed = 0
-        self.frame4 = 0
-        self.frame8 = 0
+        self.iframe = 0
+        self.wframe = 0
+        self.dframe = 0
+        self.hframe = 0
+        self.aframe = 0
         self.timer = 0
         self.wait_timer = 2.0
 
@@ -138,7 +142,7 @@ class Skeleton:
 
         wait_node = LeafNode('Wait', self.wait)
         if self.num == 1:
-            Chase_wait_node = SequenceNode('ChaseWait')
+            Chase_wait_node = SelectorNode('ChaseWait')
             Chase_wait_node.add_children(chase_node, wait_node)
             self.bt = BehaviorTree(wait_node)
         elif self.num == 2:
@@ -155,6 +159,7 @@ class Skeleton:
         self.speed = 0
 
     def hit(self):
+        Skeleton.ht = 1
         Skeleton.check += 1
         if Skeleton.check == 30:
             Skeleton.check = 0
@@ -176,14 +181,18 @@ class Skeleton:
 
     def update(self):
         if self.hp <= 0:
-            game_world.remove_object(self)
+            self.dframe = (self.dframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
 
         if collide(self, server.boy):
+            Skeleton.atk = 1
             server.boy.set_parent(self)
 
         self.bt.run()
-        self.frame4 = (self.frame4 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-        self.frame8 = (self.frame8 + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        self.iframe = (self.iframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.wframe = (self.wframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.hframe = (self.hframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.aframe = (self.aframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+
         self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
         self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
         self.x = clamp(50, self.x, server.background.w - 50)
@@ -191,17 +200,36 @@ class Skeleton:
 
     def draw(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
-
-        if math.cos(self.dir) < 0:
-            if self.speed == 0:
-                Skeleton.images['idle'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
+        if self.hp <= 0:
+            if math.cos(self.dir) < 0:
+                Skeleton.images['dead'].clip_composite_draw(int(self.dframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
             else:
-                Skeleton.images['walk'].clip_composite_draw(int(self.frame4) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
+                Skeleton.images['dead'].clip_draw(int(self.dframe) * 150, 0, 150, 150, cx, cy, 150, 150)
+            if self.dframe >= 3:
+                Skeleton.atk = 0
+                game_world.remove_object(self)
+        elif Skeleton.ht == 1:
+            if math.cos(self.dir) < 0:
+                Skeleton.images['hit'].clip_composite_draw(int(self.hframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
+            else:
+                Skeleton.images['hit'].clip_draw(int(self.hframe) * 150, 0, 150, 150, cx, cy, 150, 150)
+            Skeleton.ht = 0
+        elif Skeleton.atk == 1:
+            if math.cos(self.dir) < 0:
+                Skeleton.images['attack'].clip_composite_draw(int(self.aframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
+            else:
+                Skeleton.images['attack'].clip_draw(int(self.aframe) * 150, 0, 150, 150, cx, cy, 150, 150)
+            Skeleton.atk = 0
+        elif math.cos(self.dir) < 0:
+            if self.speed == 0:
+                Skeleton.images['idle'].clip_composite_draw(int(self.iframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
+            else:
+                Skeleton.images['walk'].clip_composite_draw(int(self.wframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
         else:
             if self.speed == 0:
-                Skeleton.images['idle'].clip_draw(int(self.frame4) * 150, 0, 150, 150, cx, cy)
+                Skeleton.images['idle'].clip_draw(int(self.iframe) * 150, 0, 150, 150, cx, cy)
             else:
-                Skeleton.images['walk'].clip_draw(int(self.frame4) * 150, 0, 150, 150, cx, cy)
+                Skeleton.images['walk'].clip_draw(int(self.wframe) * 150, 0, 150, 150, cx, cy)
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
