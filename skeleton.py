@@ -152,7 +152,7 @@ class Skeleton:
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
-        if self.dir > 0:
+        if math.cos(self.dir) > 0:
             return cx - 15, cy - 30, cx + 30, cy + 25
         else:
             return cx - 30, cy - 30, cx + 15, cy + 25
