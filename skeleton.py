@@ -163,7 +163,7 @@ class Skeleton:
     def hit(self):
         Skeleton.ht = 1
         Skeleton.check += 1
-        if Skeleton.check == 200:
+        if Skeleton.check == 50:
             Skeleton.check = 0
             self.hp -= 5
 
