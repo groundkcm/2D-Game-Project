@@ -24,8 +24,10 @@ animation_names = ['idle', 'attack']
 class Witch:
     images = None
     check = 0
+    one = 0
     px, py = 0, 0
     atk = 0
+    effect = 0
 
     def load_images(self):
         if Witch.images == None:
@@ -78,6 +80,7 @@ class Witch:
         distance = (server.boy.x - self.x) ** 2 + (server.boy.y - self.y) ** 2
         if distance < (PIXEL_PER_METER * 10) ** 2:
             Witch.atk = 1
+            Witch.effect = 1
             return BehaviorTree.SUCCESS
         else:
             self.speed = 0
@@ -142,7 +145,14 @@ class Witch:
             game_world.remove_object(self)
 
         if collide(self, server.boy):
+            Witch.effect = 0
             server.boy.set_parent(self)
+
+        if Witch.effect:
+            Witch.one += 1
+            if Witch.one == 1:
+                Witch.fire_ball(self)
+
 
         self.bt.run()
         self.aframe = (self.aframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
