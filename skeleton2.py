@@ -151,7 +151,7 @@ class Skeleton2:
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
-        return cx - 30, cy - 40, cx + 30, cy + 40
+        return cx - 25, cy - 35, cx + 10, cy + 15
 
     def stop(self):
         self.speed = 0
