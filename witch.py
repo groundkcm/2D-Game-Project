@@ -136,9 +136,9 @@ class Witch:
     def hit(self):
         Witch.ht = 1
         Witch.check += 1
-        if Witch.check == 30:
+        if Witch.check == 200:
             Witch.check = 0
-            self.hp -= 1
+            self.hp -= 5
 
     def update(self):
         if self.hp <= 0:
@@ -147,7 +147,7 @@ class Witch:
 
         if collide(self, server.boy):
             Witch.effect = 0
-            server.boy.set_parent(self)
+            server.boy.set_parent(self, 4)
 
         if Witch.effect:
             Witch.one += 1

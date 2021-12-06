@@ -160,9 +160,9 @@ class Mushroom:
     def hit(self):
         Mushroom.ht = 1
         Mushroom.check += 1
-        if Mushroom.check == 30:
+        if Mushroom.check == 200:
             Mushroom.check = 0
-            self.hp -= 1
+            self.hp -= 5
 
     def add_event(self, event):
         pass
@@ -185,7 +185,7 @@ class Mushroom:
         server.left, server.right, server.top, server.bottom = 0, 0, 0, 0
         if collide(self, server.boy):
             Mushroom.atk = 1
-            server.boy.set_parent(self)
+            server.boy.set_parent(self, 1)
 
         self.bt.run()
         self.iframe = (self.iframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4

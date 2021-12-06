@@ -329,23 +329,23 @@ class Boy:
             self.y -= self.high * game_framework.frame_time
         # self.add_event(READY)
 
-    def hit(self):
+    def hit(self, gage):
         Boy.check += 1
-        if Boy.check == 50:
+        if Boy.check == 200:
             Boy.check = 0
-            self.hp -= 1
+            self.hp -= gage
 
-    def set_parent(self, enemy):
+    def set_parent(self, enemy, gage):
         self.parent = enemy
         if self.cur_state == AttackState:
             enemy.set_parent(self)
             enemy.hit()
         if enemy.speed == 0:
             self.stop()
-            self.hit()
+            self.hit(1)
         else:
             enemy.set_parent(self)
-            self.hit()
+            self.hit(gage)
 
     def set_parent_wall(self, wall):
         self.parent = wall

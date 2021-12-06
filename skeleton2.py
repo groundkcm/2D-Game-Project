@@ -162,9 +162,9 @@ class Skeleton2:
     def hit(self):
         Skeleton2.ht = 1
         Skeleton2.check += 1
-        if Skeleton2.check == 30:
+        if Skeleton2.check == 200:
             Skeleton2.check = 0
-            self.hp -= 1
+            self.hp -= 5
 
     def add_event(self, event):
         pass
@@ -187,7 +187,7 @@ class Skeleton2:
         server.left, server.right, server.top, server.bottom = 0, 0, 0, 0
         if collide(self, server.boy):
             Skeleton2.atk = 1
-            server.boy.set_parent(self)
+            server.boy.set_parent(self, 2)
 
         self.bt.run()
         self.iframe = (self.iframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 11
