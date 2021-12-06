@@ -16,6 +16,8 @@ drag = False
 images = None
 x_but = None
 
+window_left = 0
+window_bottom = 0
 
 def load_images():
     global images
@@ -56,27 +58,17 @@ def handle_events():
 
 def draw():
     global ax, ay, drag, mx, my, images
-    WIDTH, HEIGHT = 1280 - server.x * 2 + 160, 960 - server.y * 2 + 120
-    if WIDTH >= 640:
-        WIDTH = 640
-    elif WIDTH <= 160:
-        WIDTH = 160
-    if HEIGHT >= 480:
-        HEIGHT = 480
-    elif HEIGHT <= 120:
-        HEIGHT = 120
+    global window_left, window_bottom
     clear_canvas()
     if server.clear == 1:
-        images['stage1'].draw(WIDTH, HEIGHT)
+        images['stage1'].clip_draw_to_origin(window_left, window_bottom, server.background.canvas_width, server.background.canvas_height, 0, 0)
     elif server.clear == 2:
-        images['stage2'].draw(WIDTH, HEIGHT)
+        images['stage2'].clip_draw_to_origin(window_left, window_bottom, server.background.canvas_width, server.background.canvas_height, 0, 0)
     elif server.clear == 3:
-        images['stage3'].draw(WIDTH, HEIGHT)
+        images['stage3'].clip_draw_to_origin(window_left, window_bottom, server.background.canvas_width, server.background.canvas_height, 0, 0)
     else:
-        # images['start'].draw(WIDTH, HEIGHT)
-        images['stage1'].draw(WIDTH, HEIGHT)
-        # images['stage2'].draw(WIDTH, HEIGHT)
-        # images['stage3'].draw(WIDTH, HEIGHT)
+        images['start'].clip_draw_to_origin(window_left, window_bottom, server.background.canvas_width, server.background.canvas_height, 0, 0)
+
 
     images['inventory'].draw(400, 300)
 
@@ -90,7 +82,9 @@ def draw():
 
 
 def update():
-    pass
+    global window_left, window_bottom
+    window_left = clamp(0, int(server.boy.x) - server.background.canvas_width // 2, server.background.w - server.background.canvas_width)
+    window_bottom = clamp(0, int(server.boy.y) - server.background.canvas_height // 2, server.background.h - server.background.canvas_height)
 
 
 def pause():
