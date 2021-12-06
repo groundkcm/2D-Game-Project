@@ -7,16 +7,14 @@ import server
 import math
 import game_world
 
-# Boy Run Speed
-# fill expressions correctly
+from fireball import Fire
+
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 3.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-# Boy Action Speed
-# fill expressions correctly
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 5
@@ -25,7 +23,6 @@ animation_names = ['idle', 'attack']
 
 class Witch:
     images = None
-    fire_images = None
     check = 0
     px, py = 0, 0
     atk = 0
@@ -35,9 +32,6 @@ class Witch:
             Witch.images = {}
             for name in animation_names:
                 Witch.images[name] = load_image("./sheets/witch/" + name + ".png")
-        if Witch.fire_images == None:
-            Witch.fire_images = {}
-            Witch.fire_images['fireball'] = [load_image("./sheets/fire/" + "%d" % i + ".png") for i in range(1, 60)]
 
     def __init__(self, name='NONAME', x=0, y=0, hp=1):
         self.name = name
@@ -55,7 +49,6 @@ class Witch:
         self.wait_timer = 2.0
         self.frame = 0
         self.aframe = 0
-        self.fframe = 0
         self.timer = 0
 
 
@@ -129,7 +122,9 @@ class Witch:
         return cx - 20, cy - 40, cx + 20, cy + 45
 
     def fire_ball(self):
-        pass
+        cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
+        fire = Fire(cx, cy, self.dir * RUN_SPEED_PPS * 10)
+        game_world.add_object(fire, 1)
 
     def stop(self):
         self.speed = 0
@@ -152,7 +147,6 @@ class Witch:
         self.bt.run()
         self.aframe = (self.aframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 17
-        self.fframe = (self.fframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 55
         self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
         self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
         self.x = clamp(50, self.x, server.background.w - 50)
@@ -162,7 +156,6 @@ class Witch:
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
 
         if Witch.atk == 1:
-            Witch.fire_images['fireball'][int(self.fframe)].draw(cx - 40, cy, 32, 32)
             if math.cos(self.dir) < 0:
                 Witch.images['attack'].clip_composite_draw(int(self.aframe) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
             else:
