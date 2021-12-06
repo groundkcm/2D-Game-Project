@@ -152,8 +152,10 @@ class Skeleton:
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
-
-        return cx - 25, cy - 30, cx + 25, cy + 30
+        if self.dir > 0:
+            return cx - 15, cy - 30, cx + 30, cy + 25
+        else:
+            return cx - 30, cy - 30, cx + 15, cy + 25
 
     def stop(self):
         self.speed = 0
@@ -234,4 +236,4 @@ class Skeleton:
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp, 3, cx - (40 - self.hp)/2, cy + 30)
+        self.hpbar.clip_draw(0, 0, self.hp, 3, cx - (40 - self.hp)/2, cy + 25)
