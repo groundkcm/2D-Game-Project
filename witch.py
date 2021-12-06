@@ -78,9 +78,11 @@ class Witch:
 
     def find_player(self):
         distance = (server.boy.x - self.x) ** 2 + (server.boy.y - self.y) ** 2
+        if distance < (PIXEL_PER_METER * 10) ** 2 and distance > (PIXEL_PER_METER * 5) ** 2:
+            Witch.effect = 1
+
         if distance < (PIXEL_PER_METER * 10) ** 2:
             Witch.atk = 1
-            Witch.effect = 1
             return BehaviorTree.SUCCESS
         else:
             self.speed = 0

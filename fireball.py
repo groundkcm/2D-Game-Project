@@ -38,7 +38,7 @@ class Fire:
 
     def update(self):
         if collide(self, server.boy):
-            server.boy.hp -= 2
+            server.boy.hp -= 1
             game_world.remove_object(self)
 
         self.x += RUN_SPEED_PPS * math.cos(self.dir) * game_framework.frame_time
