@@ -305,9 +305,9 @@ class Boy:
                 return cx - 5, cy - 35, cx + 30, cy + 5
         elif self.cur_state == RunState:
             if self.dir == 1:
-                return cx - 30, cy - 25, cx + 10, cy + 20
+                return cx - 25, cy - 25, cx, cy + 15
             else:
-                return cx - 10, cy - 25, cx + 30, cy + 20
+                return cx, cy - 25, cx + 25, cy + 15
         elif self.cur_state == AttackState:
             return cx - 30, cy - 25, cx + 25, cy + 25
         elif self.cur_state == JumpState:

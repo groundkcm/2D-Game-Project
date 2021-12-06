@@ -27,7 +27,7 @@ class Fire:
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
-        return cx - 15, cy - 15, cx + 15, cy + 15
+        return cx - 10, cy - 10, cx + 10, cy + 10
 
     def draw(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
