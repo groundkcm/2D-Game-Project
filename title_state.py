@@ -150,7 +150,7 @@ def create_new_world():
             server.walls3 = Wall(data['x1'], data['y1'], data['x2'], data['y2'])
             game_world.add_object(server.walls3, 1)
 
-        server.witch = Witch("ff", 700, 400, 200)
+        server.witch = Witch("ff", 700, 400, 150)
         game_world.add_object(server.witch, 1)
     else:
         server.boy = Boy(300, 600)

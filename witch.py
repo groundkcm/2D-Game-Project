@@ -121,7 +121,7 @@ class Witch:
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
 
-        return cx - 40, cy - 50, cx + 40, cy + 45
+        return cx - 20, cy - 40, cx + 20, cy + 45
 
     def stop(self):
         self.speed = 0
@@ -135,6 +135,7 @@ class Witch:
 
     def update(self):
         if self.hp <= 0:
+            server.clear = 1
             game_world.remove_object(self)
 
         if collide(self, server.boy):

@@ -73,9 +73,14 @@ def draw():
     images['inventory'].draw(400, 300)
 
     x_but.draw(750, 450)
+    check = 0
     if drag:
         images['red potion'].draw(ax, ay)
     else:
+        if mx != 55 and my != 397:
+            check += 1
+            if check == 1:
+                server.boy.hp += 30
         images['red potion'].draw(mx, my)
     update_canvas()
 
