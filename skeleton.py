@@ -236,4 +236,4 @@ class Skeleton:
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp, 3, cx - (40 - self.hp)/2, cy + 25)
+        self.hpbar.clip_draw(0, 0, self.hp, 3, cx - (40 - self.hp)/2, cy + 30)

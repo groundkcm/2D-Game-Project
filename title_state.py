@@ -171,12 +171,6 @@ def create_new_world():
         server.mushroom = Mushroom("ff", 700, 400, 15, 1)
         game_world.add_object(server.mushroom, 1)
 
-        server.skeleton2 = Skeleton2("ff", 400, 400, 15, 1)
-        game_world.add_object(server.skeleton2, 1)
-
-        server.skeleton = Skeleton("ff", 200, 350, 15, 1)
-        game_world.add_object(server.skeleton, 1)
-
 
 def load_saved_world():
     game_world.load()
