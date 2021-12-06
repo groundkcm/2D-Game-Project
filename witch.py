@@ -124,8 +124,8 @@ class Witch:
         return cx - 20, cy - 40, cx + 20, cy + 45
 
     def fire_ball(self):
-        cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
-        fire = Fire(cx, cy, self.dir)
+        # cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
+        fire = Fire(self.x, self.y, self.dir)
         game_world.add_object(fire, 1)
 
     def stop(self):
@@ -151,6 +151,8 @@ class Witch:
             Witch.one += 1
             if Witch.one == 1:
                 Witch.fire_ball(self)
+            if Witch.one == 500:
+                Witch.one = 0
 
 
         self.bt.run()
