@@ -399,17 +399,18 @@ class Boy:
             self.y = clamp(150, self.y, server.background.h - 180)
 
     def draw(self):
-        global trans
+        # global trans
         self.hpbase.draw(150, 575)
         self.hpbar.clip_draw(0, 0, self.hp * 2, 13, 150 - (100 - self.hp), 575)
         self.cur_state.draw(self)
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255,255,0))
         # debug_print('x:' + str(int(self.x)) + ' y:' + str(int(self.y)))
-        debug_print('trans:' + str(trans))
+        # debug_print('trans:' + str(trans))
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
+
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
