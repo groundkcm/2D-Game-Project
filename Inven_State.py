@@ -56,8 +56,9 @@ def handle_events():
             drag = False
             mx, my = ax, ay
 
+check = 0
 def draw():
-    global ax, ay, drag, mx, my, images
+    global ax, ay, drag, mx, my, images, check
     global window_left, window_bottom
     clear_canvas()
     if server.clear == 1:
@@ -73,7 +74,6 @@ def draw():
     images['inventory'].draw(400, 300)
 
     x_but.draw(750, 450)
-    check = 0
     if drag:
         images['red potion'].draw(ax, ay)
     else:

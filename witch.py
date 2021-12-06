@@ -135,7 +135,7 @@ class Witch:
 
     def update(self):
         if self.hp <= 0:
-            server.clear = 1
+            server.end = 1
             game_world.remove_object(self)
 
         if collide(self, server.boy):
@@ -171,6 +171,6 @@ class Witch:
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp * 40 // 200, 3, cx - (40 - self.hp * 40 // 200)/2, cy + 50)
+        self.hpbar.clip_draw(0, 0, self.hp * 40 // 150, 3, cx - (40 - self.hp * 40 // 150)/2, cy + 50)
 
 
