@@ -121,12 +121,11 @@ class Witch:
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
-
         return cx - 20, cy - 40, cx + 20, cy + 45
 
     def fire_ball(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom
-        fire = Fire(cx, cy, self.dir * RUN_SPEED_PPS * 10)
+        fire = Fire(cx, cy, self.dir)
         game_world.add_object(fire, 1)
 
     def stop(self):
