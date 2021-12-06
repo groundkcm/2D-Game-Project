@@ -74,7 +74,8 @@ class Mushroom:
 
         self.patrol_positions = []
         for p in positions:
-            self.patrol_positions.append((p[0], 1024 - p[1]))
+            self.patrol_positions.append((p[0], p[1]))
+            # self.patrol_positions.append((p[0], 960 - p[1]))
 
     def wander(self):
         self.speed = RUN_SPEED_PPS
@@ -100,7 +101,7 @@ class Mushroom:
 
     def find_player(self):
         distance = (server.boy.x - self.x) ** 2 + (server.boy.y - self.y) ** 2
-        if distance < (PIXEL_PER_METER * 5) ** 2:
+        if distance < (PIXEL_PER_METER * 6) ** 2:
             return BehaviorTree.SUCCESS
         else:
             self.speed = 0
@@ -146,7 +147,7 @@ class Mushroom:
         elif self.num == 2:
             patrol_chase_node = SelectorNode("PatrolChase")
             patrol_chase_node.add_children(chase_node, patrol_node)
-            self.bt = BehaviorTree(wait_node)
+            self.bt = BehaviorTree(patrol_chase_node)
 
     def get_bb(self):
         cx, cy = self.x - server.background.window_left, self.y - server.background.window_bottom

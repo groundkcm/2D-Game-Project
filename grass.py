@@ -90,19 +90,19 @@ class Wall:
     def update(self):
 
         # game_world.load()
-        for o in game_world.all_objects():
-            if isinstance(o, Mushroom):
-                if collide_wall(self, o):
-                    server.mushroom.set_parent(self)
-            elif isinstance(o, Skeleton2):
-                if collide_wall(self, o):
-                    server.skeleton2.set_parent(self)
-            elif isinstance(o, Skeleton):
-                if collide_wall(self, o):
-                    server.skeleton.set_parent(self)
-            elif isinstance(o, Witch):
-                if collide_wall(self, o):
-                    server.witch.set_parent(self)
+        # for o in game_world.all_objects():
+        #     if isinstance(o, Mushroom):
+        #         if collide_wall(self, o):
+        #             server.mushroom.set_parent(self)
+        #     elif isinstance(o, Skeleton2):
+        #         if collide_wall(self, o):
+        #             server.skeleton2.set_parent(self)
+        #     elif isinstance(o, Skeleton):
+        #         if collide_wall(self, o):
+        #             server.skeleton.set_parent(self)
+        #     elif isinstance(o, Witch):
+        #         if collide_wall(self, o):
+        #             server.witch.set_parent(self)
 
         if collide_wall(self, server.boy):
             # print('stop')
