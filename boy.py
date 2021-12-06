@@ -48,10 +48,10 @@ class RunState:
         elif event == RIGHT_UP:
             boy.velocity -= RUN_SPEED_PPS
         if event == LEFT_DOWN:
-            trans += 1
+            # trans += 1
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
-            trans = 0
+            # trans = 0
             boy.velocity += RUN_SPEED_PPS
 
         if event == TOP_DOWN:
@@ -76,10 +76,11 @@ class RunState:
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
         boy.iframe = (boy.iframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 18
 
-        if trans == 1:
-            boy.x += boy.velocity * game_framework.frame_time * 2
-        else:
-            boy.x += boy.velocity * game_framework.frame_time
+        # if trans == 1:
+        #     boy.x += boy.velocity * game_framework.frame_time * 2
+        # else:
+        #     boy.x += boy.velocity * game_framework.frame_time
+        boy.x += boy.velocity * game_framework.frame_time
         boy.y += boy.high * game_framework.frame_time
         # RunState.soundcheck += 1
         # if RunState.soundcheck == 100:
@@ -348,22 +349,22 @@ class Boy:
 
     def set_parent_wall(self, wall):
         self.parent = wall
-        if server.left:
+        # if server.left:
+        #     self.x -= self.velocity * game_framework.frame_time
+        # if server.right:
+        #     self.x += self.velocity * game_framework.frame_time
+        # if server.top:
+        #     self.y -= self.high * game_framework.frame_time
+        # if server.bottom:
+        #     self.y += self.high * game_framework.frame_time
+        if self.dir == 1:
             self.x -= self.velocity * game_framework.frame_time
-        if server.right:
-            self.x += self.velocity * game_framework.frame_time
-        if server.top:
+        elif self.dir == -1:
+            self.x -= self.velocity * game_framework.frame_time
+        if self.high > 0:
             self.y -= self.high * game_framework.frame_time
-        if server.bottom:
-            self.y += self.high * game_framework.frame_time
-        # if self.dir == 1:
-        #     self.x -= self.velocity * game_framework.frame_time * 10
-        # elif self.dir == -1:
-        #     self.x -= self.velocity * game_framework.frame_time * 10
-        # if self.high > 0:
-        #     self.y -= self.high * game_framework.frame_time * 10
-        # elif self.high < 0:
-        #     self.y -= self.high * game_framework.frame_time * 10
+        elif self.high < 0:
+            self.y -= self.high * game_framework.frame_time
 
     def set_background(self, bg):
         self.bg = bg

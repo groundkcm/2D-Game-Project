@@ -24,7 +24,7 @@ def collide_wall(a, b):
         server.left = 1
     elif right_a > left_b and right_a < right_b and top_a > bottom_b and bottom_a < bottom_b:
         server.right = 1
-    elif top_a > bottom_b and top_a < top_a and ((left_a < right_b and right_a > right_b) or (left_a < left_b and right_a > left_b)):
+    elif top_a > bottom_b and top_a < top_b and right_a > left_b and left_a < right_b:
         server.top = 1
     elif bottom_a < bottom_b:
         server.bottom = 1

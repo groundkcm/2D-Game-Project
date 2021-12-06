@@ -105,7 +105,14 @@ class Wall:
                     server.witch.set_parent(self)
 
         if collide_wall(self, server.boy):
-            # print('stop')
+            if server.left:
+                print('left')
+            elif server.right:
+                print('right')
+            elif server.top:
+                print('top')
+            elif server.bottom:
+                print('bottom')
             server.boy.set_parent_wall(self)
 
     def get_bb(self):
