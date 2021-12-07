@@ -224,7 +224,8 @@ class Skeleton2:
                 Skeleton2.images['attack'].clip_composite_draw(int(self.aframe) * 43, 0, 43, 37, 0, 'h', cx, cy, tw, th)
             else:
                 Skeleton2.images['attack'].clip_draw(int(self.aframe) * 43, 0, 43, 37, cx, cy, tw, th)
-            # Skeleton2.atk = 0
+            if self.aframe >= 17:
+                Skeleton2.atk = 0
         elif math.cos(self.dir) < 0:
             tw, th = int(24 * 2), int(32 * 2)
             if self.speed == 0:

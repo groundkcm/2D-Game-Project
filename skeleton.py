@@ -216,13 +216,15 @@ class Skeleton:
                 Skeleton.images['hit'].clip_composite_draw(int(self.hframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
             else:
                 Skeleton.images['hit'].clip_draw(int(self.hframe) * 150, 0, 150, 150, cx, cy, 150, 150)
-            Skeleton.ht = 0
+            if self.hframe >= 3:
+                Skeleton.ht = 0
         elif Skeleton.atk == 1:
             if math.cos(self.dir) < 0:
                 Skeleton.images['attack'].clip_composite_draw(int(self.aframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
             else:
                 Skeleton.images['attack'].clip_draw(int(self.aframe) * 150, 0, 150, 150, cx, cy, 150, 150)
-            # Skeleton.atk = 0
+            if self.aframe >= 7:
+                Skeleton.atk = 0
         elif math.cos(self.dir) < 0:
             if self.speed == 0:
                 Skeleton.images['idle'].clip_composite_draw(int(self.iframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
