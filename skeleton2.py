@@ -142,7 +142,7 @@ class Skeleton2:
         if self.num == 1:
             Chase_wait_node = SelectorNode('ChaseWait')
             Chase_wait_node.add_children(chase_node, wait_node)
-            self.bt = BehaviorTree(wait_node)
+            self.bt = BehaviorTree(Chase_wait_node)
         elif self.num == 2:
             patrol_chase_node = SelectorNode("PatrolChase")
             patrol_chase_node.add_children(chase_node, patrol_node)
@@ -174,11 +174,11 @@ class Skeleton2:
         if math.cos(self.dir) > 0:
             self.x -= self.speed * game_framework.frame_time
         elif math.cos(self.dir) < 0:
-            self.x -= self.speed * game_framework.frame_time
+            self.x += self.speed * game_framework.frame_time
         if math.sin(self.dir) > 0:
             self.y -= self.speed * game_framework.frame_time
         elif math.sin(self.dir) < 0:
-            self.y -= self.speed * game_framework.frame_time
+            self.y += self.speed * game_framework.frame_time
 
     def update(self):
         if self.hp <= 0:
