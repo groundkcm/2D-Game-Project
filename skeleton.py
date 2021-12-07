@@ -173,13 +173,13 @@ class Skeleton:
     def set_parent(self, enemy):
         self.parent = enemy
         if math.cos(self.dir) > 0:
-            self.x -= self.speed * game_framework.frame_time * 10
+            self.x -= self.speed * game_framework.frame_time
         elif math.cos(self.dir) < 0:
-            self.x += self.speed * game_framework.frame_time * 10
+            self.x += self.speed * game_framework.frame_time
         if math.sin(self.dir) > 0:
-            self.y -= self.speed * game_framework.frame_time * 10
+            self.y -= self.speed * game_framework.frame_time
         elif math.sin(self.dir) < 0:
-            self.y += self.speed * game_framework.frame_time * 10
+            self.y += self.speed * game_framework.frame_time
 
     def update(self):
         if self.hp <= 0:
@@ -222,7 +222,7 @@ class Skeleton:
                 Skeleton.images['attack'].clip_composite_draw(int(self.aframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
             else:
                 Skeleton.images['attack'].clip_draw(int(self.aframe) * 150, 0, 150, 150, cx, cy, 150, 150)
-            Skeleton.atk = 0
+            # Skeleton.atk = 0
         elif math.cos(self.dir) < 0:
             if self.speed == 0:
                 Skeleton.images['idle'].clip_composite_draw(int(self.iframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)

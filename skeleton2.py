@@ -172,13 +172,13 @@ class Skeleton2:
     def set_parent(self, enemy):
         self.parent = enemy
         if math.cos(self.dir) > 0:
-            self.x -= self.speed * game_framework.frame_time * 10
+            self.x -= self.speed * game_framework.frame_time
         elif math.cos(self.dir) < 0:
-            self.x -= self.speed * game_framework.frame_time * 10
+            self.x -= self.speed * game_framework.frame_time
         if math.sin(self.dir) > 0:
-            self.y -= self.speed * game_framework.frame_time * 10
+            self.y -= self.speed * game_framework.frame_time
         elif math.sin(self.dir) < 0:
-            self.y -= self.speed * game_framework.frame_time * 10
+            self.y -= self.speed * game_framework.frame_time
 
     def update(self):
         if self.hp <= 0:
@@ -216,14 +216,15 @@ class Skeleton2:
                 Skeleton2.images['hit'].clip_composite_draw(int(self.hframe) * 30, 0, 30, 32, 0, 'h', cx, cy, tw, th)
             else:
                 Skeleton2.images['hit'].clip_draw(int(self.hframe) * 30, 0, 30, 32, cx, cy, tw, th)
-            Skeleton2.ht = 0
+            if self.hframe >= 7:
+                Skeleton2.ht = 0
         elif Skeleton2.atk == 1:
             tw, th = int(43 * 2), int(37 * 2)
             if math.cos(self.dir) < 0:
                 Skeleton2.images['attack'].clip_composite_draw(int(self.aframe) * 43, 0, 43, 37, 0, 'h', cx, cy, tw, th)
             else:
                 Skeleton2.images['attack'].clip_draw(int(self.aframe) * 43, 0, 43, 37, cx, cy, tw, th)
-            Skeleton2.atk = 0
+            # Skeleton2.atk = 0
         elif math.cos(self.dir) < 0:
             tw, th = int(24 * 2), int(32 * 2)
             if self.speed == 0:

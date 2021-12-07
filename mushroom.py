@@ -212,13 +212,15 @@ class Mushroom:
                 Mushroom.images['hit'].clip_composite_draw(int(self.hframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
             else:
                 Mushroom.images['hit'].clip_draw(int(self.hframe) * 150, 0, 150, 150, cx, cy, 150, 150)
-            Mushroom.ht = 0
+            if self.hframe >= 3:
+                Mushroom.ht = 0
         elif Mushroom.atk == 1:
             if math.cos(self.dir) < 0:
                 Mushroom.images['attack'].clip_composite_draw(int(self.aframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
             else:
                 Mushroom.images['attack'].clip_draw(int(self.aframe) * 150, 0, 150, 150, cx, cy, 150, 150)
-            Mushroom.atk = 0
+            if self.aframe >= 7:
+                Mushroom.atk = 0
         elif math.cos(self.dir) < 0:
             if self.speed == 0:
                 Mushroom.images['idle'].clip_composite_draw(int(self.iframe) * 150, 0, 150, 150, 0, 'h', cx, cy, 150, 150)
@@ -230,6 +232,7 @@ class Mushroom:
             else:
                 Mushroom.images['walk'].clip_draw(int(self.wframe) * 150, 0, 150, 150, cx, cy)
 
+        debug_print('akt:' + str(Mushroom.atk))
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
         self.hpbar.clip_draw(0, 0, self.hp * 40 // 15, 3, cx - (40 - self.hp * 40 // 15)/2, cy + 15)
