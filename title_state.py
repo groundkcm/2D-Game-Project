@@ -168,7 +168,7 @@ def create_new_world():
             server.trigger0 = Trigger(data['x1'], data['y1'], data['x2'], data['y2'], data['num'])
             game_world.add_object(server.trigger0, 1)
 
-        server.mushroom = Mushroom("ff", 700, 400, 15, 1)
+        server.mushroom = Mushroom("ff", 700, 400, 5, 1)
         game_world.add_object(server.mushroom, 1)
 
 

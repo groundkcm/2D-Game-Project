@@ -132,6 +132,8 @@ class Trigger:
     def __init__(self, x1=0, y1=0, x2=0, y2=0, num = 0):
         self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
         self.num = num
+        self.door = load_music('door.mp3')
+        self.door.set_volume(32)
         # self.build_behavior_tree(num)
         if Trigger.font is None:
             Trigger.font = load_font('ENCR10B.TTF', 16)
@@ -143,6 +145,9 @@ class Trigger:
     def __setstate__(self, state):
         self.__init__()
         self.__dict__.update(state)
+
+    def open(self):
+        self.door.play()
 
     def order(self, num):
         # server.background = FixedBackground
@@ -230,6 +235,7 @@ class Trigger:
         if collide_wall(self, server.boy):
             Trigger.check += 1
             if self.num == 4 and Trigger.check == 1:
+                Trigger.open(self)
                 server.clear += 1
                 game_world.clear()
                 title_state.create_new_world()

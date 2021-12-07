@@ -235,4 +235,4 @@ class Mushroom:
         debug_print('akt:' + str(Mushroom.atk))
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp * 40 // 15, 3, cx - (40 - self.hp * 40 // 15)/2, cy + 15)
+        self.hpbar.clip_draw(0, 0, self.hp * 40 // 5, 3, cx - (40 - self.hp * 40 // 5)/2, cy + 15)
