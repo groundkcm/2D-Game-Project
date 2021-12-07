@@ -189,6 +189,6 @@ class Witch:
 
         if server.debugmode == 1:
             draw_rectangle(*self.get_bb())
-        self.hpbar.clip_draw(0, 0, self.hp * 40 // 100, 3, cx - (40 - self.hp * 40 // 100)/2, cy + 50)
+        self.hpbar.clip_draw(0, 0, self.hp * 40 // 50, 3, cx - (40 - self.hp * 40 // 50)/2, cy + 50)
 
 

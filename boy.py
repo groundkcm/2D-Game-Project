@@ -68,7 +68,7 @@ class RunState:
         pass
 
     def do(boy):
-        global soundcheck, trans
+        global trans
         if boy.hp == 0:
             boy.add_event(DEAD)
         if Skeleton2.atk == 1:
@@ -82,10 +82,6 @@ class RunState:
         #     boy.x += boy.velocity * game_framework.frame_time
         boy.x += boy.velocity * game_framework.frame_time
         boy.y += boy.high * game_framework.frame_time
-        RunState.soundcheck += 1
-        if RunState.soundcheck == 250:
-            Boy.walking(boy)
-            RunState.soundcheck = 0
 
     # @staticmethod
     def draw(boy):
@@ -96,14 +92,26 @@ class RunState:
         #     else:
         #         Boy.images['hit'].clip_draw(int(boy.hframe) * 112, 0, 112, 100, cx, cy)
         if boy.velocity > 0:
+            RunState.soundcheck += 1
+            if RunState.soundcheck == 250:
+                Boy.walking(boy)
+                RunState.soundcheck = 0
             Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, cx, cy)
             boy.dir = 1
         elif boy.velocity < 0:
+            RunState.soundcheck += 1
+            if RunState.soundcheck == 250:
+                Boy.walking(boy)
+                RunState.soundcheck = 0
             Boy.images['run'].clip_composite_draw(int(boy.frame) * 100, 0, 100, 100, 0, 'h', cx, cy, 100, 100)
             boy.dir = -1
         else:
             # if boy x_velocity == 0
             if boy.high > 0 or boy.high < 0:
+                RunState.soundcheck += 1
+                if RunState.soundcheck == 250:
+                    Boy.walking(boy)
+                    RunState.soundcheck = 0
                 if boy.dir == 1:
                     Boy.images['run'].clip_draw(int(boy.frame) * 100, 0, 100, 100, cx, cy)
                 else:
