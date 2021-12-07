@@ -104,16 +104,16 @@ class Wall:
                 if collide_wall(self, o):
                     server.witch.set_parent(self)
 
-        if collide_wall(self, server.boy):
-            if server.left:
-                print('left')
-            elif server.right:
-                print('right')
-            elif server.top:
-                print('top')
-            elif server.bottom:
-                print('bottom')
-            server.boy.set_parent_wall(self)
+        # if collide_wall(self, server.boy):
+        #     if server.left:
+        #         print('left')
+        #     elif server.right:
+        #         print('right')
+        #     elif server.top:
+        #         print('top')
+        #     elif server.bottom:
+        #         print('bottom')
+        #     server.boy.set_parent_wall(self)
 
     def get_bb(self):
         cx1, cy1 = self.x1 - server.background.window_left, self.y1 - server.background.window_bottom
