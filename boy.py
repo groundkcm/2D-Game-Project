@@ -82,10 +82,10 @@ class RunState:
         #     boy.x += boy.velocity * game_framework.frame_time
         boy.x += boy.velocity * game_framework.frame_time
         boy.y += boy.high * game_framework.frame_time
-        # RunState.soundcheck += 1
-        # if RunState.soundcheck == 100:
-        #     boy.walking()
-        #     RunState.soundcheck = 0
+        RunState.soundcheck += 1
+        if RunState.soundcheck == 250:
+            Boy.walking(boy)
+            RunState.soundcheck = 0
 
     # @staticmethod
     def draw(boy):
@@ -282,9 +282,11 @@ class Boy:
         self.cur_state = RunState
         self.cur_state.enter(self, None)
         self.start_time = get_time()
-    #
-    # def walking(self):
-    #     self.footsteps.play()
+        self.footsteps = load_wav('walk.wav')
+        self.footsteps.set_volume(32)
+
+    def walking(self):
+        self.footsteps.play()
 
     def __getstate__(self):
         state = {'x' : self.x, 'y':self.y, 'dir':self.dir,'cur_state': self.cur_state , 'time' : get_time() - self.start_time}
