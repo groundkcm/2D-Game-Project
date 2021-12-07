@@ -2,7 +2,7 @@
 gameover = 0
 end = 0
 debugmode = 1
-clear = 0
+clear = 3
 yes = 0
 no = 0
 
