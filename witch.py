@@ -136,7 +136,7 @@ class Witch:
     def hit(self):
         Witch.ht = 1
         Witch.check += 1
-        if Witch.check == 100:
+        if Witch.check == 200:
             Witch.check = 0
             self.hp -= 5
 
@@ -153,7 +153,7 @@ class Witch:
             Witch.one += 1
             if Witch.one == 1:
                 Witch.fire_ball(self)
-            if Witch.one == 500:
+            if Witch.one == 200:
                 Witch.one = 0
 
 
