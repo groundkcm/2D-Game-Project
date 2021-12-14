@@ -206,6 +206,7 @@ class Mushroom:
                 Mushroom.images['dead'].clip_draw(int(self.dframe) * 150, 0, 150, 150, cx, cy, 150, 150)
             if self.dframe >= 3:
                 Mushroom.atk = 0
+                Mushroom.ht = 0
                 game_world.remove_object(self)
         elif Mushroom.ht == 1:
             if math.cos(self.dir) < 0:

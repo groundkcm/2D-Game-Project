@@ -69,8 +69,10 @@ class RunState:
 
     def do(boy):
         global trans
-        if boy.hp == 0:
+
+        if boy.hp <= 0:
             boy.add_event(DEAD)
+
         if Skeleton2.atk == 1:
             boy.hframe = (0.5 * boy.hframe + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 24
@@ -142,7 +144,7 @@ class JumpState:
         pass
 
     def do(self):
-        if self.hp == 0:
+        if self.hp <= 0:
             self.add_event(DEAD)
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 19
         if int(self.frame) < 9:
@@ -172,7 +174,7 @@ class AttackState:
         pass
 
     def do(boy):
-        if boy.hp == 0:
+        if boy.hp <= 0:
             boy.add_event(DEAD)
         if boy.click == 1:
             boy.frame = (boy.frame + 0.8 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
@@ -201,7 +203,7 @@ class DefenceState:
         pass
 
     def do(self):
-        if self.hp == 0:
+        if self.hp <= 0:
             self.add_event(DEAD)
         self.frame = (self.frame + 0.5 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         if self.dir == 1:
